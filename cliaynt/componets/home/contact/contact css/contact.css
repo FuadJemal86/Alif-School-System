@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.contact-container {
+    margin-top: 150px;
+    margin-bottom: 160px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+}
+
+.contact-texs {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 500px;
+    flex: 1 1 45%;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+}
+
+.contact-texs:hover {
+    transform: translateY(-5px);
+}
+
+.contact-texs h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.contact-input input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    font-size: 16px;
+}
+
+.contact-input input:focus,
+textarea:focus {
+    border: 1px solid #4379F2;
+    box-shadow: 0 0 8px rgba(67, 121, 242, 0.2);
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}
+
+.contact-submit {
+    text-align: center;
+}
+
+.contact-button {
+    background: #4379F2;
+    color: #ffffff;
+    border: none;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    width: 85%;
+    margin-top: 20px;
+}
+
+.contact-button:hover {
+    background: #1b305e;
+    transform: scale(1.05);
+}
+
+.contact-button:active {
+    transform: scale(1);
+}
+
+.contact-information div {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.contact-information span {
+    font-weight: 600;
+    color: #333;
+}
+
+iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .contact-texs {
+        flex: 1 1 100%;
+    }
+
+    textarea {
+        height: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-texs h2 {
+        font-size: 20px;
+    }
+
+    .contact-button {
+        font-size: 14px;
+        padding: 12px 18px;
+    }
+}

@@ -1,0 +1,145 @@
+* {
+    margin: 0px;
+}
+
+
+.footer-container {
+    padding: 20px;
+    background-color: #304463;
+    color: #cfc9c5;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.footer-container1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+}
+
+.footer-texts {
+    flex: 1 1 25%;
+    /* Each section takes 25% of the row */
+    padding: 10px;
+    text-align: left;
+}
+
+
+.footer-texts h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #7EACB5;
+    font-family: "Montserrat", sans-serif;
+}
+
+.footer-texts div {
+    font-size: 1.1em;
+    line-height: 1.6;
+    font-family: "Montserrat", sans-serif;
+}
+
+.footer-texts input {
+    font-size: 17px;
+    padding: 8px;
+    width: 30%;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background: #1e212c;
+    height: 50px;
+    font-family: "Montserrat", sans-serif;
+    color: #d4d4d4;
+}
+
+.footer-texts button {
+    padding: 15px 50px;
+    background-color: #091b4d;
+    border: none;
+    color: #d4d4d4;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 600;
+    transition: 0.5s ease;
+}
+
+.footer-texts button:hover {
+    background: #D0B8A8;
+    color: #222;
+}
+
+.conatct-text {
+    margin-left: 5px;
+    color: #97918f;
+}
+
+.footer-icons {
+    font-size: 25px;
+    display: flex;
+    gap: 20px;
+}
+
+.footer-icone-conatiner {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.footer-icon {
+    cursor: pointer;
+    will-change: filter, transform;
+    transition: filter 500ms ease, transform 300ms ease;
+}
+
+.footer-icon:hover {
+    filter: drop-shadow(0 0 1.2em rgba(151, 155, 156, 0.7));
+    transform: scale(1.1);
+    color: #7D8ABC;
+}
+
+.footer-icon:active {
+    transform: scale(1);
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .footer-texts {
+        flex: 1 1 50%;
+        /* Each section takes 50% of the row on medium screens */
+        text-align: left;
+    }
+
+    .footer-texts h3 {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-texts {
+        flex: 1 1 100%;
+        text-align: left;
+        /* Each section stacks vertically on small screens */
+    }
+
+    .footer-texts h3 {
+        font-size: 1.2em;
+    }
+
+    .footer-texts div {
+        font-size: 14px;
+    }
+
+    .footer-texts input {
+        font-size: 0.9em;
+        width: 90%;
+        height: 20p;
+
+    }
+
+    .footer-texts button {
+        font-size: 0.9em;
+        padding: 10px 13px;
+    }
+}
