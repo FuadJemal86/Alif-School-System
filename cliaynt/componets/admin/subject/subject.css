@@ -1,0 +1,203 @@
+
+/* font-family: "Inter", sans-serif; */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+
+.subject-main-container {
+    width: 95%;
+    margin: 80px auto 0px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subject-main-table-con {
+    height: 100vh;
+    padding-top: 30px;
+}
+
+.add-subject-button {
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.add-subject-button a {
+    padding: 10px 20px;
+    background-color: #062caa;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: .5s ease;
+    transform: scale(.9);
+    text-decoration: none;
+}
+
+.add-subject-button a:hover {
+    transform: scale(1);
+    background-color: #161050;
+}
+
+.subject-table-con table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.subject-table-con th, 
+.subject-table-con td {
+    padding: 8px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.subject-table-con th {
+    background-color: #6e6d75;
+    color: white;
+    font-weight: 600;
+}
+
+.subject-table-con tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.subject-table-con tbody tr:nth-child(even) {
+    background-color: #e9ecef;
+}
+
+.subject-table-con tbody tr:hover {
+    background-color: #d1e7dd;
+}
+
+.subject-table-con tbody td {
+    font-size: 14px;
+    color: #333;
+}
+
+
+/* Subject Input Container */
+
+.subject-input-container {
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+
+.subject-main {
+    margin-bottom: 20px;
+}
+
+
+/* Add sction  */
+
+.add-subject-text {
+    font-size: 25px;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Input Section */
+.subject-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.subject-input input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #dad4d4;
+    border-radius: 7px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.subject-input input:focus {
+    border-color: #4caf50; 
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.subject-input-container button {
+    width: 50%;
+    padding: 10px 15px;
+    background-color: #0b1d58;
+    color: rgb(228, 220, 220);
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.subject-input-container button:hover {
+    background-color: #06073d;
+    color: white;
+    transform: scale(1);
+}
+
+.subject-input-container button:active {
+    transform: scaleX(.9);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .subject-input-container {
+        padding: 15px;
+    }
+
+    .add-subject-text {
+        font-size: 16px;
+    }
+
+    .subject-input input {
+        font-size: 13px;
+    }
+
+    .subject-input-container button {
+        font-size: 14px;
+    }
+}
+
+
+/* serch bar */
+
+.serch-bar {
+    margin-top: 50px;
+    position: fixed;
+    top: 20px;
+    display: flex;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid #dad4d4;
+}
+
+.serch-bar input {
+    outline: none;
+    border-radius: 15px;
+    border: none;
+    padding: 5px;
+}
+
+.serch-icone {
+    color: #b6b0b0;
+    padding: 5px;
+}
+

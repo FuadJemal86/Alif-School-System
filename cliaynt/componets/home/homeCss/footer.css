@@ -5,7 +5,7 @@
 
 .footer-container {
     padding: 20px;
-    background-color: #304463;
+    background-color: #131c2b;
     color: #cfc9c5;
     display: flex;
     flex-wrap: wrap;
@@ -14,7 +14,7 @@
 
 .footer-container1 {
     display: flex;
-    flex-wrap: wrap;
+    flex: 1 1 30%;
     gap: 20px;
     width: 100%;
 }
@@ -28,14 +28,14 @@
 
 
 .footer-texts h3 {
-    font-size: 1.5em;
+    font-size: 1.2em;
     margin-bottom: 10px;
-    color: #7EACB5;
+    color: #fff3f3;
     font-family: "Montserrat", sans-serif;
 }
 
 .footer-texts div {
-    font-size: 1.1em;
+    font-size: .9em;
     line-height: 1.6;
     font-family: "Montserrat", sans-serif;
 }
@@ -43,7 +43,7 @@
 .footer-texts input {
     font-size: 17px;
     padding: 8px;
-    width: 30%;
+    width: 100%;
     margin: 10px 0;
     border-radius: 5px;
     border: 1px solid #ddd;
@@ -66,13 +66,14 @@
 }
 
 .footer-texts button:hover {
-    background: #D0B8A8;
-    color: #222;
+    background: #041227;
+    color: #dfdfdf;
 }
 
 .conatct-text {
     margin-left: 5px;
     color: #97918f;
+    font-size: 15px;
 }
 
 .footer-icons {
@@ -87,7 +88,8 @@
     width: 100%;
 }
 
-.footer-icon {
+.footer-icon a{
+    font-size: 25px;
     cursor: pointer;
     will-change: filter, transform;
     transition: filter 500ms ease, transform 300ms ease;
@@ -97,14 +99,23 @@
     filter: drop-shadow(0 0 1.2em rgba(151, 155, 156, 0.7));
     transform: scale(1.1);
     color: #7D8ABC;
+    transition: .7s ease;
 }
 
 .footer-icon:active {
-    transform: scale(1);
+    transform: scale(.7);
 }
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
+
+    .footer-container1 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        width: 100%;
+    }
+
     .footer-texts {
         flex: 1 1 50%;
         /* Each section takes 50% of the row on medium screens */
@@ -116,7 +127,21 @@
     }
 }
 
+.copy-write {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    margin-top: 10px;
+    color: #999897;
+}
+
 @media (max-width: 480px) {
+    .footer-container1 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        width: 100%;
+    }
     .footer-texts {
         flex: 1 1 100%;
         text-align: left;

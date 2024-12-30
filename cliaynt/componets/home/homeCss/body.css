@@ -17,7 +17,7 @@ body {
 }
 
 .body-container {
-    margin-bottom: 70px;
+    margin-bottom: 100px;
 }
 
 .banner {
@@ -31,6 +31,10 @@ body {
     color: #fff;
     position: relative;
     overflow: hidden;
+}
+
+.body-icon {
+    font-size: 30px;
 }
 
 /* Animation */
@@ -56,7 +60,7 @@ body {
     }
 }
 
-/* Banner Content */
+/* Banner Content */banner-content
 .banner-content {
     z-index: 1;
     max-width: 800px;
@@ -64,7 +68,7 @@ body {
 }
 
 .banner-content h1 {
-    font-size: 3rem;
+    font-size: 4rem;
     margin-bottom: 0.5rem;
     animation: fadeIn 2s ease-in;
 }
@@ -75,19 +79,110 @@ body {
     animation: fadeIn 2s ease-in 0.5s;
 }
 
-.cta-button {
-    background: #ff5722;
+/* From Uiverse.io by cssbuttons-io */
+.fancy {
+    background-color: transparent;
+    border: 2px solid #000;
+    border-radius: 0;
+    box-sizing: border-box;
     color: #fff;
-    padding: 0.75rem 2rem;
+    cursor: pointer;
+    display: inline-block;
+    float: center;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0;
+    outline: none;
+    overflow: visible;
+    padding: 1.25em 2em;
+    position: relative;
+    text-align: center;
     text-decoration: none;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    transition: transform 0.3s ease, background 0.3s ease;
+    text-transform: none;
+    transition: all 0.3s ease-in-out;
+    user-select: none;
+    font-size: 13px;
 }
 
-.cta-button:hover {
-    transform: scale(1.1);
-    background: #e64a19;
+.fancy::before {
+    content: " ";
+    width: 1.5625rem;
+    height: 2px;
+    background: black;
+    top: 50%;
+    left: 1.5em;
+    position: absolute;
+    transform: translateY(-50%);
+    transform-origin: center;
+    transition: background 0.3s linear, width 0.3s linear;
+}
+
+.fancy .text {
+    font-size: 1.125em;
+    line-height: 1.33333em;
+    padding-left: 2em;
+    display: block;
+    text-align: left;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: black;
+}
+
+.fancy .top-key {
+    height: 2px;
+    width: 1.5625rem;
+    top: -2px;
+    left: 0.625rem;
+    position: absolute;
+    background: #e8e8e8;
+    transition: width 0.5s ease-out, left 0.3s ease-out;
+}
+
+.fancy .bottom-key-1 {
+    height: 2px;
+    width: 1.5625rem;
+    right: 1.875rem;
+    bottom: -2px;
+    position: absolute;
+    background: #e8e8e8;
+    transition: width 0.5s ease-out, right 0.3s ease-out;
+}
+
+.fancy .bottom-key-2 {
+    height: 2px;
+    width: 0.625rem;
+    right: 0.625rem;
+    bottom: -2px;
+    position: absolute;
+    background: #e8e8e8;
+    transition: width 0.5s ease-out, right 0.3s ease-out;
+}
+
+.fancy:hover {
+    color: white;
+    background: black;
+}
+
+.fancy:hover::before {
+    width: 0.9375rem;
+    background: white;
+}
+
+.fancy:hover .text {
+    color: white;
+    padding-left: 1.5em;
+}
+
+.fancy:hover .top-key {
+    left: -2px;
+    width: 0px;
+}
+
+.fancy:hover .bottom-key-1,
+.fancy:hover .bottom-key-2 {
+    right: 0;
+    width: 0;
 }
 
 /* Keyframes for Fade-in Animation */
@@ -135,15 +230,16 @@ h1 {
 .alif-school {
     text-align: center;
     padding: 20px;
-    background: #F3E9DD;
+    background: #f8f9fa;
     margin-top: 70px;
 }
 
 .alif-school h1 {
-    color: #8FBDD3;
+    color: #101213;
+    font-size: 40px;
     margin-top: 30px;
     font-family: "Montserrat", sans-serif;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .box-container {
@@ -155,13 +251,14 @@ h1 {
 }
 
 .box {
-    background-color: #DAB88B;
-    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    background-color: white;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     flex: 1 1 calc(33.333% - 40px);
-    /* Default: 3 boxes per row with gaps */
     max-width: 300px;
     transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -175,6 +272,72 @@ h1 {
     text-align: center;
     height: 210px;
 }
+
+/* From Uiverse.io by Pravins01 */
+.card {
+    position: relative;
+    width: 190px;
+    height: 254px;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    padding: 12px;
+    gap: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: -5px;
+    margin: auto;
+    width: 200px;
+    height: 264px;
+    border-radius: 10px;
+    background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
+    z-index: -10;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(20px);
+}
+
+.heading {
+    font-size: 20px;
+    text-transform: capitalize;
+    font-weight: 700;
+}
+
+.card p:not(.heading) {
+    font-size: 14px;
+}
+
+.card p:last-child {
+    color: #e81cff;
+    font-weight: 600;
+}
+
+.card:hover::after {
+    filter: blur(30px);
+}
+
+.card:hover::before {
+    transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+}
+
+
 
 .body-icon {
     margin-bottom: 10px;
@@ -190,17 +353,16 @@ h1 {
 }
 
 /* Media Queries for Responsiveness */
+
 @media (max-width: 1024px) {
     .box {
         flex: 1 1 calc(50% - 40px);
-        /* 2 boxes per row on medium screens */
     }
 }
 
 @media (max-width: 768px) {
     .box {
         flex: 1 1 calc(100% - 40px);
-        /* 1 box per row on smaller screens */
     }
 
     h1 {
@@ -211,147 +373,334 @@ h1 {
 @media (max-width: 480px) {
     .box {
         padding: 15px;
-        /* Adjust padding for very small screens */
     }
 
     .body-icon {
         font-size: 30px;
-        /* Scale down icons */
     }
 
     .body-text1 {
         font-size: 1em;
     }
+
+    .alif-school h1 {
+        font-size: 30px;
+    }
 }
 
 
 /* about us */
+.about-container {
+    padding: 5rem 2rem;
+    background: #f8f9fa;
+}
 
-.about-box {
-    margin-top: 70px;
-    padding: 20px;
+.about-us-text {
+    color: #007BFF;
+}
+
+.about-title {
     text-align: center;
-    background-color: #789DBC;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #2d3436;
+    margin-bottom: 4rem;
+    position: relative;
 }
 
-.about-box h1 {
-    font-size: 2.5em;
-    color: #493628;
-    margin-bottom: 20px;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 600;
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.about-box1 {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: center;
-    justify-content: center;
+.about-image-section {
+    position: relative;
 }
 
-.about-kids {
-    flex: 1 1 40%;
-    /* Image takes up 40% by default */
-    text-align: center;
+.image-wrapper {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
 }
 
-.about-image img {
+.image-wrapper:hover {
+    transform: translateY(-10px);
+}
+
+.image-wrapper img {
     width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-.about-dicrption {
-    background: #C9E9D2;
-    flex: 1 1 50%;
-    /* Description takes up 50% by default */
-    text-align: left;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+.circle-decoration {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    z-index: -1;
 }
 
-.about-dicrption div {
-    font-size: 1.1em;
-    font-weight: 600;
-    color: #58635b;
-    margin-bottom: 10px;
+.top-left {
+    top: -20px;
+    left: -20px;
+    background: #C4B5FD;
+}
+
+.bottom-right {
+    bottom: -20px;
+    background: #8B5CF6;
+}
+
+.about-features {
+    display: flex;
+    align-items: center;
+}
+
+.features-card {
+    background: #8B5CF6;
+    padding: 2.5rem;
+    border-radius: 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
+}
+
+.features-card h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.feature-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.feature-icon {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.75rem;
+    border-radius: 12px;
+    font-size: 1.25rem;
+}
+
+.feature-item p {
+    font-size: 1rem;
     line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
 }
 
-.about-dicrption-texs {
-    padding: 20px;
-    font-family: "Montserrat", sans-serif;
+.background-circle {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    bottom: -100px;
+    right: -100px;
 }
 
-/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    .about-box1 {
-        flex-direction: column;
-        /* Stacks content vertically on smaller screens */
+    .about-content {
+        grid-template-columns: 1fr;
     }
 
-    .about-kids,
-    .about-dicrption {
-        flex: 1 1 100%;
-        /* Full width for both sections */
-        text-align: center;
-        /* Center-align text for smaller screens */
+    .about-title {
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
     }
 
-    .about-dicrption div {
-        font-size: 1em;
-        /* Adjust text size for smaller screens */
+    .features-card {
+        padding: 2rem;
     }
 }
 
 @media (max-width: 480px) {
-    .about-box {
-        padding: 10px;
+    .about-container {
+        padding: 3rem 1rem;
     }
 
-    .about-box h1 {
-        font-size: 2em;
+    .about-title {
+        font-size: 2rem;
     }
 
-    .about-dicrption div {
-        font-size: 0.9em;
+    .feature-item {
+        flex-direction: column;
     }
+}
 
-    .about-image img {
-        max-width: 200px;
-        /* Reduce image size for very small screens */
-    }
+.home-parent {
+    width: 100%;
 }
 
 
 /* our school */
 
-.our-school h1 {
+.our-school {
+    padding: 20px;
     text-align: center;
-    font-size: 2.5em;
-    color: #493628;
-    margin-top: 50px;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 600;
 }
 
-.school-imags {
-    flex: 1 1 calc(33.333% - 40px);
-}
-
-.school-imags img {
-    height: 250px;
-    max-width: 230px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
+.our-school h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
 }
 
 .school-text-only {
-    color: #295F98;
+    color: #007BFF; /* Adjust color as needed */
 }
 
-.home-parent {
-    width: 100%;
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.school-imags {
+    flex: 1 1 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+    display: flex;
+    justify-content: center;
+}
+
+.school-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.school-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.school-card-image {
+    display: flex;
+    justify-content: center;
+}
+
+.school-card-image img {
+    margin: 8px;
+    padding: 3px;
+    border-radius: 50px;
+    height: 110px;
+    width: 110px;
+    border: 2px solid #E4E0E1;
+}
+
+.school-card-content {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.school-card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.school-card-description {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .school-imags {
+        flex: 1 1 calc(50% - 20px); 
+        max-width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .school-imags {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .our-school h1 {
+        font-size: 2rem;
+    }
+
+    .school-card-content {
+        padding: 10px;
+    }
+
+    .school-card-title {
+        font-size: 1rem;
+    }
+
+    .school-card-description {
+        font-size: 0.8rem;
+    }
+}
+
+.ouer-school-card-content {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff;
+}
+
+.about-school-image {
+    display: flex;
+    justify-content: center;
+    max-width: 270px;
+}
+
+.about-school-image img{
+    height: 270px;
+    width: 270px;
+    border-radius: 12px;
+    
+}
+
+.ouer-school-imags {
+    flex: 1 1 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .ouer-school-imags {
+        flex: 1 1 calc(50% - 20px); 
+        max-width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .ouer-school-imags {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
 }

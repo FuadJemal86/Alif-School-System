@@ -7,9 +7,12 @@ import { faRightToBracket, faBars } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import logoo from './logo/alif.png'
+import { faLocationDot, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 
 
 function Header() {
+
+    const colour = '#A09AE3'
 
     const [isNavOpen, setIsNavOpen] = useState(false);
 
@@ -28,8 +31,8 @@ function Header() {
             document.body.style.overflow = 'hidden';
 
         }  else {
-            document.body.style.backgroundColor = ''; // Reset body color
-            document.body.style.overflow = ''; // Reset body overflow
+            document.body.style.backgroundColor = '';
+            document.body.style.overflow = ''; 
         }
     };
 
@@ -46,11 +49,11 @@ function Header() {
                             <div className="nav-container1">
 
                                 <ul>
-                                <div className='alif-logo nav-logo'><img src={logo} alt="" srcset="" /></div>
+                                <div className='alif-logoo nav-logo'><img src={logo} alt="" srcset="" /></div>
                                     <li className='mobile-ls'><Link to={'/'}>Home</Link></li>
-                                    <li className='mobile-ls'><Link onClick={() => handleScroll('about')}>About Us</Link></li>
-                                    <li className='mobile-ls'><Link to={'/contact'}>Contac</Link>t</li>
-                                    <li className='mobile-ls'><Link>Login</Link></li>
+                                    <li className='mobile-ls'><Link onClick={() => handleScroll('about')} to={'/'}>About Us</Link></li>
+                                    <li className='mobile-ls'><Link  onClick={() => handleScroll('contact')} to={'/contact'}>Contact</Link></li>
+                                    <li className='mobile-ls'><Link to={'/techer-login'}>Login</Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -61,25 +64,25 @@ function Header() {
             <div className='header-container1'>
 
                 <div className='header-container2'>
-                    <div className='header-text d-flex'>
-                        <div className='d-none d-md-block'>Have quation ?</div>
+                    <div className='header-text d-flex' style={{background: colour}}>
+                        <div className='d-none d-md-block'><strong><Link to={'contact'}>Have quation  ?</Link></strong></div>
                         <div className='d-none d-md-block'><span></span> </div>
-                        <div className='fs-15 d-block d-md-none header-mobile'>phone number: +251-90292-0301</div>
-                        <div className='d-none d-md-block'>phone number: +251-90292-0301</div>
-                        <div className='d-none d-md-block'><span>Email:</span> fuad47722@gmail.com</div>
-                        <div className='d-block d-md-none header-mobile'><span>Email:</span> fuad47722@gmail.com</div>
+                        <div className='fs-15 d-block d-md-none header-mobile'><strong>phone number:</strong> +251-90292-0301</div>
+                        <div className='d-none d-md-block'><span className='t-icone-phone'><FontAwesomeIcon icon={faPhone} /></span><strong>phone number:</strong> +251-90292-0301</div>
+                        <div className='d-none d-md-block'><span className='t-icone-phone'><FontAwesomeIcon icon={faEnvelope} /></span><span><strong>Email:</strong></span> fuad47722@gmail.com</div>
+                        <div className='d-block d-md-none header-mobile'><span><strong>Email:</strong></span> fuad47722@gmail.com</div>
                     </div>
                 </div>
 
             </div>
             <div className='header-nav-conatiner'>
                 <div className='header-navs'>
-                    <div className='alif-logo'><img src={logo} alt="" /></div>
+                    <div className='alif-logoo'><img src={logo} alt="" /></div>
                     <ul className='header-ul'>
                         <Link to={'/'} onClick={() => handleScroll('home')} className='point d-none d-md-block'>Home</Link>
-                        <Link onClick={() => handleScroll('about')} className='point d-none d-md-block'>About Us</Link>
-                        <Link to={'/Contact'} className='point d-none d-md-block'>Contact</Link>
-                        <Link className='login-button d-none d-md-block'>Login</Link>
+                        <Link onClick={() => handleScroll('about')} to={'/'} className='point d-none d-md-block'>About Us</Link>
+                        <Link onClick={() => handleScroll('contact')} to={'/Contact'} className='point d-none d-md-block'>Contact</Link>
+                        <Link to={'/techer-login'} className='header-login-button d-none d-md-block'>Login</Link>
                     </ul>
                     <button onClick={toggleNav} className='nav-button d-block d-md-none'><FontAwesomeIcon icon={faBars} /></button>
                 </div>

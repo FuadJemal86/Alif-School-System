@@ -3,8 +3,17 @@ import './homeCss/footer.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { Link } from 'react-router-dom';
 
 function Footer() {
+
+    const handleScroll = (id) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <div>
             <div className='footer-container'>
@@ -22,9 +31,9 @@ function Footer() {
                     <div className='footer-texts '>
                         <h3>Site Map</h3>
                         <div>
-                            <div>Home</div>
-                            <div>About Us</div>
-                            <div>Contact</div>
+                            <div><Link onClick={() => handleScroll('home')} to={'/'}>Home</Link></div>
+                            <div><Link onClick={() => handleScroll('about')} to={'/'}>About Us</Link></div>
+                            <div><Link onClick={() => handleScroll('contact')} to={'/Contact'}>Contact</Link></div>
                         </div>
                     </div>
 
@@ -35,6 +44,8 @@ function Footer() {
                             <div><FontAwesomeIcon icon={faEnvelope} /><spane className='conatct-text'>fuad47722@gmail.com</spane></div>
                             <div><FontAwesomeIcon icon={faPhone} /><span className='conatct-text'>+251 902 920 301</span></div>
                         </div>
+
+                        
                     </div>
 
                     <div className='footer-texts'>
@@ -52,15 +63,19 @@ function Footer() {
                         <button>Subscribe</button>
                     </div>
 
+                    
+
                 </div>
                 <div className='footer-icone-conatiner'>
                     <div className='footer-icons'>
-                        <div className='footer-icon'><FontAwesomeIcon icon={faFacebook} /></div>
-                        <div className='footer-icon'><FontAwesomeIcon icon={faInstagram} /></div>
-                        <div className='footer-icon'><FontAwesomeIcon icon={faLinkedin} /></div>
-                        <div className='footer-icon'><FontAwesomeIcon icon={faTwitter} /></div>
+                        <div className='footer-icon'><Link to={"#"}><FontAwesomeIcon icon={faFacebook} /></Link></div>
+                        <div className='footer-icon'><Link to={'https://www.instagram.com/fuad.l1'}><FontAwesomeIcon icon={faInstagram} /></Link></div>
+                        <div className='footer-icon'><Link to={'#'}><FontAwesomeIcon icon={faLinkedin} /></Link></div>
+                        <div className='footer-icon'><Link to={'https:/www.tiwtter.com/Fuadjemal185415'}><FontAwesomeIcon icon={faTwitter} /></Link></div>
                     </div>
                 </div>
+
+                <div className='copy-write'>© 2024 Fuad Jemal. All Rights Reserved.</div>
 
             </div>
         </div>

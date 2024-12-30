@@ -1,0 +1,91 @@
+.add-teacher{
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-main-con {
+    padding-top: 30px;
+}
+
+.add-teacher-text {
+    font-size: 25px;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.add-teacher-con {
+    width: 50%;
+}
+
+.add-teacher {
+    margin-top: 100px;
+}
+
+.add-teacher-con1 {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.add-teacher-inputs input {
+    width: 100%;
+    border: 1px solid #dad4d4;
+    outline: none;
+    padding: 7px;
+    border-radius: 10px;
+}
+
+.add-teacher-inputs input:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.add-teacher-button button{
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #0b1d58;
+    color: rgb(228, 220, 220);
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition:  0.3s ease;
+    transform: scale(.9);
+}
+
+.add-teacher-button button:hover {
+    transform: scale(1);
+}
+
+.add-teacher-button button:active {
+    transform: scale(.9);
+}
+
+.add-teacher-inputs select {
+    width: 100%;
+    padding: 7px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    outline: none;
+}
+
+.add-teacher-inputs select:focus {
+    border-color: #007bff;
+    background-color: #fff;
+}
+
+.add-account-main {
+    height: 100vh;
+} 

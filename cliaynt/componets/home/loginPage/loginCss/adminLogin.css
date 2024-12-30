@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+.login-maine-text {
+    margin: 30px 10px;
+    border-radius: 10px;
+    width: 70%;
+}
+
+.Login-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.Login-container1 {
+    margin-top: 60px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    height: 80vh;
+    border-radius: 10px;
+    background: #fffdfa;
+}
+
+.login-text {
+    font-size: 25px;
+    text-align: center;
+    font-weight: 600;
+    color: #000000;
+}
+
+.login-input {
+    padding: 15px;
+    
+}
+
+.login-input input {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    width: 300px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.login-input input:focus {
+    border: 1px solid #4379F2;
+    box-shadow: 0 0 8px rgba(67, 121, 242, 0.2);
+}
+
+.Login-button {
+    width: 40%;
+}
+
+
+.Login-button button {
+    padding: 10px 45px;
+    margin: 20px;
+    font-weight: 600;
+    border:1px solid rgba(0, 0, 0, 0.2) ;
+    background: #254da5;
+    border-radius: 6px;
+    color: rgb(255, 255, 255);
+    transition: transform 0.3s ease, background 0.3s ease;
+    font-size: 15px;
+}
+
+.Login-button button:hover {
+    background: #021846;
+    color: rgb(255, 251, 251);
+    cursor: pointer;
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(67, 121, 242, 0.2);
+}
+
+.Login-button button:active {
+    transform: scale(1);
+}
+
+.login-input label {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+@media (max-width: 480px) {
+
+    .login-input input {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        width: 120px;
+        border-radius: 6px;
+        margin-top: 10px;
+    }
+
+    .Login-container1 {
+        margin: 10px;
+    }
+
+    .Login-container1 {
+        flex: 1 1 100%;
+    }
+
+    .Choose-buttons {
+        flex-wrap: wrap;
+    }
+
+    .Choose-button div{
+        gap: 25px;
+    }
+}
+
+
+/* buttons */
+
+.Choose-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+}
+
+.Choose-buttons a {
+    text-decoration: none;
+    font-family: "Roboto", serif;
+    margin: 10px;
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-weight: 400;
+    color: #0e0d0d;
+    font-size: 15px;
+    transition: .5s ease;
+    transform: scale(1);
+}
+
+.Choose-buttons a:hover {
+    background: #021846;
+    color: #e3e6e7;
+    transform: scale(1.1);
+}
+
+.Choose-buttons a:active {
+    transform: scale(.9);
+}
+
+.alif-logo img{
+    border-radius: 50px;
+    width: 70px;
+    height: 70px;
+}
+
+.alif-logo {
+    text-align: center;
+}
+
+.admin a{
+    background: #021846;
+    color: #f3f2f1;
+}

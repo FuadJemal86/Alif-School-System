@@ -1,53 +1,235 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-
-
-body {
-    margin: 0;
+.login-teacher-container1 {
+    width: 35%;
+    text-align: center;
+    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-shadow);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    background-color: white;
+    margin-top: 60px;
 }
 
-.Login-container {
-    width: 100%;
+
+/* Dropdown menu styling */
+.admin-dropdown {
+    position: absolute;
+    top: 50px; 
+    right: 10px;
+    background-color: rgb(212, 211, 211);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 150px;
+    z-index: 1000;
+    padding: 10px 0px;
+}
+
+.admin-ellips-ver {
+    padding: 10px 17px 0;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.admin-dropdown {
+    padding-left: 10px;
+}
+
+.logout-dropdown-item {
+    color: rgb(177, 10, 10);
+    transition: 1s ease;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.logout-dropdown-item:hover {
+    color: rgb(233, 24, 24);
+}
+
+.dropdown-item {
+    cursor: pointer;
+    font-weight: 500;
+    transition: 1s ease;
+    font-size: 15px;
+}
+
+.dropdown-item:hover {
+    color: rgb(173, 173, 173);
+}
+
+
+.login-leable {
+    text-align: left;
+}
+
+.login-teacher-container {
     display: flex;
     justify-content: center;
+    padding: 20px;
 }
 
-.Login-container1 {
-    margin-top: 60px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    width: 50%;
+.t-login-text {
+    padding: 15px 0;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.t-input {
+    padding: 7px;
+    border: 1px solid rgb(235, 233, 233);
+    margin: 30px 40px;
+    border-radius: 12px;
     display: flex;
-    justify-content: left;
-    height: 70vh;
 }
 
-.login-text {
-    font-size: 30px;
-    text-align: left;
-    padding: 30px;
+.t-input-icone {
+    padding-top: 1px;
 }
 
-.login-input {
-    padding: 15px;
-    
+.t-input input {
+    outline: none;
+    border: none;
 }
 
-.login-input input {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 15px;
+.t-input input:focus {
+    border-color:1px solid bisque;
 }
 
-input:focus {
-    border: 1px solid #4379F2;
-    box-shadow: 0 0 8px rgba(67, 121, 242, 0.2);
-}
-
-.Login-button {
+.t-login button {
+    margin-top: 50px;
+    padding: 8px 0;
     width: 50%;
+    background: rgb(29, 83, 182);
+    color: aliceblue;
+    border-radius: 7px;
+    font-weight: 500;
+    transition: .9s ease;
+}
+
+.t-login button:hover {
+    background: rgb(11, 58, 129);
+}
+
+.t-buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 70px;
+    flex-wrap: wrap;
+    margin-bottom: 70px;
+}
+
+.t-buttons a {
+    color: rgb(14, 12, 12);
+}
+
+.t-buttons {
+    background-color: rgb(234, 232, 238);
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: .9s ease background;
+}
+
+.t-buttons:hover {
+    background-color: rgb(16, 6, 51);
+    color: rgb(255, 255, 255);
+}
+
+.t-buttons a:hover {
+    color: rgb(255, 255, 255);
+}
+
+.t-buttons-teacher {
+    background-color: rgb(16, 6, 51);
+    padding: 10px 15px;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-teacher-container1 {
+        width: 80%;
+    }
+
+    .t-input input {
+        width: 90%;
+    }
+
+    .t-login button {
+        width: 80%;
+    }
+
+    .t-buttons-container {
+        gap: 10px;
+    }
+
+    .t-buttons, .t-buttons-teacher {
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-teacher-container1 {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .t-login-text {
+        font-size: 20px;
+    }
+
+    .t-input input {
+        width: 100%;
+        padding: 6px 3px;
+    }
+
+    .t-login button {
+        width: 100%;
+    }
+
+    .t-buttons-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .t-buttons, .t-buttons-teacher {
+        width: 80%;
+        text-align: center;
+    }
+
+    .t-input-icone {
+        padding-top: 5px;
+    }
 }
 
 
-.Login-button button {
-    padding: 13px 50px;
-    margin: 20px;
+/* login header */
+
+.login-header-container {
+    background: #dbddda;
+    backdrop-filter: blur(10px);
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+    margin-bottom: 100px;
+}
+
+.login-header-container2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+    backdrop-filter: blur(10px);
+    background-color: rgba(275, 275,  275, 0.7); 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    transition: all 0.3s ease-in-out; 
+}
+
+.login-alif-logo img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50px;
 }
