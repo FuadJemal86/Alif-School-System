@@ -163,8 +163,8 @@ router.get('/get-student', [teacher,teachers],async (req, res) => {
 
         const students = await db.query(
             `SELECT s.student_id, s.name, c.class_name 
-                FROM student s 
-                INNER JOIN class c ON s.class_id = c.class_id 
+                FROM students s 
+                INNER JOIN classes c ON s.class_id = c.class_id 
                 WHERE c.teacher_id = ?`,
             [id]
         );

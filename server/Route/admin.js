@@ -267,7 +267,7 @@ router.post('/add-subjects', [auth, admin], async (req, res) => {
 
 // get subjects
 
-router.get('/get-subject', [auth, admin], async (req, res) => {
+router.get('/get-subject', async (req, res) => {
 
     try {
         const sql = 'SELECT * FROM subjects'
@@ -546,7 +546,7 @@ router.get('/get-teacher/:id', [auth, admin], async (req, res) => {
 router.post('/send-email', async (req, res) => {
     const { email, password, name } = req.body;
 
-    if (!email || !password || !name) {
+    if (!email) {
         return res.json({ Status: false, Message: 'Full information is required' });
     }
 
