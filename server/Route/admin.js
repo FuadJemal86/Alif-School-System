@@ -101,7 +101,7 @@ router.post('/admin-login', async (req, res) => {
 
 // add admin 
 
-router.post('/add-admin',[auth,admin], upload.single('image'), async (req, res) => {
+router.post('/add-admin', [auth, admin], upload.single('image'), async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -227,7 +227,7 @@ router.put('/edit-admin/:id', upload.single('image'), async (req, res) => {
 
 // add subject
 
-router.post('/add-subjects',[auth,admin], async (req, res) => {
+router.post('/add-subjects', [auth, admin], async (req, res) => {
 
     const { name } = req.body
 
@@ -267,7 +267,7 @@ router.post('/add-subjects',[auth,admin], async (req, res) => {
 
 // get subjects
 
-router.get('/get-subject',[auth,admin], async (req, res) => {
+router.get('/get-subject', [auth, admin], async (req, res) => {
 
     try {
         const sql = 'SELECT * FROM subjects'
@@ -289,7 +289,7 @@ router.get('/get-subject',[auth,admin], async (req, res) => {
 
 // get teacher subjects
 
-router.get('/auth/get-teacher/:id',[auth,admin], (req, res) => {
+router.get('/auth/get-teacher/:id', [auth, admin], (req, res) => {
 
     const id = req.params.id
 
@@ -305,7 +305,7 @@ router.get('/auth/get-teacher/:id',[auth,admin], (req, res) => {
 
 // subject delete
 
-router.delete('/subject-delete/:id',[auth,admin], async (req, res) => {
+router.delete('/subject-delete/:id', [auth, admin], async (req, res) => {
     const id = req.params.id;
 
     if (!id) {
@@ -334,14 +334,11 @@ router.delete('/subject-delete/:id',[auth,admin], async (req, res) => {
 
 // add techers
 
-router.post('/add-teacher',[auth,admin], upload.single('image'), async (req, res) => {
-
+router.post('/add-teacher', [auth, admin], upload.single('image'), async (req, res) => {
 
     const { name, password, subject_id, email, phone, address } = req.body;
 
     const image = req.file ? req.file.filename : null;
-
-    const value = [name, password, subject_id, email, image, phone, address]
 
     if (!name || !password || !subject_id || !email || !phone || !address) {
         return res.status(200).json({ status: false, message: 'Missing required fields' })
@@ -364,15 +361,27 @@ router.post('/add-teacher',[auth,admin], upload.single('image'), async (req, res
             }
 
 
-            const sql = `INSERT INTO teachers (name,password, subject_id, email,image, phone, address) VALUES (?,?, ?, ?, ?, ?,?)`;
-            connection.query(sql, value, (err, result) => {
+            bcrypt.hash(password, 10, (err, hash) => {
+
+                const value = [name, hash, subject_id, email, image, phone, address]
+
                 if (err) {
-                    console.error(err.message)
-                    return res.status(400).json({ status: false, error: err })
+                    return res.status(500).json({ hash: false, error: err.message })
                 }
-                return res.status(200).json({ status: true, message: 'sucsess' })
+
+                const sql = `INSERT INTO teachers (name,password, subject_id, email,image, phone, address) VALUES (?,?, ?, ?, ?, ?,?)`;
+                connection.query(sql, value, (err, result) => {
+                    if (err) {
+                        console.error(err.message)
+                        return res.status(400).json({ status: false, error: err })
+                    }
+                    return res.status(200).json({ status: true, message: 'sucsess' })
+                })
             })
         })
+
+
+
     } catch (err) {
         console.error(err.message)
         return res.status(400).json({ status: false, error: err.message })
@@ -382,7 +391,7 @@ router.post('/add-teacher',[auth,admin], upload.single('image'), async (req, res
 
 // get teacher
 
-router.get('/get-teacher',[auth,admin], async (req, res) => {
+router.get('/get-teacher', [auth, admin], async (req, res) => {
     const sql = `
                 SELECT 
             teachers.id, 
@@ -421,7 +430,7 @@ router.get('/get-teacher',[auth,admin], async (req, res) => {
 
 // get teacher name
 
-router.get('/get-teacher-name',[auth,admin], async (req, res) => {
+router.get('/get-teacher-name', [auth, admin], async (req, res) => {
 
     try {
         const sql = 'SELECT * FROM teachers'
@@ -443,7 +452,7 @@ router.get('/get-teacher-name',[auth,admin], async (req, res) => {
 
 // delete the teacher
 
-router.delete('/teacher-delete/:id',[auth,admin], async (req, res) => {
+router.delete('/teacher-delete/:id', [auth, admin], async (req, res) => {
     const id = req.params.id;
 
     if (!id) {
@@ -472,7 +481,7 @@ router.delete('/teacher-delete/:id',[auth,admin], async (req, res) => {
 
 // edit the teacher
 
-router.put('/update-teacher/:id',[auth,admin], async (req, res) => {
+router.put('/update-teacher/:id', [auth, admin], async (req, res) => {
     const id = req.params.id
     console.log('id:', id)
     const { name, subject_id, email, phone, address } = req.body;
@@ -503,7 +512,7 @@ router.put('/update-teacher/:id',[auth,admin], async (req, res) => {
 
 // show selected id teacher info
 
-router.get('/get-teacher/:id',[auth,admin], async (req, res) => {
+router.get('/get-teacher/:id', [auth, admin], async (req, res) => {
     const id = req.params.id
 
     if (!id || isNaN(id)) {
@@ -537,10 +546,8 @@ router.get('/get-teacher/:id',[auth,admin], async (req, res) => {
 router.post('/send-email', async (req, res) => {
     const { email, password, name } = req.body;
 
-    console.log('email is', email)
-
     if (!email || !password || !name) {
-        return res.json({ Status: false, Message: 'full info- is required' });
+        return res.json({ Status: false, Message: 'Full information is required' });
     }
 
     const transporter = nodemailer.createTransport({
@@ -548,14 +555,15 @@ router.post('/send-email', async (req, res) => {
         port: 465,
         secure: true,
         auth: {
-            user: 'fuad47722@gmail.com',
-            pass: 'adyu juwc wdvb ukhf',
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
         },
     });
 
     const message = {
-        from: 'Alif School <fuad47722@gmail.com>',
+        from: 'Alif School <' + process.env.EMAIL_USER + '>',
         to: email,
+        subject: 'Welcome to Alif School!',
         text: `
             Hi ${name},
 
@@ -568,6 +576,18 @@ router.post('/send-email', async (req, res) => {
 
             Best regards,
             Admin Team
+        `,
+        html: `
+            <h2>Hi ${name},</h2>
+            <p>Welcome to our platform! Your account has been successfully created.</p>
+            <p><strong>Here are your credentials:</strong></p>
+            <ul>
+                <li><strong>Email:</strong> ${email}</li>
+                <li><strong>Password:</strong> ${password}</li>
+            </ul>
+            <p>Please log in and update your password as soon as possible.</p>
+            <br/>
+            <p>Best regards,<br/>Admin Team</p>
         `,
     };
 
@@ -583,7 +603,7 @@ router.post('/send-email', async (req, res) => {
 
 // add class
 
-router.post('/add-class',[auth,admin], async (req, res) => {
+router.post('/add-class', [auth, admin], async (req, res) => {
 
     const { class_name, teacher_id } = req.body
 
@@ -617,7 +637,7 @@ router.post('/add-class',[auth,admin], async (req, res) => {
 
 // get class for option 
 
-router.get('/get-class-section',[auth,admin], async (req, res) => {
+router.get('/get-class-section', [auth, admin], async (req, res) => {
 
     try {
         const sql = 'SELECT * FROM classes'
@@ -640,7 +660,7 @@ router.get('/get-class-section',[auth,admin], async (req, res) => {
 
 // get class
 
-router.get('/get-class',[auth,admin], async (req, res) => {
+router.get('/get-class', [auth, admin], async (req, res) => {
     const sql = `
         SELECT 
             classes.id, 
@@ -666,7 +686,7 @@ router.get('/get-class',[auth,admin], async (req, res) => {
 
 // delete class
 
-router.delete('/class-delete/:id',[auth,admin], async (req, res) => {
+router.delete('/class-delete/:id', [auth, admin], async (req, res) => {
     const id = req.params.id;
 
     if (!id) {
@@ -696,7 +716,7 @@ router.delete('/class-delete/:id',[auth,admin], async (req, res) => {
 
 // add student
 
-router.post('/add-student',[auth,admin], upload.single('image'), async (req, res) => {
+router.post('/add-student', [auth, admin], upload.single('image'), async (req, res) => {
     const email = req.body.email;
 
     try {
@@ -756,7 +776,7 @@ router.post('/add-student',[auth,admin], upload.single('image'), async (req, res
 
 // get student
 
-router.get('/get-student',[auth,admin], async (req, res) => {
+router.get('/get-student', [auth, admin], async (req, res) => {
     const sql = `
     SELECT 
     
@@ -794,7 +814,7 @@ router.get('/get-student',[auth,admin], async (req, res) => {
 
 // delete student
 
-router.delete('/delete-student/:id',[auth,admin], async (req, res) => {
+router.delete('/delete-student/:id', [auth, admin], async (req, res) => {
 
     const id = req.params.id
 
@@ -815,7 +835,7 @@ router.delete('/delete-student/:id',[auth,admin], async (req, res) => {
 
 //  edit(update student)
 
-router.put('/update-student/:id',[auth,admin], async (req, res) => {
+router.put('/update-student/:id', [auth, admin], async (req, res) => {
     const id = req.params.id
     console.log(id)
     const { name, email, class_name, gender, contact, dob, address } = req.body;
@@ -837,7 +857,7 @@ router.put('/update-student/:id',[auth,admin], async (req, res) => {
 
 // select student by id
 
-router.get('/get-student/:id',[auth,admin], async (req, res) => {
+router.get('/get-student/:id', [auth, admin], async (req, res) => {
     const id = req.params.id
     console.log(id)
 
@@ -858,7 +878,7 @@ router.get('/get-student/:id',[auth,admin], async (req, res) => {
 
 // get student for parents
 
-router.get('/get-students/:id',[auth,admin], async (req, res) => {
+router.get('/get-students/:id', [auth, admin], async (req, res) => {
     const id = req.params.id
     console.log(id)
 
@@ -926,7 +946,7 @@ router.post('/send-email-student', async (req, res) => {
 
 // add grades
 
-router.post('/add-grade',[auth,admin], async (req, res) => {
+router.post('/add-grade', [auth, admin], async (req, res) => {
 
     const { student_id, subject_id, grade } = req.body
     if (!student_id || !subject_id || !grade) {
@@ -970,7 +990,7 @@ router.post('/add-grade',[auth,admin], async (req, res) => {
 
 // get grade
 
-router.get('/get-grade',[auth,admin], async (req, res) => {
+router.get('/get-grade', [auth, admin], async (req, res) => {
     const sql = `SELECT 
         grades.id,
         grades.grade,
@@ -1002,7 +1022,7 @@ router.get('/get-grade',[auth,admin], async (req, res) => {
 
 // update grade
 
-router.put('/edit-grade/:id',[auth,admin], async (req, res) => {
+router.put('/edit-grade/:id', [auth, admin], async (req, res) => {
     const id = req.params.id
 
     const { subject_id, grade } = req.body
@@ -1026,7 +1046,7 @@ router.put('/edit-grade/:id',[auth,admin], async (req, res) => {
 
 // delete grade 
 
-router.delete('/delete-grade/:id',[auth,admin], async (req, res) => {
+router.delete('/delete-grade/:id', [auth, admin], async (req, res) => {
     const id = req.params.id
 
     try {
@@ -1046,7 +1066,7 @@ router.delete('/delete-grade/:id',[auth,admin], async (req, res) => {
 
 // add parent 
 
-router.post('/add-parent',[auth,admin], async (req, res) => {
+router.post('/add-parent', [auth, admin], async (req, res) => {
 
     try {
         const { name, contact, student_id } = req.body;
@@ -1084,7 +1104,7 @@ router.post('/add-parent',[auth,admin], async (req, res) => {
 })
 
 // get parent info
-router.get('/get-parent',[auth,admin], async (req, res) => {
+router.get('/get-parent', [auth, admin], async (req, res) => {
     const sql = `SELECT 
 
     parents.id,
@@ -1113,7 +1133,7 @@ router.get('/get-parent',[auth,admin], async (req, res) => {
 
 // update parent
 
-router.put('/edit-parent/:id',[auth,admin], async (req, res) => {
+router.put('/edit-parent/:id', [auth, admin], async (req, res) => {
 
     const id = req.params.id
 
@@ -1135,7 +1155,7 @@ router.put('/edit-parent/:id',[auth,admin], async (req, res) => {
 
 // delete parent
 
-router.delete('/delete-parent/:id',[auth,admin], async (req, res) => {
+router.delete('/delete-parent/:id', [auth, admin], async (req, res) => {
     const id = req.params.id
 
     try {
@@ -1190,7 +1210,7 @@ router.post('/contact-message', async (req, res) => {
 
 // delete message
 
-router.delete('/delete-message/:id',[auth,admin], async (req, res) => {
+router.delete('/delete-message/:id', [auth, admin], async (req, res) => {
 
     const id = req.params.id
     console.log(id)
@@ -1214,7 +1234,7 @@ router.delete('/delete-message/:id',[auth,admin], async (req, res) => {
 
 // get notification
 
-router.get('/get-messaga',[auth,admin], async (req, res) => {
+router.get('/get-messaga', [auth, admin], async (req, res) => {
 
     try {
         const sql = 'SELECT * FROM contact'
@@ -1234,7 +1254,7 @@ router.get('/get-messaga',[auth,admin], async (req, res) => {
 
 // count messag 
 
-router.get('/count-message',[auth,admin], (req, res) => {
+router.get('/count-message', [auth, admin], (req, res) => {
     try {
         const sql = 'SELECT COUNT(id) AS messags FROM contact'
 
@@ -1254,7 +1274,7 @@ router.get('/count-message',[auth,admin], (req, res) => {
 
 //  total teacher
 
-router.get('/teacher-total',[auth,admin], (req, res) => {
+router.get('/teacher-total', [auth, admin], (req, res) => {
     try {
         const sql = 'SELECT COUNT(id) AS teacherTotal FROM teachers';
 
@@ -1273,7 +1293,7 @@ router.get('/teacher-total',[auth,admin], (req, res) => {
 
 // total dipartment
 
-router.get('/dip-total',[auth,admin], (req, res) => {
+router.get('/dip-total', [auth, admin], (req, res) => {
     try {
         const sql = 'SELECT COUNT(id) AS dipTotal FROM dip';
 
@@ -1292,7 +1312,7 @@ router.get('/dip-total',[auth,admin], (req, res) => {
 
 //  total student
 
-router.get('/student-total',[auth,admin], (req, res) => {
+router.get('/student-total', [auth, admin], (req, res) => {
     try {
         const sql = 'SELECT COUNT(id) AS studentTotal FROM students';
 
@@ -1311,7 +1331,7 @@ router.get('/student-total',[auth,admin], (req, res) => {
 
 // add dipartment
 
-router.post('/add-dipa',[auth,admin], async (req, res) => {
+router.post('/add-dipa', [auth, admin], async (req, res) => {
 
     const { name } = req.body
 
@@ -1351,7 +1371,7 @@ router.post('/add-dipa',[auth,admin], async (req, res) => {
 
 // get dip
 
-router.get('/get-dip',[auth,admin], (req, res) => {
+router.get('/get-dip', [auth, admin], (req, res) => {
     try {
         const sql = 'SELECT * FROM dip';
 
@@ -1370,7 +1390,7 @@ router.get('/get-dip',[auth,admin], (req, res) => {
 
 // delete dip
 
-router.delete('/dip-delete/:id',[auth,admin], async (req, res) => {
+router.delete('/dip-delete/:id', [auth, admin], async (req, res) => {
     const id = req.params.id;
 
     if (!id) {
@@ -1400,7 +1420,7 @@ router.delete('/dip-delete/:id',[auth,admin], async (req, res) => {
 
 // sitting image uplode
 
-router.post('/school-image',[auth,admin], upload.single('image'), async (req, res) => {
+router.post('/school-image', [auth, admin], upload.single('image'), async (req, res) => {
 
     const { description } = req.body
 
@@ -1426,7 +1446,7 @@ router.post('/school-image',[auth,admin], upload.single('image'), async (req, re
 
 // teacher image
 
-router.post('/teacher-image',[auth,admin], upload.single('image'), async (req, res) => {
+router.post('/teacher-image', [auth, admin], upload.single('image'), async (req, res) => {
 
     const { name, description } = req.body
 
@@ -1490,7 +1510,7 @@ router.get('/get-teacherImage', async (req, res) => {
 
 // school image delete 
 
-router.delete('/delete-school-image/:id',[auth,admin], async (req, res) => {
+router.delete('/delete-school-image/:id', [auth, admin], async (req, res) => {
     const id = req.params.id;
     console.log(id)
 
@@ -1520,7 +1540,7 @@ router.delete('/delete-school-image/:id',[auth,admin], async (req, res) => {
 
 // teacher image(info) delete
 
-router.delete('/delete-teacher-info/:id',[auth,admin], async (req, res) => {
+router.delete('/delete-teacher-info/:id', [auth, admin], async (req, res) => {
     const id = req.params.id;
     console.log(id)
 

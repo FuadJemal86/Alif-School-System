@@ -12,6 +12,7 @@ function Nav() {
 
     return (
         <div>
+            
             {/* Header Section */}
             <div className={`t-header-container ${!isNavOpen ? 'header-wid' : ''}`}>
                 <header className='t-heade'>
@@ -43,13 +44,13 @@ function Nav() {
                             </Link>
                         </li>
                         <li>
-                            <Link className='t-link'>
-                                <FontAwesomeIcon icon={faClipboardList} className='t-nav-icone' /> Grade
+                            <Link to={'student-list'} className='t-link'>
+                                <FontAwesomeIcon icon={faClipboardList} className='t-nav-icone' /> Student List
                             </Link>
                         </li>
                         <li>
                             <Link className='t-link'>
-                                <FontAwesomeIcon icon={faUsers} className='t-nav-icone' /> Student List
+                                <FontAwesomeIcon icon={faUsers} className='t-nav-icone' /> Grade
                             </Link>
                         </li>
                         <li>
@@ -69,9 +70,13 @@ function Nav() {
                         </li>
                     </ul>
                 </div>
+                
             </div>
-            <Outlet />
+            <div className={`t-main-outlet ${!isNavOpen ? 't-main-outlet-mobile' : ''}`}>
+                <Outlet/>
+            </div>
         </div>
+        
     );
 }
 

@@ -36,6 +36,7 @@ function AddTeacher() {
         api.post('/auth/send-email', { email, name, password })
             .then(response => {
                 if (response.data.Status) {
+                    alert('send!')
 
                 } else {
                     alert('Failed to send email');

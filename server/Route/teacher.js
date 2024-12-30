@@ -1,6 +1,10 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const connection = require('../db');
+const bcrypt = require('bcrypt');
+const { auth } = require('../middelwer/auth');
+const admin = require('./admin');
+const { teacher, teachers } = require('../middelwer/teacher');
 require('dotenv').config()
 
 
@@ -10,16 +14,37 @@ require('dotenv').config()
 const router = express.Router();
 
 
-router.post('/login', async (req, res) => {
-    const sql = 'SELECT * FROM teachers WHERE email=? AND password=?';
-    connection.query(sql, [req.body.email, req.body.password], (err, result) => {
-        if (err) {
-            console.error("Database query error:", err.message);
-            return res.status(400).json({ loginStatus: false, status: false })
-        }
+router.post('/teacher-login', async (req, res) => {
 
-        if (result.length > 0) {
+    const { email, password } = req.body;
+
+
+
+    if (!email || !password) {
+        return res.status(200).json({ status: false, message: 'Missing required fields' })
+    }
+
+    try {
+
+        const sql = 'SELECT * FROM teachers WHERE email=?';
+        connection.query(sql, [req.body.email], async (err, result) => {
+            if (err) {
+                console.error("Database query error:", err.message);
+                return res.status(500).json({ loginStatus: false, error: err.message })
+            }
+
+            if (result.length == 0) {
+                return res.status(200).json({ localStatus: false, message: 'Wrong Email or Password' })
+
+            }
             const teacherId = result[0].id;
+            const hashedPassword = result[0].password;
+
+            const isPasswordValid = await bcrypt.compare(password, hashedPassword);
+
+            if (!isPasswordValid) {
+                return res.status(200).json({ loginStatus: false, message: 'Wrong Email or Password' })
+            }
 
             const token = jwt.sign(
                 { teacher: true, email: req.body.email, id: teacherId },
@@ -27,12 +52,14 @@ router.post('/login', async (req, res) => {
                 { expiresIn: '30d' }
             );
 
-            res.status(200).json({ token: token, loginStates: true });
-        } else {
-            console.log("Login failed: Wrong Email or Password");
-            return res.json({ loginStates: false, Error: 'Wrong Email or Password' });
-        }
-    });
+            res.status(200).json({ loginStates: true, token: token });
+
+        });
+
+    } catch (err) {
+        console.log(err.message)
+    }
+
 });
 
 //add attendance 
@@ -120,5 +147,35 @@ router.get('/get-grade', async (req, res) => {
         return res.status(400).json({ status: false, error: err.message })
     }
 })
+
+// get teachers 
+
+router.get('/get-student', [teacher,teachers],async (req, res) => {
+    const token = req.header('token');
+
+    if (!token) {
+        return res.status(400).send('Access Denied, No token Provided!');
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.TEACHER_KEY);
+        const id = decoded.id;
+
+        const students = await db.query(
+            `SELECT s.student_id, s.name, c.class_name 
+                FROM student s 
+                INNER JOIN class c ON s.class_id = c.class_id 
+                WHERE c.teacher_id = ?`,
+            [id]
+        );
+
+        res.status(200).json(students);
+    } catch (error) {
+        res.status(500).send('An error occurred');
+    }
+});
+
+
+
 
 module.exports = { teacher: router };

@@ -32,6 +32,7 @@ import Dipartment from '../componets/admin/dipartment/Dipartment';
 import AddDipartement from '../componets/admin/dipartment/AddDipartement';
 import Sitting from '../componets/admin/sitting/Sitting';
 import Nav from '../componets/teacher/teacherNav/Nav';
+import StudentList from '../componets/teacher/teacherNav/studentLst/StudentList';
 
 function App() {
   return (
@@ -83,6 +84,7 @@ function App() {
         </Route>
 
         <Route path='/teacher-nav' element={<Nav />}>
+          <Route path='student-list' element={<StudentList />} />
           
         </Route>
       </Routes>
