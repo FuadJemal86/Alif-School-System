@@ -101,7 +101,7 @@ router.post('/admin-login', async (req, res) => {
 
 // add admin 
 
-router.post('/add-admin', [auth, admin], upload.single('image'), async (req, res) => {
+router.post('/add-admin',upload.single('image'), async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -336,24 +336,23 @@ router.delete('/subject-delete/:id', [auth, admin], async (req, res) => {
 
 router.post('/add-teacher', [auth, admin], upload.single('image'), async (req, res) => {
 
-    const { name, password, subject_id, email, phone, address } = req.body;
+    const { name, password, subject_id,class_id, email, phone, address } = req.body;
 
     const image = req.file ? req.file.filename : null;
 
-    if (!name || !password || !subject_id || !email || !phone || !address) {
+    if (!name || !password || !subject_id || !class_id || !email || !phone || !address) {
         return res.status(200).json({ status: false, message: 'Missing required fields' })
     }
 
 
-
-
     try {
 
-        const chekExist = 'SELECT id FROM teachers WHERE email = ?'
-        connection.query(chekExist, [email], (err, result) => {
+        const chekExist = 'SELECT id FROM teachers WHERE email = ? OR (subject_id = ? AND class_id = ?)'
+
+        connection.query(chekExist, [email,subject_id,class_id,] ,(err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ starus: false, error: err.message })
+                return res.status(500).json({ status: false, error: err.message })
             }
 
             if (result.length > 0) {
@@ -363,14 +362,14 @@ router.post('/add-teacher', [auth, admin], upload.single('image'), async (req, r
 
             bcrypt.hash(password, 10, (err, hash) => {
 
-                const value = [name, hash, subject_id, email, image, phone, address]
+                const value = [name, hash, subject_id,class_id, email, image, phone, address]
 
                 if (err) {
                     return res.status(500).json({ hash: false, error: err.message })
                 }
 
-                const sql = `INSERT INTO teachers (name,password, subject_id, email,image, phone, address) VALUES (?,?, ?, ?, ?, ?,?)`;
-                connection.query(sql, value, (err, result) => {
+                const sql = `INSERT INTO teachers (name,password,subject_id,class_id, email,image, phone, address) VALUES (?,?, ?, ?, ?, ?,?,?)`;
+                connection.query(sql, value, (err, result) => { 
                     if (err) {
                         console.error(err.message)
                         return res.status(400).json({ status: false, error: err })
@@ -399,14 +398,22 @@ router.get('/get-teacher', [auth, admin], async (req, res) => {
             teachers.email, 
             teachers.phone, 
             teachers.address, 
-            teachers.subject_id, 
-            subjects.name AS subject_name
+            teachers.subject_id,
+            teachers.class_id,
+            subjects.name AS subject_name,
+            classes.class_name
         FROM 
             teachers
         LEFT JOIN 
             subjects 
         ON 
-            teachers.subject_id = subjects.id;
+            teachers.subject_id = subjects.id
+
+        LEFT JOIN
+            classes
+
+        ON 
+            teachers.class_id = classes.id;
 
             `;
 
@@ -605,10 +612,10 @@ router.post('/send-email', async (req, res) => {
 
 router.post('/add-class', [auth, admin], async (req, res) => {
 
-    const { class_name, teacher_id } = req.body
+    const { class_name} = req.body
 
     try {
-        const classChek = 'SELECT id FROM classes WHERE  class_name = ?'
+        const classChek = 'SELECT id FROM classes WHERE class_name = ?'
 
         connection.query(classChek, [class_name], (err, result) => {
             if (err) {
@@ -620,8 +627,8 @@ router.post('/add-class', [auth, admin], async (req, res) => {
                 return res.status(200).json({ status: false, message: 'class already exist' })
             }
 
-            const sql = `INSERT INTO classes (class_name,teacher_id) VALUES(?,?)`;
-            connection.query(sql, [req.body.class_name, req.body.teacher_id], (err, result) => {
+            const sql = `INSERT INTO classes (class_name) VALUES(?)`;
+            connection.query(sql, [req.body.class_name], (err, result) => {
                 if (err) {
                     throw err
                 }
@@ -661,15 +668,7 @@ router.get('/get-class-section', [auth, admin], async (req, res) => {
 // get class
 
 router.get('/get-class', [auth, admin], async (req, res) => {
-    const sql = `
-        SELECT 
-            classes.id, 
-            classes.class_name AS name, 
-            teachers.name AS teacher_name 
-        FROM classes 
-        LEFT JOIN teachers 
-        ON classes.teacher_id = teachers.id
-    `;
+    const sql = 'SELECT * FROM classes'
 
     try {
         connection.query(sql, (err, result) => {

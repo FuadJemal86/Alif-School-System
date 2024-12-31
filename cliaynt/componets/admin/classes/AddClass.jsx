@@ -11,8 +11,7 @@ function AddClass() {
     const navigate = useNavigate()
     const [teacher, setTeacher] = useState([])
     const [section, setSection] = useState({
-        class_name: '',
-        teacher_id: ''
+        class_name: ''
     })
 
     useEffect(() => {
@@ -38,8 +37,8 @@ function AddClass() {
     const handelSubmit = async (e) => {
         e.preventDefault()
 
-        const { class_name, teacher_id } = section
-        if (!class_name || !teacher_id) {
+        const { class_name } = section
+        if (!class_name) {
             return toast.error("Please fill in all required fields.");
         }
 
@@ -84,24 +83,6 @@ function AddClass() {
                                     placeholder='Section Name'
                                     type='text'
                                 />
-                            </div>
-
-                            <div className='add-teacher-inputs'>
-                                <select
-                                    onChange={e => setSection({ ...section, teacher_id: e.target.value })}
-                                    defaultValue=""
-                                >
-                                    <option value="" disabled>
-                                        Select a teacher
-                                    </option>
-                                    {
-                                        teacher.map((c) => (
-                                            <option key={c.id} value={c.id}>
-                                                {c.name}
-                                            </option>
-                                        ))
-                                    }
-                                </select>
                             </div>
 
                         </div>

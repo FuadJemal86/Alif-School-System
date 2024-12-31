@@ -76,7 +76,6 @@ function Class() {
                             <tr>
                                 <th>Id</th>
                                 <th>class</th>
-                                <th>Teacher</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -87,7 +86,6 @@ function Class() {
                                     <tr key={c.id}>
                                         <td>{c.id}</td>
                                         <td>{c.name}</td>
-                                        <td>{c.teacher_name}</td>
 
                                         <td>
                                             <span onClick={() => handelDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer' }}>

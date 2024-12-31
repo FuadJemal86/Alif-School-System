@@ -14,10 +14,11 @@ function AddTeacher() {
         name: '',
         password: '',
         subject_id: '',
+        class_id: '',
         email: '',
         phone: '',
         address: '',
-        image:''
+        image: ''
     })
 
     const generatePassword = () => {
@@ -54,6 +55,7 @@ function AddTeacher() {
         // Append form fields to FormData
         formData.append('name', teacher.name);
         formData.append('subject_id', teacher.subject_id);
+        formData.append('class_id', teacher.class_id);
         const newPassword = generatePassword();
         formData.append('password', newPassword);
         formData.append('email', teacher.email);
@@ -106,6 +108,28 @@ function AddTeacher() {
         fetchData()
 
     }, [])
+
+    const [section, setSection] = useState([]);
+    useEffect(() => {
+
+        const feachdata = async () => {
+            try {
+                const result = await api.get('/auth/get-class');
+                if (result.data.status) {
+                    setSection(result.data.result);
+                } else {
+                    console.error('Error fetching teachers:', result.data.error);
+                }
+            } catch (err) {
+                console.log(err)
+            }
+
+        }
+
+        feachdata()
+
+    }, [])
+
     return (
         <div className='teacher-main-con'>
             <div className='add-teacher'>
@@ -121,11 +145,26 @@ function AddTeacher() {
                                 />
                             </div>
 
+
                             <div className='add-teacher-inputs'>
                                 <select
-                                    onChange={(e) =>
-                                        setTeacher({ ...teacher, subject_id: e.target.value })
-                                    }
+                                    onChange={(e) => setTeacher({ ...teacher, class_id: e.target.value })}
+                                    defaultValue=""
+                                >
+                                    <option value="" disabled>
+                                        Select a class
+                                    </option>
+                                    {section.map((c) => (
+                                        <option key={c.id} value={c.id}>
+                                            {c.class_name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className='add-teacher-inputs'>
+                                <select
+                                    onChange={(e) => setTeacher({ ...teacher, subject_id: e.target.value })}
                                     defaultValue=""
                                 >
                                     <option value="" disabled>

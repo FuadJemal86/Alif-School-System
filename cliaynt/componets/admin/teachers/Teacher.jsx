@@ -73,6 +73,7 @@ function Teacher() {
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
+                                <th>Section</th>
                                 <th>Subject</th>
                                 <th>Email</th>
                                 <th>Phone</th>
@@ -85,6 +86,7 @@ function Teacher() {
                                 <tr key={teacher.id}>
                                     <td>{teacher.id}</td>
                                     <td>{teacher.name}</td>
+                                    <td>{teacher.class_name}</td>
                                     <td>{teacher.subject_name}</td>
                                     <td>{teacher.email}</td>
                                     <td>{teacher.phone}</td>

@@ -150,30 +150,86 @@ router.get('/get-grade', async (req, res) => {
 
 // get teachers 
 
-router.get('/get-student', [teacher,teachers],async (req, res) => {
+router.get('/teacher-data', async (req, res) => {
     const token = req.header('token');
-
     if (!token) {
-        return res.status(400).send('Access Denied, No token Provided!');
+        return res.status(401).json({ status: false, message: 'No token provided' });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.TEACHER_KEY);
-        const id = decoded.id;
+        const teacherId = decoded.id;
 
-        const students = await db.query(
-            `SELECT s.student_id, s.name, c.class_name 
-                FROM students s 
-                INNER JOIN classes c ON s.class_id = c.class_id 
-                WHERE c.teacher_id = ?`,
-            [id]
-        );
+        const teacherQuery = `
+            SELECT class_id, subject_id 
+            FROM teachers 
+            WHERE id = ?`;
 
-        res.status(200).json(students);
-    } catch (error) {
-        res.status(500).send('An error occurred');
+        connection.query(teacherQuery, [teacherId], (err, teacherResult) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ status: false, error: err.message });
+            }
+
+            if (teacherResult.length === 0) {
+                return res.status(404).json({ status: false, message: 'Teacher not found' });
+            }
+
+            const { class_id, subject_id } = teacherResult[0];
+
+            // Query to get students in the teacher's class along with class details
+            const studentQuery = `
+                SELECT 
+                    students.id, 
+                    students.name, 
+                    students.email, 
+                    students.dob, 
+                    students.gender, 
+                    students.address, 
+                    classes.class_name 
+                FROM 
+                    students 
+                JOIN 
+                    classes 
+                ON 
+                    students.class_id = classes.id
+                WHERE 
+                    students.class_id = ?`;
+
+            connection.query(studentQuery, [class_id], (err, studentResult) => {
+                if (err) {
+                    console.error(err.message);
+                    return res.status(500).json({ status: false, error: err.message });
+                }
+
+                // Query to get the teacher's subject details
+                const subjectQuery = `
+                    SELECT id, name, description 
+                    FROM subjects 
+                    WHERE id = ?`;
+
+                connection.query(subjectQuery, [subject_id], (err, subjectResult) => {
+                    if (err) {
+                        console.error(err.message);
+                        return res.status(500).json({ status: false, error: err.message });
+                    }
+
+                    return res.status(200).json({
+                        status: true,
+                        class_students: studentResult,
+                        subject_details: subjectResult,
+                    });
+                });
+            });
+        });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(401).json({ status: false, message: 'Invalid or expired token' });
     }
 });
+
+
+
 
 
 

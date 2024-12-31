@@ -24,29 +24,29 @@ connection.connect((err) => {
             description TEXT
         );`,
 
-        `CREATE TABLE IF NOT EXISTS teachers (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            password VARCHAR(250)  NOT NULL,
-            subject_id INT,
-            email VARCHAR(100) UNIQUE,
-            image VARCHAR(255),
-            phone VARCHAR(15),
-            address TEXT,
-            UNIQUE (email),
-            FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
-        );`,
-
         `CREATE TABLE IF NOT EXISTS classes (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            class_name VARCHAR(50) NOT NULL,
-            teacher_id INT,
-            FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE
+            class_name VARCHAR(50) NOT NULL
         );`,
 
         `CREATE TABLE IF NOT EXISTS dip (
             id INT AUTO_INCREMENT PRIMARY KEY,
             dip_name VARCHAR(100) NOT NULL
+        );`,
+
+        `CREATE TABLE IF NOT EXISTS teachers (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(100) NOT NULL,
+            password VARCHAR(250) NOT NULL,
+            subject_id INT NULL,
+            class_id INT NULL,
+            email VARCHAR(100) UNIQUE,
+            image VARCHAR(255),
+            phone VARCHAR(15),
+            address TEXT,
+            UNIQUE (email),
+            FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+            FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL
         );`,
 
         `CREATE TABLE IF NOT EXISTS students (

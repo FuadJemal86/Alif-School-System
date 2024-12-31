@@ -152,14 +152,16 @@ function AdminNav() {
                                     <FontAwesomeIcon icon={faBook} className="nav-icon" /> Subject
                                 </Link>
                             </li>
-                            <li>
-                                <Link to={'teacher'}>
-                                    <FontAwesomeIcon icon={faChalkboardTeacher} className="nav-icon" /> Teacher
-                                </Link>
-                            </li>
+
                             <li>
                                 <Link to={'class'}>
                                     <FontAwesomeIcon icon={faSchool} className="nav-icon" /> Classes
+                                </Link>
+                            </li>
+
+                            <li>
+                                <Link to={'teacher'}>
+                                    <FontAwesomeIcon icon={faChalkboardTeacher} className="nav-icon" /> Teacher
                                 </Link>
                             </li>
 

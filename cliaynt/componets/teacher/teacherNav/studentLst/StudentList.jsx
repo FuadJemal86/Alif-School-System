@@ -6,25 +6,29 @@ import { Link } from 'react-router-dom';
 import api from '../../../../src/api';
 
 function StudentList() {
-    const [students , setStudents] = useState([])
+    const [students, setStudents] = useState([]);
+    const [section , setSection] = useState([])
 
     useEffect(() => {
-
-        const feachData = async () => {
+        const fetchData = async () => {
             try {
-                const result =  await api.get('/teacher/get-student')
-
-                if(result.data.status) {
-                    setStudents(result.data.result)
+                const result = await api.get('/teacher/teacher-data');
+    
+                if (result.data && result.data.status) {
+                    // Assuming the response has class_students
+                    setStudents(result.data.class_students); // Use 'class_students' from the response
+                    setSection(result.data.subject_details);
                 } else {
-                    console.log(result.data.message)
+                    console.log('Error: ', result.data.message || 'Failed to fetch students');
                 }
-            } catch(err) {
-                console.log(err)
+            } catch (err) {
+                console.error('An error occurred: ', err);
             }
-        }
-
-    }, [])
+        };
+    
+        fetchData();
+    }, []);
+    
     return (
         <div>
             <div className='subject-main-table-con'>
@@ -40,8 +44,14 @@ function StudentList() {
                 </div>
                 <div className='subject-main-container'>
                     <h4>Students</h4>
-                    <div className='add-subject-button'>
-                        <Link to={'/admin-dashbord/add-student'}>Add Student</Link>
+                    <div>
+                        {
+                            section.map(c => (
+                                <div>
+                                    <strong>{c.name}</strong>
+                                </div>
+                            ))
+                        }
                     </div>
                     <div className='subject-table-con'>
                         <table>
@@ -51,24 +61,23 @@ function StudentList() {
                                     <th>Name</th>
                                     <th>Section</th>
                                     <th>Gender</th>
-                                    <th>Action</th>
+                                    <th>Grade</th>
                                 </tr>
                             </thead>
                             <tbody>
-
-
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <Link to={`/admin-dashbord/enter-parent`} style={{ color: '#FFB200' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
-                                    </td>
-
-                                </tr>
-
-
+                                {
+                                    students.map(c => (
+                                        <tr key={c.id}>
+                                            <td>{c.id}</td>
+                                            <td>{c.name}</td>
+                                            <td>{c.class_name}</td>
+                                            <td>{c.gender}</td>
+                                            <td>
+                                                <Link to={`/admin-dashbord/enter-parent`} style={{ color: '#FFB200' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
+                                            </td>
+                                        </tr>
+                                    ))
+                                }
                             </tbody>
                         </table>
                     </div>
