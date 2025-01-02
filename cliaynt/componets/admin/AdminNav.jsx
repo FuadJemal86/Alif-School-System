@@ -189,7 +189,7 @@ function AdminNav() {
 
                             <li>
                                 <Link to={'sitting'}>
-                                    <FontAwesomeIcon icon={faGear} className="nav-icon" /> Sitting
+                                    <FontAwesomeIcon icon={faGear} className="nav-icon" /> Setting
                                 </Link>
                             </li>
                         </ul>

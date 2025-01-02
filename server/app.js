@@ -1,32 +1,28 @@
 const express = require('express');
-const {admin} = require('./Route/admin')
+const { admin } = require('./Route/admin');
+const { teacher } = require('./Route/teacher');
+const { student } = require('./Route/student');
 const cors = require('cors');
-const {teacher} = require('./Route/teacher');
-const {student} = require('./Route/student');
-require('dotenv').config()
-
-
+require('dotenv').config();
 
 const app = express();
 
+// Middleware setup
 app.use(cors({
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT','DELETE','UPDATE'],
-    credentials: true, 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'UPDATE'],
+    credentials: true,
 }));
 
-app.use(express.json())
-// app.use(sanitaze.middleware())
-app.use('/auth',admin)
-app.use('/teacher',teacher)
-app.use('/student',student)
-app.use(express.static('public'))
+app.use(express.json());
+app.use('/auth', admin);
+app.use('/teacher', teacher);
+app.use('/student', student);
+app.use(express.static('public'));
 
 
 
-
-
-
-app.listen(process.env.PORT, () => {
-    console.log('Server is running on port 3032');
+// Start the server
+app.listen(process.env.PORT || 3032, () => {
+    console.log(`Server is running on port ${process.env.PORT || 3032}`);
 });

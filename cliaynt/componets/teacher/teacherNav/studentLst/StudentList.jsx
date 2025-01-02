@@ -73,7 +73,7 @@ function StudentList() {
                                             <td>{c.class_name}</td>
                                             <td>{c.gender}</td>
                                             <td>
-                                                <Link to={`/admin-dashbord/enter-parent`} style={{ color: '#FFB200' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
+                                                <Link to={`/teacher-nav/add-grade/${c.id}`} style={{ color: '#FFB200' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
                                             </td>
                                         </tr>
                                     ))

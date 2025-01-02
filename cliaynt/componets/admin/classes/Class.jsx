@@ -85,7 +85,7 @@ function Class() {
 
                                     <tr key={c.id}>
                                         <td>{c.id}</td>
-                                        <td>{c.name}</td>
+                                        <td>{c.class_name}</td>
 
                                         <td>
                                             <span onClick={() => handelDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer' }}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faSchool ,faTrash} from "@fortawesome/free-solid-svg-icons";
+import { faImage, faSchool, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "../sitting/sitting.css";
 import api from "../../../src/api";
 import Swal from "sweetalert2";
@@ -49,7 +49,7 @@ function Sitting() {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                window.location.reload()
+                FeachDataSchool()
 
             } else {
                 console.log(result.data.message)
@@ -86,7 +86,7 @@ function Sitting() {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                window.location.reload()
+                FeachData()
 
             } else {
                 console.log(result.data.message)
@@ -107,45 +107,43 @@ function Sitting() {
 
     useEffect(() => {
 
-        const FeachData = async () => {
-            try {
-                const result = await api.get('/auth/get-schoolImage')
-
-                if (result.data.status) {
-                    setSchoolImage(result.data.result)
-                } else {
-                    console.log(result.data.error)
-                }
-            } catch (err) {
-                console.log(err)
-            }
-        }
+        FeachDataSchool()
         FeachData()
 
     }, [])
+
+    const FeachDataSchool = async () => {
+        try {
+            const result = await api.get('/auth/get-schoolImage')
+
+            if (result.data.status) {
+                setSchoolImage(result.data.result)
+            } else {
+                console.log(result.data.error)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const FeachData = async () => {
+        try {
+            const result = await api.get('/auth/get-teacherImage')
+
+            if (result.data.status) {
+                setteacherImage(result.data.result)
+            } else {
+                console.log(result.data.error)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     const [teacherImage, setteacherImage] = useState([])
 
-    useEffect(() => {
 
-        const FeachData = async () => {
-            try {
-                const result = await api.get('/auth/get-teacherImage')
-
-                if (result.data.status) {
-                    setteacherImage(result.data.result)
-                } else {
-                    console.log(result.data.error)
-                }
-            } catch (err) {
-                console.log(err)
-            }
-        }
-        FeachData()
-
-    }, [])
-
-    const schoolDelete = async(id) => {
+    const schoolDelete = async (id) => {
         try {
             Swal.fire({
                 title: "Are you sure?",
@@ -168,7 +166,7 @@ function Sitting() {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
-                        window.location.reload()
+                        FeachDataSchool()
                     }
 
                 } else {
@@ -183,7 +181,7 @@ function Sitting() {
     }
 
 
-    const teacherDelete = async(id) => {
+    const teacherDelete = async (id) => {
         try {
             Swal.fire({
                 title: "Are you sure?",
@@ -206,7 +204,7 @@ function Sitting() {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
-                        window.location.reload()
+                        FeachData()
                     }
 
                 } else {
@@ -228,7 +226,7 @@ function Sitting() {
                     {
                         schoolImage.map((c) => (
                             <div className="sitting-text" key={c.id}>
-                                <div className="sitting-tresh"> <span onClick={() => schoolDelete(c.id)}  style={{ color: '#FA4032', cursor: 'pointer', marginRight: '10px' }} ><FontAwesomeIcon icon={faTrash} /></span></div>
+                                <div className="sitting-tresh"> <span onClick={() => schoolDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer', marginRight: '10px' }} ><FontAwesomeIcon icon={faTrash} /></span></div>
                                 <img src={`http://localhost:3032/image/${c.image}`} alt="" srcset="" />
                                 <div>{c.discription}</div>
                             </div>
@@ -243,12 +241,12 @@ function Sitting() {
                     {
                         teacherImage.map((c) => (
                             <div className="sitting-text" key={c.id}>
-                                <div className="sitting-tresh"> <span onClick={() => teacherDelete(c.id)}  style={{ color: '#FA4032', cursor: 'pointer', marginRight: '10px' }} ><FontAwesomeIcon icon={faTrash} /></span></div>
+                                <div className="sitting-tresh"> <span onClick={() => teacherDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer', marginRight: '10px' }} ><FontAwesomeIcon icon={faTrash} /></span></div>
                                 <img src={`http://localhost:3032/image/${c.image}`} alt="" srcset="" />
                                 <strong>{c.name}</strong>
                                 <div className="t-image-des">{c.discription}</div>
                             </div>
-                            
+
 
                         ))
                     }
@@ -291,7 +289,7 @@ function Sitting() {
 
                 {/* Teacher Image Section */}
                 <div className="sitting-container">
-                
+
                     <h3>Teacher Info</h3>
                     <form onSubmit={handelTeacher}>
                         <div className="sitting-box">

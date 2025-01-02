@@ -1,14 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../teacherNav/mainTeacher.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faChartBar, faUser, faSignOutAlt, faUsers, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { Link, Outlet } from 'react-router-dom';
+import api from '../../../src/api';
 
 function Nav() {
+    const [teacherInfo , setTeacherInfo] = useState([])
     const [isNavOpen, setIsNavOpen] = useState(true);
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen);
     };
+
+    useEffect(() => {
+        feachData()
+
+    } ,[])
+
+    const feachData = async() => {
+
+        try {
+            const result = await api.get('/get-teacher-profile')
+            if(result.data.status) {
+                setTeacherInfo(result.data.result)
+            } else {
+                console.log(result.data.message)
+            }
+        } catch(err) {
+            console.log(err)
+        }
+
+    }
 
     return (
         <div>
@@ -26,7 +48,7 @@ function Nav() {
 
                             </div>
                             <div className='t-elips-dot'>
-
+                                <img src={`http://localhost:3032/image/${teacherInfo.image}`} alt="" srcset="" />
                             </div>
                         </div>
                     </div>
@@ -49,12 +71,12 @@ function Nav() {
                             </Link>
                         </li>
                         <li>
-                            <Link className='t-link'>
+                            <Link to={'grade-list'} className='t-link'>
                                 <FontAwesomeIcon icon={faUsers} className='t-nav-icone' /> Grade
                             </Link>
                         </li>
                         <li>
-                            <Link className='t-link'>
+                            <Link to={'attendance'} className='t-link'>
                                 <FontAwesomeIcon icon={faClipboardList} className='t-nav-icone' /> Attendance
                             </Link>
                         </li>

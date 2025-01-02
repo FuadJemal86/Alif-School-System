@@ -33,6 +33,13 @@ import AddDipartement from '../componets/admin/dipartment/AddDipartement';
 import Sitting from '../componets/admin/sitting/Sitting';
 import Nav from '../componets/teacher/teacherNav/Nav';
 import StudentList from '../componets/teacher/teacherNav/studentLst/StudentList';
+import StudentGrade from '../componets/teacher/teacherNav/studentLst/StudentGrade';
+import GradeList from '../componets/teacher/teacherNav/studentLst/GradeList';
+import Attendance from '../componets/teacher/teacherNav/studentLst/Attendance';
+import EditAttendance from '../componets/teacher/teacherNav/studentLst/EditAttendance';
+
+
+
 
 function App() {
   return (
@@ -85,6 +92,11 @@ function App() {
 
         <Route path='/teacher-nav' element={<Nav />}>
           <Route path='student-list' element={<StudentList />} />
+          <Route path='add-grade/:id' element={<StudentGrade />} />
+          <Route path='grade-list' element={<GradeList />} />
+          <Route path='attendance' element={<Attendance />} />
+          <Route path='edit-attendance/:id' element={<EditAttendance />} />
+
           
         </Route>
       </Routes>

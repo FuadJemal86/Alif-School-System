@@ -10,6 +10,7 @@ const { hash } = require('crypto');
 const { error } = require('console');
 const { console } = require('inspector');
 const { auth, admin } = require('../middelwer/auth');
+const { teacher, teachers } = require('../middelwer/teacher');
 
 
 

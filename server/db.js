@@ -69,10 +69,11 @@ connection.connect((err) => {
             id INT AUTO_INCREMENT PRIMARY KEY,
             student_id INT NOT NULL,
             class_id INT NOT NULL,
-            date DATE NOT NULL DEFAULT CURRENT_DATE,
-            status ENUM('Present', 'Absent', 'Late') NOT NULL DEFAULT 'Present',
+            attendance_date DATE NOT NULL DEFAULT CURRENT_DATE,
+            status ENUM('Present', 'Absent', 'Late', '-') NOT NULL DEFAULT '-',
             FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-            FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
+            FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
+            UNIQUE KEY unique_attendance (student_id, class_id, attendance_date)
         );`,
 
         `CREATE TABLE IF NOT EXISTS grades (
