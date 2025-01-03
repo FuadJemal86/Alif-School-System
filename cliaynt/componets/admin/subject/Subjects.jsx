@@ -14,22 +14,24 @@ function Subjects() {
     const [subject, setSubject] = useState([])
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await api.get('/auth/get-subject');
-                if (result.data.status) {
-                    setSubject(result.data.result)
-                } else {
-                    console.error('Error fetching data:', result.data.error);
-                }
-
-            } catch (err) {
-                console.error(err)
-            }
-        }
+        
         fetchData()
 
     }, [])
+
+    const fetchData = async () => {
+        try {
+            const result = await api.get('/auth/get-subject');
+            if (result.data.status) {
+                setSubject(result.data.result)
+            } else {
+                console.error('Error fetching data:', result.data.error);
+            }
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     const handelDelete = (id) => {
 
@@ -55,7 +57,7 @@ function Subjects() {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
-                        window.location.reload()
+                        fetchData()
                     }
 
                 } else {

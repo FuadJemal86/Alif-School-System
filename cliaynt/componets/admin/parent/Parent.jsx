@@ -12,21 +12,21 @@ function Parent() {
 
     useEffect(() => {
 
-        const fechData = async () => {
-            try {
-                const result = await api.get('/auth/get-parent')
-                if (result.data.status) {
-                    setParent(result.data.result)
-                } else {
-                    console.log(result.data.error)
-                }
-            } catch (err) {
-                console.error(err.message)
-            }
-        }
-
         fechData()
     }, [])
+
+    const fechData = async () => {
+        try {
+            const result = await api.get('/auth/get-parent')
+            if (result.data.status) {
+                setParent(result.data.result)
+            } else {
+                console.log(result.data.error)
+            }
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
 
     const handelDelete = async(id) => {
 
@@ -52,7 +52,7 @@ function Parent() {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
-                        window.location.reload()
+                        fechData()
                     }
 
                 } else {

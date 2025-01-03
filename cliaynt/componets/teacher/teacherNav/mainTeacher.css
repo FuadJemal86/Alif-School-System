@@ -32,6 +32,31 @@
     left: 0;
 }
 
+.header-main1 {
+    display: flex;
+}
+
+.teacher-profile {
+    width: 100%;
+    padding: 7px;
+}
+
+.teacher-profile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+}
+
+.teacher-profile {
+    display: flex;
+    justify-content: right;
+}
+
+.teacher-profile img{
+    width: 40px;
+    height: 40px;
+}
+
 .nav-toggle-btn {
     padding: 10px;
     font-size: 20px;
@@ -71,4 +96,5 @@
     font-size: 15px;
     display: block;
 }
+
 

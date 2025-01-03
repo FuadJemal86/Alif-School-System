@@ -12,23 +12,23 @@ function Class() {
     const [section, setSection] = useState([]);
     useEffect(() => {
 
-        const feachdata = async () => {
-            try {
-                const result = await api.get('/auth/get-class');
-                if (result.data.status) {
-                    setSection(result.data.result);
-                } else {
-                    console.error('Error fetching teachers:', result.data.error);
-                }
-            } catch (err) {
-                console.log(err)
-            }
-
-        }
-
         feachdata()
 
     }, [])
+
+    const feachdata = async () => {
+        try {
+            const result = await api.get('/auth/get-class');
+            if (result.data.status) {
+                setSection(result.data.result);
+            } else {
+                console.error('Error fetching teachers:', result.data.error);
+            }
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
 
     const handelDelete = (id) => {
         const fetchDelete = async () => {
@@ -51,7 +51,7 @@ function Class() {
                                     text: "Your file has been deleted.",
                                     icon: "success"
                                 });
-                                window.location.reload()
+                                feachdata()
                             }
                         }
                     })

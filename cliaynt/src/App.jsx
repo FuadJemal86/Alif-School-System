@@ -37,6 +37,8 @@ import StudentGrade from '../componets/teacher/teacherNav/studentLst/StudentGrad
 import GradeList from '../componets/teacher/teacherNav/studentLst/GradeList';
 import Attendance from '../componets/teacher/teacherNav/studentLst/Attendance';
 import EditAttendance from '../componets/teacher/teacherNav/studentLst/EditAttendance';
+import TeacherProfile from '../componets/teacher/teacherNav/teacher profile/TeacherProfile';
+import EditTeacherProfile from '../componets/teacher/teacherNav/teacher profile/EditTeacherProfile';
 
 
 
@@ -96,6 +98,8 @@ function App() {
           <Route path='grade-list' element={<GradeList />} />
           <Route path='attendance' element={<Attendance />} />
           <Route path='edit-attendance/:id' element={<EditAttendance />} />
+          <Route path='teacher-profile' element={<TeacherProfile />} />
+          <Route path='edit-teacher/:id' element={<EditTeacherProfile />} />
 
           
         </Route>

@@ -10,7 +10,6 @@ const { hash } = require('crypto');
 const { error } = require('console');
 const { console } = require('inspector');
 const { auth, admin } = require('../middelwer/auth');
-const { teacher, teachers } = require('../middelwer/teacher');
 
 
 
@@ -102,7 +101,7 @@ router.post('/admin-login', async (req, res) => {
 
 // add admin 
 
-router.post('/add-admin',upload.single('image'), async (req, res) => {
+router.post('/add-admin', upload.single('image'), async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -123,7 +122,7 @@ router.post('/add-admin',upload.single('image'), async (req, res) => {
             ]
 
             if (err) {
-                return res.status(500).json({ hash: false, error: err.message })
+                return res.status(500).json({ hash: false, error: 'hash error' })
             }
 
             const isAdminFound = 'SELECT id FROM admin WHERE email = ?'
@@ -141,7 +140,7 @@ router.post('/add-admin',upload.single('image'), async (req, res) => {
                 connection.query(sql, [value], (err, result) => {
                     if (err) {
                         console.error(err.message);
-                        return res.status(500).json({ status: false, error: err.message })
+                        return res.status(500).json({ status: false, error: 'query error' })
                     }
                     return res.status(200).json({ status: true, message: 'Admin added successfully!' })
                 })
@@ -152,7 +151,7 @@ router.post('/add-admin',upload.single('image'), async (req, res) => {
 
     } catch (err) {
         console.log(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -177,7 +176,7 @@ router.get('/get-admin', (req, res) => {
         connection.query(sql, [id], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
 
             if (result.length > 0) {
@@ -188,7 +187,7 @@ router.get('/get-admin', (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 
 })
@@ -337,12 +336,12 @@ router.delete('/subject-delete/:id', [auth, admin], async (req, res) => {
 
 router.post('/add-teacher', [auth, admin], upload.single('image'), async (req, res) => {
 
-    const { name, password, subject_id,class_id, email, phone, address } = req.body;
+    const { name, password, subject_id, class_id, email, phone, address } = req.body;
 
     const image = req.file ? req.file.filename : null;
 
     if (!name || !password || !subject_id || !class_id || !email || !phone || !address) {
-        return res.status(200).json({ status: false, message: 'Missing required fields' })
+        return res.status(400).json({ status: false, message: 'Missing required fields' })
     }
 
 
@@ -350,27 +349,27 @@ router.post('/add-teacher', [auth, admin], upload.single('image'), async (req, r
 
         const chekExist = 'SELECT id FROM teachers WHERE email = ? OR (subject_id = ? AND class_id = ?)'
 
-        connection.query(chekExist, [email,subject_id,class_id,] ,(err, result) => {
+        connection.query(chekExist, [email, subject_id, class_id,], (err, result) => {
             if (err) {
                 console.error(err.message)
                 return res.status(500).json({ status: false, error: err.message })
             }
 
             if (result.length > 0) {
-                return res.status(200).json({ status: false, message: 'Email Already Exist' })
+                return res.status(200).json({ status: false, message: 'Already Exist' })
             }
 
 
             bcrypt.hash(password, 10, (err, hash) => {
 
-                const value = [name, hash, subject_id,class_id, email, image, phone, address]
+                const value = [name, hash, subject_id, class_id, email, image, phone, address]
 
                 if (err) {
                     return res.status(500).json({ hash: false, error: err.message })
                 }
 
                 const sql = `INSERT INTO teachers (name,password,subject_id,class_id, email,image, phone, address) VALUES (?,?, ?, ?, ?, ?,?,?)`;
-                connection.query(sql, value, (err, result) => { 
+                connection.query(sql, value, (err, result) => {
                     if (err) {
                         console.error(err.message)
                         return res.status(400).json({ status: false, error: err })
@@ -613,7 +612,7 @@ router.post('/send-email', async (req, res) => {
 
 router.post('/add-class', [auth, admin], async (req, res) => {
 
-    const { class_name} = req.body
+    const { class_name } = req.body
 
     try {
         const classChek = 'SELECT id FROM classes WHERE class_name = ?'

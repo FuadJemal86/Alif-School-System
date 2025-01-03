@@ -15,26 +15,27 @@ function Grade() {
 
 
     useEffect(() => {
-        const fechData = async () => {
-            try {
-                const result = await api.get('/auth/get-grade')
-                if (result.data.status) {
-                    const sortedStudents = result.data.result.sort((a, b) =>
-                        a.student_name.localeCompare(b.student_name) || a.grade.localeCompare(b.grade)
-                    );
-                    setStudentInfo(sortedStudents)
-                    setFilteredStudents(sortedStudents)
-                } else {
-                    console.log(result.data.error)
-                }
-            } catch (err) {
-                console.error(err.message)
-            }
-        }
 
         fechData()
 
     }, [])
+
+    const fechData = async () => {
+        try {
+            const result = await api.get('/auth/get-grade')
+            if (result.data.status) {
+                const sortedStudents = result.data.result.sort((a, b) =>
+                    a.student_name.localeCompare(b.student_name) || a.grade.localeCompare(b.grade)
+                );
+                setStudentInfo(sortedStudents)
+                setFilteredStudents(sortedStudents)
+            } else {
+                console.log(result.data.error)
+            }
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
 
     useEffect(() => {
         const filterd = studentInfo.filter((students) => 
@@ -64,7 +65,7 @@ function Grade() {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
-                        window.location.reload()
+                        fechData()
                     } else {
                         console.error(err.message)
                     }

@@ -13,24 +13,25 @@ function Student() {
     const [searchTerm, setSearchTerm] = useState(''); 
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await api.get('/auth/get-student');
-                if (result.data.status) {
-                    const sortedStudents = result.data.result.sort((a, b) =>
-                        a.class_name.localeCompare(b.class_name) || a.name.localeCompare(b.name)
-                    );
-                    setStudents(sortedStudents);
-                    setFilteredStudents(sortedStudents); // Show all students by default
-                } else {
-                    alert('not found', result.data.error);
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        };
         fetchData();
     }, []);
+
+    const fetchData = async () => {
+        try {
+            const result = await api.get('/auth/get-student');
+            if (result.data.status) {
+                const sortedStudents = result.data.result.sort((a, b) =>
+                    a.class_name.localeCompare(b.class_name) || a.name.localeCompare(b.name)
+                );
+                setStudents(sortedStudents);
+                setFilteredStudents(sortedStudents); // Show all students by default
+            } else {
+                alert('not found', result.data.error);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     useEffect(() => {
         const filtered = students.filter((student) =>
@@ -60,7 +61,7 @@ function Student() {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
-                        window.location.reload()
+                        fetchData()
 
                     } else {
                         console.log(result.data.error)

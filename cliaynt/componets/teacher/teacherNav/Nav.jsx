@@ -4,9 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faChartBar, faUser, faSignOutAlt, faUsers, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { Link, Outlet } from 'react-router-dom';
 import api from '../../../src/api';
+import teacherValidation from '../../../src/hooks/teacherValidation';
 
 function Nav() {
-    const [teacherInfo , setTeacherInfo] = useState([])
+    teacherValidation()
+
+    const [teacherInfo, setTeacherInfo] = useState([])
     const [isNavOpen, setIsNavOpen] = useState(true);
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen);
@@ -15,41 +18,44 @@ function Nav() {
     useEffect(() => {
         feachData()
 
-    } ,[])
+    }, [])
 
-    const feachData = async() => {
+    const feachData = async () => {
 
         try {
-            const result = await api.get('/get-teacher-profile')
-            if(result.data.status) {
-                setTeacherInfo(result.data.result)
+            const result = await api.get('/teacher/get-teacher-profile')
+            if (result.data.status) {
+                setTeacherInfo(result.data.teacher)
             } else {
                 console.log(result.data.message)
             }
-        } catch(err) {
+        } catch (err) {
             console.log(err)
         }
 
     }
 
+    const handelLogout =  () => {
+        localStorage.removeItem('token')
+        window.location.reload()
+    }
+
     return (
         <div>
-            
+
             {/* Header Section */}
             <div className={`t-header-container ${!isNavOpen ? 'header-wid' : ''}`}>
                 <header className='t-heade'>
                     <div className='header-main'>
-                        <div>
+                        <div className='header-main1'>
                             <button className="nav-toggle-btn" onClick={toggleNav}>
                                 <FontAwesomeIcon icon={faBars} />
                             </button>
 
-                            <div className='t-notification-gire'>
-
-                            </div>
-                            <div className='t-elips-dot'>
+                            <div className='teacher-profile'>
                                 <img src={`http://localhost:3032/image/${teacherInfo.image}`} alt="" srcset="" />
                             </div>
+
                         </div>
                     </div>
                 </header>
@@ -81,24 +87,24 @@ function Nav() {
                             </Link>
                         </li>
                         <li>
-                            <Link className='t-link'>
+                            <Link to={'teacher-profile'} className='t-link'>
                                 <FontAwesomeIcon icon={faUser} className='t-nav-icone' /> Profile
                             </Link>
                         </li>
                         <li>
-                            <Link className='t-link'>
+                            <Link onClick={handelLogout} className='t-link'>
                                 <FontAwesomeIcon icon={faSignOutAlt} className='t-nav-icone' /> Logout
                             </Link>
                         </li>
                     </ul>
                 </div>
-                
+
             </div>
             <div className={`t-main-outlet ${!isNavOpen ? 't-main-outlet-mobile' : ''}`}>
-                <Outlet/>
+                <Outlet />
             </div>
         </div>
-        
+
     );
 }
 

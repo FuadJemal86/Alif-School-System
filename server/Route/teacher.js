@@ -4,6 +4,9 @@ const connection = require('../db');
 const bcrypt = require('bcrypt');
 const { teacher, teachers } = require('../middelwer/teacher');
 const cron = require('node-cron');
+const { format } = require('date-fns');
+const multer = require('multer');
+const path = require('path');
 require('dotenv').config()
 
 
@@ -11,6 +14,33 @@ require('dotenv').config()
 
 
 const router = express.Router();
+
+router.post('/vlidate', async (req, res) => {
+    const { token } = req.body;
+
+    if (!token) {
+        return res.status(400).json({ message: 'Token is required' });
+    }
+
+    try {
+        jwt.verify(token, process.env.TEACHER_KEY);
+        return res.json({ valid: true });
+    } catch (err) {
+        return res.status(401).json({ message: 'Invalid token' });
+    }
+});
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/image')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({
+    storage: storage
+})
 
 
 router.post('/teacher-login', async (req, res) => {
@@ -63,43 +93,57 @@ router.post('/teacher-login', async (req, res) => {
 
 // get teacher profile
 
-router.get('/get-teacher-profile', async(req , res) => {
+router.get('/get-teacher-profile', async (req, res) => {
     const token = req.header('token')
 
-    if(!token) {
-        return res.status(400).json({status:false , message :'token not found!'})
+    if (!token) {
+        return res.status(400).json({ status: false, message: 'token not found!' })
     }
 
     try {
-        const decoded = jwt.verify(token , process.env.TEACHER_KEY )
+        const decoded = jwt.verify(token, process.env.TEACHER_KEY)
         const teacherId = decoded.id
 
-        const sql = 'SELECT * FROM teachers WHERE id = ?'
+        const sql = `SELECT
+            teachers.id,
+            teachers.name,
+            teachers.email,
+            teachers.image,
+            subjects.name AS subject_name
 
-        connection.query(sql , [teacherId] , (err , result) => {
-            if(err) {
+            FROM 
+                teachers 
+            JOIN
+                subjects ON teachers.subject_id = subjects.id
+            WHERE
+                teachers.id = ?    
+        `;
+
+        connection.query(sql, [teacherId], (err, result) => {
+            if (err) {
                 console.error(err.message)
-                return res.status(500).json({status:false , error:'query error'})
+                return res.status(500).json({ status: false, error: 'query error' })
             }
 
-            return res.status(200).json({status:true , result})
+            return res.status(200).json({ status: true, teacher: result[0] })
         })
     } catch (err) {
         console.log(err.message)
-        return res.status(400).json({status:false , message :'Something went wrong!'})
+        return res.status(400).json({ status: false, message: 'Something went wrong!' })
     }
 })
 
 //add attendance 
 
 router.post('/take-attendance', async (req, res) => {
-
     const { student_id, class_id, status } = req.body;
-    const today = new Date().toISOString().slice(0, 10);
+    const today = format(new Date(), 'yyyy-MM-dd');
 
-    const sql = `INSERT INTO attendance (student_id, class_id, status, attendance_date)
-                    VALUES (?, ?, ?, ?)
-                    ON DUPLICATE KEY UPDATE status = ?`;
+    const sql = `
+        INSERT INTO attendance (student_id, class_id, status, attendance_date)
+        VALUES (?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE status = ?, updated_at = NOW()
+    `;
 
     try {
         connection.query(
@@ -107,43 +151,69 @@ router.post('/take-attendance', async (req, res) => {
             [student_id, class_id, status, today, status],
             (err, result) => {
                 if (err) {
-                    console.error(err.message);
-                    return res.status(500).json({ status: false, error: 'Query error' });
+                    console.error('Database error:', err);
+                    return res.status(500).json({
+                        status: false,
+                        error: 'Failed to update attendance',
+                    });
                 }
-                return res.status(200).json({ status: true, message: 'Attendance updated.' });
+
+                console.log(`Attendance updated for student ${student_id} in class ${class_id} with status ${status}`);
+                return res.status(200).json({
+                    status: true,
+                    message: 'Attendance updated successfully',
+                });
             }
         );
     } catch (err) {
-        console.error(err);
-        return res.status(400).json({ status: false, error: "Something went wrong!" });
+        console.error('Server error:', err);
+        return res.status(500).json({
+            status: false,
+            error: 'Server error occurred',
+        });
     }
 });
 
 
-// Scheduled Task: Reset attendance daily at midnight
-cron.schedule('0 0 * * *', () => {
-    const today = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
+cron.schedule('0 0 * * *', async () => {
+    const today = format(new Date(), 'yyyy-MM-dd');
+
     const resetSql = `
         INSERT INTO attendance (student_id, class_id, status, attendance_date)
-        SELECT s.id AS student_id, c.id AS class_id, '-' AS status, ? AS attendance_date
+        SELECT 
+            s.id AS student_id, 
+            c.id AS class_id, 
+            '-' AS status, 
+            ? AS attendance_date
         FROM students s
         CROSS JOIN classes c
-        WHERE NOT EXISTS (
-                SELECT 1 FROM attendance
-                WHERE attendance.student_id = s.id
-                AND attendance.class_id = c.id
-                AND attendance.attendance_date = ?
-        )
+        WHERE 
+            s.status = 'active' AND
+            c.status = 'active' AND
+            NOT EXISTS (
+                SELECT 1 
+                FROM attendance a
+                WHERE a.student_id = s.id
+                AND a.class_id = c.id
+                AND a.attendance_date = ?
+            )
     `;
 
-    connection.query(resetSql, [today, today], (err, result) => {
-        if (err) {
-            console.error('Error resetting attendance:', err.message);
-        } else {
-            console.log('Daily attendance reset successfully.');
-        }
-    });
+    try {
+        connection.query(resetSql, [today, today], (err, result) => {
+            if (err) {
+                console.error('Failed to reset attendance:', err);
+                notifyAdmin('Attendance reset failed', err.message);
+            } else {
+                console.log(`Daily attendance reset completed for ${result.affectedRows} entries on ${today}`);
+            }
+        });
+    } catch (err) {
+        console.error('Critical error in attendance reset:', err);
+        notifyAdmin('Critical attendance reset error', err.message);
+    }
 });
+
 
 
 // update attendance
@@ -233,50 +303,52 @@ router.post('/add-grade', [teacher, teachers], async (req, res) => {
 
 // get attendance
 
-// router.get('/get-attendance', async (req, res) => {
+router.get('/get-attendance', async (req, res) => {
 
-//     const token = req.header('token');
-//     if (!token) {
-//         return res.status(401).json({ status: false, message: 'No token provided' });
-//     }
+    const token = req.header('token');
+    if (!token) {
+        return res.status(401).json({ status: false, message: 'No token provided' });
+    }
 
-//     const decoded = jwt.verify(token, process.env.TEACHER_KEY);
-//     const teacherId = decoded.id;
+    try {
+        const decoded = jwt.verify(token, process.env.TEACHER_KEY);
+        const teacherId = decoded.id;
 
+        const sql = `
+            SELECT 
+                students.id AS student_id,
+                students.name AS student_name,
+                students.gender AS student_gender,
+                classes.id AS class_id,
+                classes.class_name,
+                attendance.id AS attendance_id,
+                attendance.status AS attendance_status,
+                attendance.attendance_date
+            FROM 
+                students
+            INNER JOIN 
+                classes ON students.class_id = classes.id
+            INNER JOIN 
+                teachers ON classes.id = teachers.class_id
+            LEFT JOIN 
+                attendance ON students.id = attendance.student_id
+            WHERE 
+                teachers.id = ?`;
 
+        connection.query(sql, [teacherId], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ status: false, error: err.message });
+            }
 
-//     const sql = `SELECT
-//             attendance.id AS attendance_id,
-//             attendance.status AS attendance_status,
-//             students.name AS student_name,
-//             students.gender AS student_gender,
-//             classes.id AS class_id
+            return res.status(200).json({ status: true, attendance: result });
+        });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json({ status: false, error: err.message });
+    }
+});
 
-//         FROM 
-//             attendance
-//         LEFT JOIN 
-//             students ON attendance.student_id = students.id
-//         LEFT JOIN
-//             classes ON attendance.class_id = classes.id
-//         LEFT JOIN
-//             teachers ON teachers.class_id = classes.id
-//         LEFT JOIN 
-//             classes ON teachers.class_id = classes.id
-//         WHERE
-//             teachers.id = ?`;
-
-//     try {
-//         connection.query(sql,[teacherId], (err, result) => {
-//             if (err) {
-//                 throw err
-//             }
-//             return res.status(200).json({ status: true, result })
-//         })
-//     } catch (err) {
-//         console.error(err.message)
-//         return res.status(400).json({ status: false, error: err.message })
-//     }
-// })
 
 // get greade
 
@@ -327,7 +399,7 @@ router.get('/get-grade', async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: "server error!" })
     }
 })
 
@@ -428,9 +500,47 @@ router.get('/get-student/:id', async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).jsone({ status: false, error: err.message })
+        return res.status(400).jsone({ status: false, error: "server error!" })
     }
 })
+
+// edit teacher profile
+
+
+router.put('/edit-teacher/:id', upload.single('image'), async (req, res) => {
+
+    const id = req.params.id;
+    const { password } = req.body;
+
+    try {
+
+        const image = req.file ? req.file.filename : null;
+
+        const sql = `UPDATE  teachers  SET password = ? , image = ?  WHERE id = ?`
+
+        bcrypt.hash(password, 10, (err, hash) => {
+            if (err) {
+                console.log(err.message)
+                return res.status(500).json({ status: false, error: 'hash error' })
+            }
+
+            const values = [hash, image, id];
+
+            connection.query(sql, values, (err, result) => {
+                if (err) {
+                    console.error(err.message);
+                    return res.status(500).json({ status: false, error: err.message })
+                }
+                return res.status(200).json({ status: true, message: 'Teacher Update successfully!' })
+            })
+        })
+
+    } catch (err) {
+        console.log(err.message)
+        return res.status(400).json({ status: false, error: "server error!" })
+    }
+})
+
 
 
 

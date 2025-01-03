@@ -11,22 +11,23 @@ function Dipartment() {
     const [department , setDepartment] = useState([])
 
     useState(() => {
-        const feachData = async() => {
-            try {
-                const result = await api.get('/auth/get-dip')
-
-                if(result.data.status) {
-                    setDepartment(result.data.result)
-                } else {
-                    console.log(result.data.message)
-                }
-            } catch(err) {
-                console.log(err)
-            }
-        }
         feachData()
 
     } , [])
+
+    const feachData = async() => {
+        try {
+            const result = await api.get('/auth/get-dip')
+
+            if(result.data.status) {
+                setDepartment(result.data.result)
+            } else {
+                console.log(result.data.message)
+            }
+        } catch(err) {
+            console.log(err)
+        }
+    }
 
     const handeDelete = async (id) => {
 
@@ -49,7 +50,7 @@ function Dipartment() {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
-                        window.location.reload()
+                        feachData()
 
                     } else {
                         console.log(result.data.error)

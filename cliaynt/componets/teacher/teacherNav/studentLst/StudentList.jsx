@@ -44,15 +44,6 @@ function StudentList() {
                 </div>
                 <div className='subject-main-container'>
                     <h4>Students</h4>
-                    <div>
-                        {
-                            section.map(c => (
-                                <div>
-                                    <strong>{c.name}</strong>
-                                </div>
-                            ))
-                        }
-                    </div>
                     <div className='subject-table-con'>
                         <table>
                             <thead>

@@ -23,6 +23,12 @@ function Login() {
 
         e.preventDefault()
 
+        const { email, password } = teacherInfo
+
+        if (!email || !password) {
+            return toast.error('Missing required fields')
+        }
+
         try {
             const result = await api.post('/teacher/teacher-login', teacherInfo)
 
@@ -64,7 +70,7 @@ function Login() {
                                 <input
                                     onChange={(e) => setTeacherInfo({ ...teacherInfo, email: e.target.value })}
                                     placeholder='Username'
-                                    required
+                                    
                                 />
                             </div>
 
@@ -73,16 +79,13 @@ function Login() {
                                 <input
                                     onChange={(e) => setTeacherInfo({ ...teacherInfo, password: e.target.value })}
                                     placeholder='Password'
-                                    required
+                                    
 
                                 />
                             </div>
                             <div className='t-login'>
-                            <button >Login <FontAwesomeIcon icon={faRightToBracket} />
-                                    <Toaster
-                                        position="top-center" // Position of the toast
-                                        reverseOrder={false} // Keep toasts in the order they were added
-                                    />
+                                <button >Login <FontAwesomeIcon icon={faRightToBracket} />
+
                                 </button>
                             </div>
                         </div>
@@ -105,6 +108,10 @@ function Login() {
 
 
             </div>
+            <Toaster
+                position="top-center" // Position of the toast
+                reverseOrder={false} // Keep toasts in the order they were added
+            />
             <Footer />
 
         </div>

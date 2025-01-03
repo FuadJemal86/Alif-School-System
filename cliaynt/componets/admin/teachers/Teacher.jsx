@@ -9,21 +9,23 @@ function Teacher() {
     const [teachers, setTeachers] = useState([]);
 
     useEffect(() => {
-        const fetchTeachers = async () => {
-            try {
-                const result = await api.get('/auth/get-teacher');
-                if (result.data.status) {
-                    setTeachers(result.data.result);
-                } else {
-                    console.error('Error fetching teachers:', result.data.error);
-                }
-            } catch (err) {
-                console.error('Error fetching teachers:', err.message);
-            }
-        };
+        
 
         fetchTeachers();
     }, []);
+
+    const fetchTeachers = async () => {
+        try {
+            const result = await api.get('/auth/get-teacher');
+            if (result.data.status) {
+                setTeachers(result.data.result);
+            } else {
+                console.error('Error fetching teachers:', result.data.error);
+            }
+        } catch (err) {
+            console.error('Error fetching teachers:', err.message);
+        }
+    };
 
     const handelDelete = (id) => {
         const fetchDelete = async () => {
@@ -45,7 +47,7 @@ function Teacher() {
                                     text: "Your file has been deleted.",
                                     icon: "success"
                                 });
-                                window.location.reload()
+                                fetchTeachers()
                             } else {
                                 console.error(err.message)
                             }

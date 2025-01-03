@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faCheck, faMagnifyingGlass,faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faCheck, faMagnifyingGlass, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import api from '../../../../src/api';
 import toast, { Toaster } from 'react-hot-toast';
 import { cache } from 'react';
@@ -17,10 +17,10 @@ function Attendance() {
 
     const fetchData = async () => {
         try {
-            const result = await api.get('/teacher/get-grade');
+            const result = await api.get('/teacher/get-attendance');
 
             if (result.data && result.data.status) {
-                setAttendance(result.data.result);
+                setAttendance(result.data.attendance);
             } else {
                 console.log('Error: ', result.data.message || 'Failed to fetch students');
             }
@@ -35,25 +35,25 @@ function Attendance() {
             const result = await api.post('/teacher/take-attendance', {
                 student_id,
                 class_id,
-                status, 
+                status,
             });
-    
+
             if (result.data.status) {
                 toast.success(status);
                 fetchData()
             } else {
-                toast.error(result.data.message||"This didn't work.");
+                toast.error(result.data.message || "This didn't work.");
             }
         } catch (err) {
             console.error(err);
             toast.error("An error occurred while updating attendance.");
         }
     };
-    
+
     const handlePresent = (student_id, class_id) => {
         handleAttendance(student_id, class_id, "Present");
     };
-    
+
     const handleAbsent = (student_id, class_id) => {
         handleAttendance(student_id, class_id, "Absent");
     };
@@ -85,25 +85,21 @@ function Attendance() {
                                     <th>Gender</th>
                                     <th>Attendance</th>
                                     <th>Action</th>
-                                    <th>Edit</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
                                     attendance.map(c => (
-                                        <tr key={c.id}>
+                                        <tr key={c.student_id}>
                                             <td>{c.student_id}</td>
                                             <td>{c.student_name}</td>
-                                            <td>{c.gender}</td>
-                                            <td>{c.status || '-'}</td>
+                                            <td>{c.student_gender}</td>
+                                            <td>{c.attendance_status || '-'}</td>
                                             <td>
                                                 <div style={{ display: 'flex', gap: "15px" }}><FontAwesomeIcon onClick={() => handlePresent(c.student_id, c.class_id)} style={{ color: '#16C47F', cursor: 'pointer' }} icon={faCheck} />
                                                     <FontAwesomeIcon onClick={() => handleAbsent(c.student_id, c.class_id)} style={{ color: '#F93827', cursor: 'pointer' }} icon={faXmark} />
                                                 </div>
-                                                
-                                            </td>
-                                            <td>
-                                                <Link to={`/teacher-nav/edit-attendance/${c.attendance_id}`}> <FontAwesomeIcon style={{cursor:'pointer',color:'#789DBC'}} icon={faPenToSquare} /></Link>
+
                                             </td>
                                         </tr>
 

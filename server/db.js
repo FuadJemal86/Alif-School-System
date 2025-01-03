@@ -70,7 +70,8 @@ connection.connect((err) => {
             student_id INT NOT NULL,
             class_id INT NOT NULL,
             attendance_date DATE NOT NULL DEFAULT CURRENT_DATE,
-            status ENUM('Present', 'Absent', 'Late', '-') NOT NULL DEFAULT '-',
+            status ENUM('Present', 'Absent', '-') NOT NULL DEFAULT '-',
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
             FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
             UNIQUE KEY unique_attendance (student_id, class_id, attendance_date)
