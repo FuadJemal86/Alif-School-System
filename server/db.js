@@ -123,7 +123,32 @@ connection.connect((err) => {
             name VARCHAR(100) NOT NULL,
             email VARCHAR(50),
             message  VARCHAR(50)
-        );`
+        );`,
+
+        `CREATE TABLE IF NOT EXISTS messages (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            admin_id INT NOT NULL,
+            message VARCHAR(100) NOT NULL,
+            time VARCHAR(50),
+            FOREIGN KEY (admin_id) REFERENCES admin(id) ON DELETE CASCADE
+        )`,
+
+        `CREATE TABLE IF NOT EXISTS exams (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            teacher_id INT NOT NULL,
+            student_id INT NOT NULL,
+            class_id INT NOT NULL,
+            subject_id INT NOT NULL,
+            assi1 FLOAT NOT NULL,
+            assi2 FLOAT NOT NULL,
+            midterm FLOAT NOT NULL,
+            final FLOAT NOT NULL,
+            average FLOAT AS (assi1 + assi2 + midterm + final) STORED,
+            FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE,
+            FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+            FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
+            FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
+        )`
     ];
 
     const executeQueries = (queries) => {

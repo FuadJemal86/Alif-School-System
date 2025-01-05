@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from '../logo/alif.png';
 import '../loginPage/loginCss/login.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faRightToBracket, faPhone, faEnvelope,faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../Footer';
 import api from '../../../src/api';
@@ -70,12 +70,13 @@ function Login() {
                                 <input
                                     onChange={(e) => setTeacherInfo({ ...teacherInfo, email: e.target.value })}
                                     placeholder='Username'
+                                    className="input"
                                     
                                 />
                             </div>
 
                             <div className='t-input'>
-                                <span className='t-input-icone'><FontAwesomeIcon icon={faEnvelope} /></span>
+                                <span className='t-input-icone'><FontAwesomeIcon icon={faLock} /></span>
                                 <input
                                     onChange={(e) => setTeacherInfo({ ...teacherInfo, password: e.target.value })}
                                     placeholder='Password'

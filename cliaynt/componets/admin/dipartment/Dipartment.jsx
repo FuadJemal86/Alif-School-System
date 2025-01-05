@@ -10,10 +10,7 @@ function Dipartment() {
 
     const [department , setDepartment] = useState([])
 
-    useState(() => {
-        feachData()
-
-    } , [])
+    
 
     const feachData = async() => {
         try {
@@ -28,6 +25,11 @@ function Dipartment() {
             console.log(err)
         }
     }
+
+    useState(() => {
+        feachData()
+
+    } , [])
 
     const handeDelete = async (id) => {
 

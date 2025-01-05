@@ -71,6 +71,13 @@ function Nav() {
                                 <FontAwesomeIcon icon={faChartBar} className='t-nav-icone' /> Overview
                             </Link>
                         </li>
+
+                        <li>
+                            <Link to={'assisment'} className='t-link'>
+                                <FontAwesomeIcon icon={faClipboardList} className='t-nav-icone' /> Assisment
+                            </Link>
+                        </li>
+
                         <li>
                             <Link to={'student-list'} className='t-link'>
                                 <FontAwesomeIcon icon={faClipboardList} className='t-nav-icone' /> Student List

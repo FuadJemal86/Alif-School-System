@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../loginPage/loginCss/login.css'
 import logo from '../logo/alif.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faRightToBracket, faEnvelope ,faLock } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../Footer';
 
 function StudentLogin() {
@@ -37,7 +37,7 @@ function StudentLogin() {
                         </div>
 
                         <div className='t-input'>
-                            <span className='t-input-icone'><FontAwesomeIcon icon={faEnvelope} /></span>
+                            <span className='t-input-icone'><FontAwesomeIcon icon={faLock} /></span>
                             <input
                                 placeholder='Password'
                             />

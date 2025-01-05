@@ -176,7 +176,7 @@ router.post('/take-attendance', async (req, res) => {
 
 
 cron.schedule('0 0 * * *', async () => {
-    const today = format(new Date(), 'yyyy-MM-dd');
+    const today = format(new Date(), 'yyyy-MM-dd');  // Get current date
 
     const resetSql = `
         INSERT INTO attendance (student_id, class_id, status, attendance_date)
@@ -213,6 +213,7 @@ cron.schedule('0 0 * * *', async () => {
         notifyAdmin('Critical attendance reset error', err.message);
     }
 });
+
 
 
 
@@ -432,7 +433,7 @@ router.get('/teacher-data', async (req, res) => {
 
             const { class_id, subject_id } = teacherResult[0];
 
-            // Query to get students in the teacher's class along with class details
+
             const studentQuery = `
                 SELECT 
                     students.id, 
@@ -445,9 +446,7 @@ router.get('/teacher-data', async (req, res) => {
                 FROM 
                     students 
                 JOIN 
-                    classes 
-                ON 
-                    students.class_id = classes.id
+                    classes  ON students.class_id = classes.id
                 WHERE 
                     students.class_id = ?`;
 
@@ -540,6 +539,139 @@ router.put('/edit-teacher/:id', upload.single('image'), async (req, res) => {
         return res.status(400).json({ status: false, error: "server error!" })
     }
 })
+
+
+router.get('/get-assistence', async (req, res) => {
+    const token = req.header('token');
+    if (!token) {
+        return res.status(401).json({ status: false, message: 'No token provided' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.TEACHER_KEY);
+        const teacherId = decoded.id;
+
+        const sql = `
+            SELECT 
+                students.id AS student_id,
+                students.name AS student_name,
+                students.gender AS student_gender,
+                teachers.id AS teacher_id,
+                teachers.name AS teacher_name,
+                subjects.name AS teacher_subject,
+                subjects.id AS subject_id,
+                classes.id AS class_id,
+                exams.assi1,
+                exams.assi2,
+                exams.midterm,
+                exams.final,
+                exams.average
+            FROM 
+                students
+            INNER JOIN   -- INNER JOIN means match the student table based on classes.id
+
+                classes ON students.class_id = classes.id 
+            INNER JOIN 
+                teachers ON teachers.class_id = classes.id
+            INNER JOIN 
+                subjects ON teachers.subject_id = subjects.id
+            LEFT JOIN 
+                exams ON exams.student_id = students.id AND exams.teacher_id = teachers.id AND exams.class_id = classes.id 
+            WHERE
+                teachers.id = ?;
+        `;
+
+        connection.query(sql, [teacherId], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ status: false, error: err.message });
+            }
+
+            return res.status(200).json({ status: true, students: result });
+        });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json({ status: false, error: err.message });
+    }
+});
+
+// add assisstence
+
+router.post('/add-assistence/:student_id', async (req, res) => {
+
+    const student_id = req.params.id;
+
+
+    const { teacher_id, class_id, subject_id, assi1, assi2, midterm, final } = req.body;
+    console.log(teacher_id , student_id , class_id)
+
+    try {
+
+        const checkExistQuery = 'SELECT * FROM exams WHERE student_id = ? AND subject_id = ?';
+
+        connection.query(checkExistQuery, [student_id, subject_id], (err, result) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ status: false, error: 'Query error while checking existence' });
+            }
+
+            if (result.length > 0) {
+                // Update the existing row with new values
+
+                // IF(condition, value_if_true, value_if_false)
+                // assi1 = IF(? IS NOT NULL, ?, assi1)
+
+                const updateQuery = `
+                    UPDATE exams 
+                    SET 
+                        assi1 = IF(? IS NOT NULL, ?, assi1), 
+                        assi2 = IF(? IS NOT NULL, ?, assi2),
+                        midterm = IF(? IS NOT NULL, ?, midterm),
+                        final = IF(? IS NOT NULL, ?, final)
+                    WHERE student_id = ? AND subject_id = ?
+                `;
+
+                const updateValues = [
+                    assi1, assi1,
+                    assi2, assi2,
+                    midterm, midterm,
+                    final, final,
+                    student_id, subject_id
+                ];
+
+                connection.query(updateQuery, updateValues, (err, updateResult) => {
+                    if (err) {
+                        console.error(err.message);
+                        return res.status(500).json({ status: false, error: 'Query error while updating data' });
+                    }
+                    return res.status(200).json({ status: true, message: 'Record updated successfully!' });
+                });
+            } else {
+                // Insert a new row if it doesn't exist
+                const insertQuery = `
+                    INSERT INTO exams 
+                    (teacher_id, student_id, class_id, subject_id, assi1, assi2, midterm, final) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                `;
+
+                const insertValues = [teacher_id, student_id, class_id, subject_id, assi1 || 0, assi2 || 0, midterm || 0, final || 0];
+
+                connection.query(insertQuery, insertValues, (err, insertResult) => {
+                    if (err) {
+                        console.error(err.message);
+                        return res.status(500).json({ status: false, error: 'Query error while inserting data' });
+                    }
+                    return res.status(200).json({ status: true, message: 'Record added successfully!' });
+                });
+            }
+        });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json({ status: false, error: err.message });
+    }
+});
+
+
 
 
 

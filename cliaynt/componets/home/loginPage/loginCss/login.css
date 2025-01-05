@@ -86,6 +86,7 @@
 }
 
 .t-input input {
+    width: 100%;
     outline: none;
     border: none;
 }
@@ -201,6 +202,12 @@
     .t-input-icone {
         padding-top: 5px;
     }
+
+    .t-input {
+        padding: 5px;
+        margin: 30px;
+    }
+
 }
 
 
