@@ -41,6 +41,8 @@ import TeacherProfile from '../componets/teacher/teacherNav/teacher profile/Teac
 import EditTeacherProfile from '../componets/teacher/teacherNav/teacher profile/EditTeacherProfile';
 import Assisment from '../componets/teacher/teacherNav/studentLst/Assisment';
 import AddMarke from '../componets/teacher/teacherNav/studentLst/AddMarke';
+import SendMessage from '../componets/admin/send message/SendMessage';
+import Message from '../componets/teacher/teacherNav/Message';
 
 
 
@@ -92,6 +94,7 @@ function App() {
           <Route path='dipartmen' element={<Dipartment />} />
           <Route path='add-dipartmen' element={<AddDipartement />} />
           <Route path='sitting' element={<Sitting />} />
+          <Route path='send-message' element={<SendMessage />} />
         </Route>
 
         <Route path='/teacher-nav' element={<Nav />}>
@@ -104,6 +107,7 @@ function App() {
           <Route path='edit-teacher/:id' element={<EditTeacherProfile />} />
           <Route path='assisment' element={<Assisment />} />
           <Route path='add-mark/:id' element={<AddMarke />} />
+          <Route path='notification' element={<Message />} />
 
           
         </Route>

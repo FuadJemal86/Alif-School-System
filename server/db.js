@@ -13,12 +13,12 @@ connection.connect((err) => {
             id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             email VARCHAR(100) UNIQUE,
-            password VARCHAR(100)  NOT NULL,
+            password VARCHAR(100) NOT NULL,
             image VARCHAR(255),
             UNIQUE (email)
         );`,
 
-        `CREATE TABLE IF NOT EXISTS  subjects (
+        `CREATE TABLE IF NOT EXISTS subjects (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             description TEXT
@@ -53,7 +53,7 @@ connection.connect((err) => {
             id INT AUTO_INCREMENT PRIMARY KEY,
             dip_id INT,
             name VARCHAR(100) NOT NULL,
-            password VARCHAR(100)  NOT NULL,
+            password VARCHAR(100) NOT NULL,
             email VARCHAR(100) UNIQUE,
             image VARCHAR(255),
             dob DATE NULL,
@@ -109,20 +109,20 @@ connection.connect((err) => {
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             image VARCHAR(50),
-            discription  VARCHAR(50)
+            discription VARCHAR(50)
         );`,
 
         `CREATE TABLE IF NOT EXISTS schoolImags (
             id INT AUTO_INCREMENT PRIMARY KEY,
             image VARCHAR(100),
-            discription  VARCHAR(50)
+            discription VARCHAR(50)
         );`,
 
         `CREATE TABLE IF NOT EXISTS contact (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             email VARCHAR(50),
-            message  VARCHAR(50)
+            message VARCHAR(50)
         );`,
 
         `CREATE TABLE IF NOT EXISTS messages (
@@ -131,6 +131,14 @@ connection.connect((err) => {
             message VARCHAR(100) NOT NULL,
             time VARCHAR(50),
             FOREIGN KEY (admin_id) REFERENCES admin(id) ON DELETE CASCADE
+        );`,
+
+        `CREATE TABLE IF NOT EXISTS history (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT NOT NULL,
+            class_id INT NOT NULL,
+            attendance_date DATE NOT NULL DEFAULT CURRENT_DATE,
+            status ENUM('Present', 'Absent', '-') NOT NULL DEFAULT '-'
         )`,
 
         `CREATE TABLE IF NOT EXISTS exams (
@@ -148,14 +156,23 @@ connection.connect((err) => {
             FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
             FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
             FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
-        )`
+        );`
     ];
+
+    const resetAttendanceEvent = `
+        CREATE EVENT IF NOT EXISTS reset_attendance_status
+        ON SCHEDULE EVERY 5 MINUTE
+        DO
+        BEGIN
+            UPDATE attendance
+            SET status = '-', updated_at = NOW()
+            WHERE status != '-' AND attendance_date = CURDATE();
+        END;
+    `;
 
     const executeQueries = (queries) => {
         queries.forEach((query, index) => {
-
             connection.query(query, (err) => {
-
                 if (err) {
                     console.error(`Error executing query ${index + 1}:`, err.message);
                 } else {
@@ -163,8 +180,18 @@ connection.connect((err) => {
                 }
             });
         });
+
+        // Execute the event creation query
+        connection.query(resetAttendanceEvent, (err) => {
+            if (err) {
+                console.error('Error creating reset_attendance_status event:', err.message);
+            } else {
+                console.log('Event reset_attendance_status created/verified successfully.');
+            }
+        });
     };
 
     executeQueries(schoolDatabase);
 });
+
 module.exports = connection;

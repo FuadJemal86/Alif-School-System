@@ -13,7 +13,7 @@ function AddMarke() {
     const [mark, setMark] = useState({
         assi1: '',
         assi2: '',
-        midterm: '',
+        midterm: '',   
         final: ''
     })
 
@@ -78,7 +78,7 @@ function AddMarke() {
                 <div className='add-teacher'>
                     <form className='add-teacher-con' onSubmit={handelSubmit}>
                         <div >
-                            <div className='add-teacher-text'>Add Teacher</div>
+                            <div className='add-teacher-text'>Add Mark</div>
                             <div className='add-teacher-con1'>
                                 <div className='add-teacher-inputs'>
                                     <input
@@ -114,7 +114,7 @@ function AddMarke() {
                                 </div>
                             </div>
                             <div className='add-teacher-button'>
-                                <button>Add Teacher</button>
+                                <button>Add Mark</button>
                             </div>
                         </div>
                     </form>

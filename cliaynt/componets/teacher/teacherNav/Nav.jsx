@@ -1,44 +1,70 @@
 import React, { useEffect, useState } from 'react';
 import '../teacherNav/mainTeacher.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faChartBar, faUser, faSignOutAlt, faUsers, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChartBar, faUser, faSignOutAlt, faUsers, faClipboardList, faBell,faHistory } from '@fortawesome/free-solid-svg-icons';
 import { Link, Outlet } from 'react-router-dom';
 import api from '../../../src/api';
 import teacherValidation from '../../../src/hooks/teacherValidation';
+import Swal from 'sweetalert2';
 
 function Nav() {
     teacherValidation()
 
     const [teacherInfo, setTeacherInfo] = useState([])
     const [isNavOpen, setIsNavOpen] = useState(true);
+    const [notificationCount, setNotificationCount] = useState();
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen);
     };
 
     useEffect(() => {
+
+        const feachData = async () => {
+
+            try {
+                const result = await api.get('/teacher/get-teacher-profile')
+                if (result.data.status) {
+                    setTeacherInfo(result.data.teacher)
+                } else {
+                    console.log(result.data.message)
+                }
+            } catch (err) {
+                console.log(err)
+            }
+
+        }
         feachData()
 
     }, [])
 
-    const feachData = async () => {
 
-        try {
-            const result = await api.get('/teacher/get-teacher-profile')
-            if (result.data.status) {
-                setTeacherInfo(result.data.teacher)
-            } else {
-                console.log(result.data.message)
-            }
-        } catch (err) {
-            console.log(err)
-        }
 
-    }
-
-    const handelLogout =  () => {
+    const handelLogout = () => {
         localStorage.removeItem('token')
         window.location.reload()
     }
+
+    useEffect(() => {
+
+        const feahData = async () => {
+            try {
+                const result = await api.get('/auth/get-message')
+                if (result.data.status) {
+                    setNotificationCount(result.data.result.length)
+                } else {
+                    toast.error(result.data.message)
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+        feahData()
+
+    }, [])
+
+
+
 
     return (
         <div>
@@ -51,6 +77,27 @@ function Nav() {
                             <button className="nav-toggle-btn" onClick={toggleNav}>
                                 <FontAwesomeIcon icon={faBars} />
                             </button>
+
+                            <div className='t-bell'>
+                                <Link to={'/teacher-nav/notification'}><FontAwesomeIcon icon={faBell} style={{ fontSize: '23px', cursor: 'pointer', padding: '12px', paddingTop: '12px', color: '#295F98' }} /></Link>
+                                {notificationCount > 0 && (
+                                    <span
+                                        style={{
+                                            position: 'absolute',
+                                            top: '10px',
+                                            right: '-1',
+                                            backgroundColor: '#789DBC',
+                                            color: 'white',
+                                            borderRadius: '50%',
+                                            padding: '2px 6px',
+                                            fontSize: '10px',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {notificationCount}
+                                    </span>
+                                )}
+                            </div>
 
                             <div className='teacher-profile'>
                                 <img src={`http://localhost:3032/image/${teacherInfo.image}`} alt="" srcset="" />
@@ -80,12 +127,12 @@ function Nav() {
 
                         <li>
                             <Link to={'student-list'} className='t-link'>
-                                <FontAwesomeIcon icon={faClipboardList} className='t-nav-icone' /> Student List
+                                <FontAwesomeIcon icon={faClipboardList} className='t-nav-icone' /> Student Grade
                             </Link>
                         </li>
                         <li>
                             <Link to={'grade-list'} className='t-link'>
-                                <FontAwesomeIcon icon={faUsers} className='t-nav-icone' /> Grade
+                                <FontAwesomeIcon icon={faUsers} className='t-nav-icone' /> Grade List
                             </Link>
                         </li>
                         <li>
@@ -93,6 +140,13 @@ function Nav() {
                                 <FontAwesomeIcon icon={faClipboardList} className='t-nav-icone' /> Attendance
                             </Link>
                         </li>
+
+                        <li>
+                            <Link to={'attendance'} className='t-link'>
+                                <FontAwesomeIcon icon={faHistory } className='t-nav-icone' /> History
+                            </Link>
+                        </li>
+
                         <li>
                             <Link to={'teacher-profile'} className='t-link'>
                                 <FontAwesomeIcon icon={faUser} className='t-nav-icone' /> Profile

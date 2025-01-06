@@ -16,7 +16,8 @@ import {
     faRightFromBracket,
     faBell,
     faInbox,
-    faGear
+    faGear,
+    faMessage
 } from '@fortawesome/free-solid-svg-icons';
 import useValidation from '../../src/hooks/validation';
 import api from '../../src/api';
@@ -125,8 +126,17 @@ function AdminNav() {
                                 {
                                     isOpen && (
                                         <div onClick={togelCloth} className='admin-dropdown'>
-                                            <Link to={'/admin-dashbord/add-account'} className='dropdown-item'><FontAwesomeIcon icon={faPlus} />Add Account</Link>
-                                            <div onClick={handelLogout} className='logout-dropdown-item'><FontAwesomeIcon icon={faRightFromBracket} />Logout</div>
+                                            <div style={{ padding: '2px' , display:'flex' }}>
+                                                <div><FontAwesomeIcon style={{ padding: '2px' }} icon={faPlus} /></div>
+                                                <Link to={'/admin-dashbord/add-account'} className='dropdown-item'>Add Account</Link>
+                                            </div>
+
+                                            <div style={{ padding: '2px' , display:'flex'}} onClick={handelLogout} 
+                                            className='logout-dropdown-item'>
+                                                <div><FontAwesomeIcon style={{ padding: '2px' }} icon={faRightFromBracket} /></div>
+                                                Logout
+
+                                            </div>
                                         </div>
                                     )
                                 }
@@ -184,6 +194,12 @@ function AdminNav() {
                             <li>
                                 <Link to={'parent'}>
                                     <FontAwesomeIcon icon={faUsers} className="nav-icon" /> Parents
+                                </Link>
+                            </li>
+
+                            <li>
+                                <Link to={'/admin-dashbord/send-message'}>
+                                <FontAwesomeIcon icon={faMessage}  className="nav-icon"/> Message
                                 </Link>
                             </li>
 

@@ -94,7 +94,7 @@ function Attendance() {
                                             <td>{c.student_id}</td>
                                             <td>{c.student_name}</td>
                                             <td>{c.student_gender}</td>
-                                            <td>{c.attendance_status || '-'}</td>
+                                            <td>{c.attendance_status}</td>
                                             <td>
                                                 <div style={{ display: 'flex', gap: "15px" }}><FontAwesomeIcon onClick={() => handlePresent(c.student_id, c.class_id)} style={{ color: '#16C47F', cursor: 'pointer' }} icon={faCheck} />
                                                     <FontAwesomeIcon onClick={() => handleAbsent(c.student_id, c.class_id)} style={{ color: '#F93827', cursor: 'pointer' }} icon={faXmark} />

@@ -37,8 +37,7 @@
 }
 
 .teacher-profile {
-    width: 100%;
-    padding: 7px;
+    padding: 7px 15px 7px 15px;
 }
 
 .teacher-profile img{
@@ -55,6 +54,13 @@
 .teacher-profile img{
     width: 40px;
     height: 40px;
+}
+
+.t-bell {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    padding-right: 10px;
 }
 
 .nav-toggle-btn {

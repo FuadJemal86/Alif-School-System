@@ -89,3 +89,30 @@
 .add-account-main {
     height: 100vh;
 } 
+
+.message-box-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.message-trash {
+    color: rgb(206, 36, 36);
+    text-align: right;
+}
+.message-box {
+    margin-top: 30px;
+    border: 1px solid rgb(224, 220, 220);
+    padding: 20px;
+    padding-top: 20px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    width: 35%;
+}
+
+.message-box1 {
+    padding: 5px;
+}

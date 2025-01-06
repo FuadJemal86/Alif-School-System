@@ -6,8 +6,6 @@ const nodemailer = require('nodemailer');
 const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcrypt');
-const { hash } = require('crypto');
-const { error } = require('console');
 const { console } = require('inspector');
 const { auth, admin } = require('../middelwer/auth');
 
@@ -1564,6 +1562,61 @@ router.delete('/delete-teacher-info/:id', [auth, admin], async (req, res) => {
     } catch (err) {
         console.error(err)
         return res.status(400).json({ status: false, error: err.message })
+    }
+})
+
+//  send message
+
+router.post('/send-message' , async(req , res) => {
+    const token = req.header('token')
+
+    if(!token) {
+        return res.status(400).send('token not provide')
+    }
+
+    const message  = req.body.message
+    const time = req.body.time
+    try {
+        const decoded = jwt.verify( token , process.env.ADMIN_PASSWORD)
+        const adminId = decoded.id
+        console.log(adminId)
+
+        const value = [adminId , message , time]
+
+        const sql = `INSERT  INTO messages (admin_id , message , time) VALUES(?)`
+
+        connection.query(sql , [value] , (err , result) => {
+            if (err) {
+                console.log(err.message)
+                return res.status(500).json({ status: false, error:'query errro' });
+            }
+            return res.status(200).json({ status: true, message:'send succsessfully!' });
+        })
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({ status: false, error: 'server error!' })
+    }
+})
+
+// 
+
+router.get('/get-message', async (req, res) => {
+
+    try {
+        const sql = 'SELECT * FROM messages'
+        connection.query(sql, (err, result) => {
+            if (err) {
+                console.error('Database query error:', err.message);
+                return res.status(500).json({
+                    status: false,
+                    error: 'Failed to fetch teacher data from the database',
+                });
+            }
+            return res.status(200).json({ status: true, result })
+        })
+    } catch (err) {
+        console.error(err.message)
+        return res.status(500).json({ status: false, error: 'server error' })
     }
 })
 

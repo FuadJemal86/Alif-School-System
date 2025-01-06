@@ -103,17 +103,6 @@ function StudentGrade() {
                             </div>
 
                             <div className='add-teacher-inputs'>
-                                <input
-    
-                                    value={student.id}
-                                    placeholder='student ID'
-                                    type='text'
-                                    readOnly
-                                />
-                            </div>
-
-
-                            <div className='add-teacher-inputs'>
                                 <select
                                 onChange={(e) =>
                                     setGreade({ ...grade, subject_id: e.target.value })

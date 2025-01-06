@@ -7,13 +7,13 @@ import api from '../../../../src/api';
 
 function StudentList() {
     const [students, setStudents] = useState([]);
-    const [section , setSection] = useState([])
+    const [section, setSection] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const result = await api.get('/teacher/teacher-data');
-    
+
                 if (result.data && result.data.status) {
                     // Assuming the response has class_students
                     setStudents(result.data.class_students); // Use 'class_students' from the response
@@ -25,10 +25,10 @@ function StudentList() {
                 console.error('An error occurred: ', err);
             }
         };
-    
+
         fetchData();
     }, []);
-    
+
     return (
         <div>
             <div className='subject-main-table-con'>
@@ -52,6 +52,7 @@ function StudentList() {
                                     <th>Name</th>
                                     <th>Section</th>
                                     <th>Gender</th>
+                                    <th>Total Mark</th>
                                     <th>Grade</th>
                                 </tr>
                             </thead>
@@ -63,8 +64,21 @@ function StudentList() {
                                             <td>{c.name}</td>
                                             <td>{c.class_name}</td>
                                             <td>{c.gender}</td>
+                                            <td>{c.average}</td>
                                             <td>
-                                                <Link to={`/teacher-nav/add-grade/${c.id}`} style={{ color: '#FFB200' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
+                                                {c.average !== null ? (
+                                                    <Link
+                                                        to={`/teacher-nav/add-grade/${c.id}`}
+                                                        style={{ color: '#FFB200' }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faCircleInfo} />
+                                                    </Link>
+                                                ) : (
+                                                    <span style={{ color: '#FFB200', cursor: 'not-allowed' }}>
+                                                        <FontAwesomeIcon icon={faCircleInfo} />
+                                                    </span>
+                                                )}
+
                                             </td>
                                         </tr>
                                     ))

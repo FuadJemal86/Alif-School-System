@@ -137,19 +137,30 @@ router.get('/get-teacher-profile', async (req, res) => {
 
 router.post('/take-attendance', async (req, res) => {
     const { student_id, class_id, status } = req.body;
-    const today = format(new Date(), 'yyyy-MM-dd');
+
 
     const sql = `
-        INSERT INTO attendance (student_id, class_id, status, attendance_date)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO attendance (student_id, class_id, status)
+        VALUES (?, ?, ?)
         ON DUPLICATE KEY UPDATE status = ?, updated_at = NOW()
     `;
 
+    const historySql = `INSERT INTO history (student_id, class_id, status) VALUES (?, ?, ?)`;
+
+
     try {
-        connection.query(
-            sql,
-            [student_id, class_id, status, today, status],
-            (err, result) => {
+
+        connection.query(historySql, [student_id, class_id, status], (err, historyResult) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({
+                    status: false,
+                    error: 'Failed to update attendance',
+                });
+
+            }
+
+            connection.query(sql, [student_id, class_id, status, status], (err, result) => {
                 if (err) {
                     console.error('Database error:', err);
                     return res.status(500).json({
@@ -157,14 +168,15 @@ router.post('/take-attendance', async (req, res) => {
                         error: 'Failed to update attendance',
                     });
                 }
-
-                console.log(`Attendance updated for student ${student_id} in class ${class_id} with status ${status}`);
                 return res.status(200).json({
                     status: true,
                     message: 'Attendance updated successfully',
                 });
-            }
-        );
+            });
+
+        });
+
+
     } catch (err) {
         console.error('Server error:', err);
         return res.status(500).json({
@@ -174,71 +186,6 @@ router.post('/take-attendance', async (req, res) => {
     }
 });
 
-
-cron.schedule('0 0 * * *', async () => {
-    const today = format(new Date(), 'yyyy-MM-dd');  // Get current date
-
-    const resetSql = `
-        INSERT INTO attendance (student_id, class_id, status, attendance_date)
-        SELECT 
-            s.id AS student_id, 
-            c.id AS class_id, 
-            '-' AS status, 
-            ? AS attendance_date
-        FROM students s
-        CROSS JOIN classes c
-        WHERE 
-            s.status = 'active' AND
-            c.status = 'active' AND
-            NOT EXISTS (
-                SELECT 1 
-                FROM attendance a
-                WHERE a.student_id = s.id
-                AND a.class_id = c.id
-                AND a.attendance_date = ?
-            )
-    `;
-
-    try {
-        connection.query(resetSql, [today, today], (err, result) => {
-            if (err) {
-                console.error('Failed to reset attendance:', err);
-                notifyAdmin('Attendance reset failed', err.message);
-            } else {
-                console.log(`Daily attendance reset completed for ${result.affectedRows} entries on ${today}`);
-            }
-        });
-    } catch (err) {
-        console.error('Critical error in attendance reset:', err);
-        notifyAdmin('Critical attendance reset error', err.message);
-    }
-});
-
-
-
-
-// update attendance
-
-router.put('/edit-attendance/:id', async (req, res) => {
-
-    const id = req.params.id;
-    const { status } = req.body;
-
-    try {
-        const sql = `UPDATE attendance SET status = ? WHERE id = ?`;
-
-        connection.query(sql, [status, id], (err, result) => {
-            if (err) {
-                console.error(err.message)
-                return res.status(500).json({ status: false, message: 'Attendance record not found' })
-            }
-            return res.status(200).json({ status: true, message: 'Attendance updated successfully' })
-        })
-    } catch (err) {
-        console.error(err.message)
-        return res.status(400).json({ status: false, error: 'Something went wrong!' })
-    }
-})
 
 // get before status
 
@@ -417,7 +364,9 @@ router.get('/teacher-data', async (req, res) => {
         const teacherId = decoded.id;
 
         const teacherQuery = `
-            SELECT class_id, subject_id 
+            SELECT 
+            class_id, 
+            subject_id 
             FROM teachers 
             WHERE id = ?`;
 
@@ -442,11 +391,15 @@ router.get('/teacher-data', async (req, res) => {
                     students.dob, 
                     students.gender, 
                     students.address, 
-                    classes.class_name 
+                    classes.class_name,
+                    classes.id AS class_id,
+                    exams.average
                 FROM 
                     students 
                 JOIN 
-                    classes  ON students.class_id = classes.id
+                    classes  ON students.class_id = classes.id 
+                LEFT JOIN 
+                    exams ON students.id = exams.student_id AND classes.id = exams.class_id
                 WHERE 
                     students.class_id = ?`;
 
@@ -486,7 +439,7 @@ router.get('/teacher-data', async (req, res) => {
 
 router.get('/get-student/:id', async (req, res) => {
     const id = req.params.id
-    console.log(id)
+
 
     try {
         const sql = 'SELECT * FROM students WHERE id = ?'
@@ -591,19 +544,18 @@ router.get('/get-assistence', async (req, res) => {
         });
     } catch (err) {
         console.error(err.message);
-        return res.status(400).json({ status: false, error: err.message });
+        return res.status(400).json({ status: false, error: "server error!" })
     }
 });
 
 // add assisstence
 
-router.post('/add-assistence/:student_id', async (req, res) => {
+router.post('/add-assistence/:id', async (req, res) => {
 
     const student_id = req.params.id;
 
 
     const { teacher_id, class_id, subject_id, assi1, assi2, midterm, final } = req.body;
-    console.log(teacher_id , student_id , class_id)
 
     try {
 
@@ -667,10 +619,62 @@ router.post('/add-assistence/:student_id', async (req, res) => {
         });
     } catch (err) {
         console.error(err.message);
-        return res.status(400).json({ status: false, error: err.message });
+        return res.status(400).json({ status: false, error: "server error!" })
     }
 });
 
+
+// get total
+
+router.get('/get-total', async (req, res) => {
+
+    const student_id = req.body.student_id
+
+    try {
+        const sql = 'SELECT average FROM exams WHERE student_id = ?'
+
+        connection.query(sql, [student_id], (err, result) => {
+            if (err) {
+                console.error(err.message)
+                return res.status(500).json({ status: false, error: 'query error' })
+            }
+            return res.status(200).json({ status: true, result });
+        })
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json({ status: false, error: "server error!" })
+    }
+
+})
+
+// delete message
+
+router.delete('/message-delete/:id', async (req, res) => {
+    const id = req.params.id;
+
+    if (!id) {
+        return res.status(400).json({ status: false, error: 'ID is required' });
+    }
+
+    const sql = 'DELETE FROM messages WHERE id = ?'
+
+    try {
+        connection.query(sql, [id], (err, result) => {
+            if (err) {
+                console.error('Database query error:', err.message);
+                return res.status(500).json({
+                    status: false,
+                    error: 'Failed to fetch teacher data from the database',
+                });
+            }
+            return res.status(200).json({ status: true, message: 'message deleted successfully' })
+
+        })
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({ status: false, error: err.message })
+    }
+})
 
 
 
