@@ -452,7 +452,7 @@ router.get('/get-student/:id', async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).jsone({ status: false, error: "server error!" })
+        return res.status(400).json({ status: false, error: "server error!" })
     }
 })
 
@@ -624,6 +624,27 @@ router.post('/add-assistence/:id', async (req, res) => {
 });
 
 
+// get assistance 
+
+router.get('/get-assistance/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+
+    const sql = 'SELECT * FROM exams WHERE student_id = ?';
+    connection.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ status: false, error: err.message });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ status: false, error: 'No exam found for the given ID.' });
+        }
+        return res.status(200).json({ status: true, result: result[0] });
+    });
+});
+
+
+
 // get total
 
 router.get('/get-total', async (req, res) => {
@@ -676,6 +697,50 @@ router.delete('/message-delete/:id', async (req, res) => {
     }
 })
 
+// get history
+
+router.get('/get-history', async (req, res) => {
+
+    const token = req.header('token');
+    if (!token) {
+        return res.status(401).json({ status: false, message: 'No token provided' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.TEACHER_KEY);
+        const teacherId = decoded.id;
+
+        const sql = `
+            SELECT 
+                students.id AS student_id,
+                students.name AS student_name,
+                classes.id AS class_id,
+                history.attendance_date,
+                COUNT(CASE WHEN history.status = 'Absent' THEN 1 ELSE 0 END) AS absent_count
+            FROM
+                students
+            INNER JOIN
+                teachers ON students.class_id = teachers.class_id
+            INNER JOIN
+                classes ON students.class_id = classes.id
+            INNER JOIN
+                history ON students.id = history.student_id  
+            WHERE
+                teachers.id = ? 
+        `;
+        connection.query(sql, [teacherId], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ status: false, error: err.message });
+            }
+
+            return res.status(200).json({ status: true, history: result });
+        });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json({ status: false, error: "server error!" })
+    }
+});
 
 
 

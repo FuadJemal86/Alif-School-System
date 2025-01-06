@@ -2,25 +2,26 @@ import React, { useEffect, useState } from 'react'
 import api from '../../../../src/api';
 import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2';
+import toast, { Toaster } from 'react-hot-toast';
 
 function StudentGrade() {
 
-    
-    
-    const {id} = useParams()
-    const [section , setSubject] = useState([])
-    const [student , setStudent] = useState([])
-    const [grade , setGreade] = useState({
-        student_id:'',
-        subject_id:'',
-        grade:'',
+
+
+    const { id } = useParams()
+    const [section, setSubject] = useState([])
+    const [student, setStudent] = useState([])
+    const [grades, setGreade] = useState({
+        student_id: '',
+        subject_id: '',
+        grade: '',
     })
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const result = await api.get('/teacher/teacher-data');
-    
+
                 if (result.data && result.data.status) {
                     setSubject(result.data.subject_details);
                 } else {
@@ -30,33 +31,39 @@ function StudentGrade() {
                 console.error('An error occurred: ', err);
             }
         };
-    
+
         fetchData();
     }, []);
 
     useEffect(() => {
-        const fechStudent = async() => {
+        const fechStudent = async () => {
             try {
                 const result = await api.get(`/teacher/get-student/${id}`)
 
-                if(result.data.status) {
+                if (result.data.status) {
                     setStudent(result.data.result[0])
                     setGreade((prevGrade) => ({ ...prevGrade, student_id: result.data.result[0]?.id }));
                 } else {
                     console.log(result.data.message)
                 }
-            } catch(err) {
+            } catch (err) {
                 console.log(err)
             }
-        } 
+        }
         fechStudent()
-    },[])
+    }, [])
 
     const handelSubmit = async (e) => {
         e.preventDefault()
 
+        const {subject_id, grade } = grades
+
+        if ( !subject_id || !grade) {
+            return toast.error('Missing Request!')
+        }
+
         try {
-            const result = await api.post('/teacher/add-grade', grade)
+            const result = await api.post('/teacher/add-grade', grades)
             if (result.data.status) {
                 Swal.fire({
                     position: "center",
@@ -94,7 +101,7 @@ function StudentGrade() {
                         <div className='add-teacher-text'>Grade</div>
                         <div className='add-teacher-con1'>
 
-                        <div className='add-teacher-inputs'>
+                            <div className='add-teacher-inputs'>
                                 <input
                                     placeholder={student.name}
                                     type='text'
@@ -104,9 +111,9 @@ function StudentGrade() {
 
                             <div className='add-teacher-inputs'>
                                 <select
-                                onChange={(e) =>
-                                    setGreade({ ...grade, subject_id: e.target.value })
-                                }
+                                    onChange={(e) =>
+                                        setGreade({ ...grades, subject_id: e.target.value })
+                                    }
                                     defaultValue=""
                                 >
                                     <option value="" disabled>
@@ -125,7 +132,7 @@ function StudentGrade() {
                             <div className='add-teacher-inputs'>
                                 <select
                                     onChange={(e) =>
-                                        setGreade({ ...grade, grade: e.target.value })
+                                        setGreade({ ...grades, grade: e.target.value })
                                     }
                                     defaultValue=""
                                 >
@@ -153,7 +160,10 @@ function StudentGrade() {
                 </form>
             </div>
 
-
+            <Toaster
+                position="top-center" // Position of the toast
+                reverseOrder={false} // Keep toasts in the order they were added
+            />
 
         </div>
     )

@@ -7,13 +7,12 @@ import Swal from 'sweetalert2';
 function AddMarke() {
 
     const { id } = useParams()
-    console.log(id)
-
+    const [exams , setExams] = useState({})
     const [assistenses, setAssistance] = useState([])
     const [mark, setMark] = useState({
         assi1: '',
         assi2: '',
-        midterm: '',   
+        midterm: '',
         final: ''
     })
 
@@ -44,9 +43,9 @@ function AddMarke() {
 
         try {
             const result = await api.post(`/teacher/add-assistence/${id}`, {
-                teacher_id : assistenses.teacher_id,
-                class_id : assistenses.class_id,
-                subject_id : assistenses.subject_id,
+                teacher_id: assistenses.teacher_id,
+                class_id: assistenses.class_id,
+                subject_id: assistenses.subject_id,
                 ...mark
             })
 
@@ -72,6 +71,27 @@ function AddMarke() {
 
     }
 
+    useEffect(() => {
+
+        const feacheData = async () => {
+            try {
+                const result = await api.get(`/teacher/get-assistance/${id}`)
+                if (result.data.status) {
+                    setExams(result.data.result)
+                    console.log(result.data.result)
+                } else {
+                    console.log(result.data.message)
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+        feacheData()
+
+
+    }, [])
+
     return (
         <div>
             <div className='teacher-main-con'>
@@ -82,14 +102,16 @@ function AddMarke() {
                             <div className='add-teacher-con1'>
                                 <div className='add-teacher-inputs'>
                                     <input
+                                        defaultValue={exams.assi1}
                                         onChange={e => setMark({ ...mark, assi1: e.target.value })}
-                                        placeholder='Assignment 1'
+                                        placeholder= 'Assignment 1'
                                         type='text'
                                     />
                                 </div>
 
                                 <div className='add-teacher-inputs'>
                                     <input
+                                    defaultValue={exams.assi2}
                                         onChange={e => setMark({ ...mark, assi2: e.target.value })}
                                         placeholder='Assignment 2'
 
@@ -98,6 +120,7 @@ function AddMarke() {
 
                                 <div className='add-teacher-inputs'>
                                     <input
+                                    defaultValue={exams.midterm}
                                         onChange={e => setMark({ ...mark, midterm: e.target.value })}
                                         placeholder='Mid Exam'
                                         type='text'
@@ -107,6 +130,7 @@ function AddMarke() {
 
                                 <div className='add-teacher-inputs'>
                                     <input
+                                    defaultValue={exams.final}
                                         onChange={e => setMark({ ...mark, final: e.target.value })}
                                         placeholder='Final'
                                         type='text'

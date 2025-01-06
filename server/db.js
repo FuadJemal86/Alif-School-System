@@ -161,7 +161,7 @@ connection.connect((err) => {
 
     const resetAttendanceEvent = `
         CREATE EVENT IF NOT EXISTS reset_attendance_status
-        ON SCHEDULE EVERY 5 MINUTE
+        ON SCHEDULE EVERY 12 HOUR
         DO
         BEGIN
             UPDATE attendance

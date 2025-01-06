@@ -142,7 +142,7 @@ function Nav() {
                         </li>
 
                         <li>
-                            <Link to={'attendance'} className='t-link'>
+                            <Link to={'history'} className='t-link'>
                                 <FontAwesomeIcon icon={faHistory } className='t-nav-icone' /> History
                             </Link>
                         </li>

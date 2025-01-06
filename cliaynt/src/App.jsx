@@ -43,6 +43,7 @@ import Assisment from '../componets/teacher/teacherNav/studentLst/Assisment';
 import AddMarke from '../componets/teacher/teacherNav/studentLst/AddMarke';
 import SendMessage from '../componets/admin/send message/SendMessage';
 import Message from '../componets/teacher/teacherNav/Message';
+import History from '../componets/teacher/teacherNav/studentLst/History';
 
 
 
@@ -108,7 +109,7 @@ function App() {
           <Route path='assisment' element={<Assisment />} />
           <Route path='add-mark/:id' element={<AddMarke />} />
           <Route path='notification' element={<Message />} />
-
+          <Route path='history' element={<History />} />
           
         </Route>
       </Routes>
