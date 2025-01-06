@@ -157,7 +157,6 @@ router.post('/take-attendance', async (req, res) => {
                     status: false,
                     error: 'Failed to update attendance',
                 });
-
             }
 
             connection.query(sql, [student_id, class_id, status, status], (err, result) => {
@@ -716,18 +715,23 @@ router.get('/get-history', async (req, res) => {
                 students.name AS student_name,
                 classes.id AS class_id,
                 history.attendance_date,
-                COUNT(CASE WHEN history.status = 'Absent' THEN 1 ELSE 0 END) AS absent_count
+                COUNT(CASE WHEN history.status = 'Absent' THEN 1 END) AS absent_count
             FROM
                 students
             INNER JOIN
-                teachers ON students.class_id = teachers.class_id
-            INNER JOIN
                 classes ON students.class_id = classes.id
             INNER JOIN
-                history ON students.id = history.student_id  
+                teachers ON classes.id = teachers.class_id
+            INNER JOIN
+                history ON students.id = history.student_id
             WHERE
-                teachers.id = ? 
+                teachers.id = ?
+            GROUP BY
+                students.id, history.attendance_date
+            ORDER BY
+                history.attendance_date DESC;
         `;
+
         connection.query(sql, [teacherId], (err, result) => {
             if (err) {
                 console.error(err);

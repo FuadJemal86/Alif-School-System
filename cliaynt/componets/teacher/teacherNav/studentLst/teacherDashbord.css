@@ -1,0 +1,218 @@
+/* Main Dashboard Container */
+.main-dashbord-container {
+    padding: 30px;
+    background: #f5f7fd;
+    min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+.main-dashbord-container1 {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.t-dashbord-text {
+    margin-top: 20px;
+    font-size: 30px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
+}
+
+.t-dashbord-main {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.t-dashbord-box {
+    border-radius: 20px;
+    padding: 40px;
+    min-height: 250px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.gradient-1 {
+    background: linear-gradient(145deg, #ffffff, #f8f9ff);
+}
+
+.t-dashbord-box:nth-child(1) {
+    background: linear-gradient(145deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.t-dashbord-box:nth-child(2) {
+    background: linear-gradient(145deg, #0ba360 0%, #3cba92 100%);
+}
+
+.t-dashbord-box:nth-child(3) {
+    background: linear-gradient(145deg, #f6d365 0%, #fda085 100%);
+}
+
+.t-dashbord-box:nth-child(4) {
+    background: linear-gradient(145deg, #ff758c 0%, #ff7eb3 100%);
+}
+
+.t-dashbord-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.t-dashbord-box > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.t-dashbord-box > div:first-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    padding-right: 30px;
+}
+
+.t-dashbord-box > div:last-child {
+    padding-left: 30px;
+}
+
+.t-dashbord-box div div:first-child {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.t-dashbord-box div div:last-child {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.t-dashbord-box h3 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.t-dashbord-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1400px) {
+    .main-dashbord-container1 {
+        max-width: 1200px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .t-dashbord-box {
+        padding: 30px;
+        min-height: 200px;
+    }
+    
+    .t-dashbord-box div div:last-child {
+        font-size: 1.8rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .t-dashbord-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .t-dashbord-box {
+        min-height: 180px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main-dashbord-container {
+        padding: 20px;
+    }
+    
+    .t-dashbord-text {
+        font-size: 24px;
+    }
+    
+    .t-dashbord-box div div:first-child {
+        font-size: 1rem;
+    }
+    
+    .t-dashbord-box div div:last-child {
+        font-size: 1.6rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .t-dashbord-box {
+        flex-direction: column;
+        gap: 20px;
+        padding: 25px;
+    }
+    
+    .t-dashbord-box > div:first-child {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-right: 0;
+        padding-bottom: 20px;
+    }
+    
+    .t-dashbord-box > div:last-child {
+        padding-left: 0;
+        padding-top: 20px;
+    }
+    
+    .t-dashbord-text {
+        font-size: 20px;
+    }
+}
+
+/* Custom Calendar Overrides */
+.custom-calendar {
+    background: transparent !important;
+    border: none !important;
+    width: 100%;
+}
+
+.custom-calendar button {
+    color: #ffffff !important;
+}
+
+.react-calendar__navigation button:disabled {
+    opacity: 0.5 !important;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+    opacity: 0.5 !important;
+}
+
+.react-calendar__tile--active,
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+}

@@ -44,7 +44,7 @@ import AddMarke from '../componets/teacher/teacherNav/studentLst/AddMarke';
 import SendMessage from '../componets/admin/send message/SendMessage';
 import Message from '../componets/teacher/teacherNav/Message';
 import History from '../componets/teacher/teacherNav/studentLst/History';
-
+import TeacherDashbord from '../componets/teacher/teacherNav/studentLst/TeacherDashbord';
 
 
 
@@ -99,6 +99,7 @@ function App() {
         </Route>
 
         <Route path='/teacher-nav' element={<Nav />}>
+          <Route path='dashbord' element={<TeacherDashbord />} />
           <Route path='student-list' element={<StudentList />} />
           <Route path='add-grade/:id' element={<StudentGrade />} />
           <Route path='grade-list' element={<GradeList />} />

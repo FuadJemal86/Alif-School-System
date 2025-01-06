@@ -161,13 +161,13 @@ connection.connect((err) => {
 
     const resetAttendanceEvent = `
         CREATE EVENT IF NOT EXISTS reset_attendance_status
-        ON SCHEDULE EVERY 12 HOUR
-        DO
-        BEGIN
-            UPDATE attendance
-            SET status = '-', updated_at = NOW()
-            WHERE status != '-' AND attendance_date = CURDATE();
-        END;
+            ON SCHEDULE EVERY 5 MINUTE
+            DO
+            BEGIN
+                UPDATE attendance
+                SET status = '-', updated_at = NOW()
+                WHERE status != '-' AND attendance_date = CURDATE();
+            END;
     `;
 
     const executeQueries = (queries) => {

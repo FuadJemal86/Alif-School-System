@@ -114,7 +114,7 @@ function Nav() {
                 <div className='t-nav-main1'>
                     <ul>
                         <li>
-                            <Link className='t-link'>
+                            <Link to={'dashbord'} className='t-link'>
                                 <FontAwesomeIcon icon={faChartBar} className='t-nav-icone' /> Overview
                             </Link>
                         </li>
@@ -143,7 +143,7 @@ function Nav() {
 
                         <li>
                             <Link to={'history'} className='t-link'>
-                                <FontAwesomeIcon icon={faHistory } className='t-nav-icone' /> History
+                                <FontAwesomeIcon icon={faHistory } className='t-nav-icone' /> Absent History
                             </Link>
                         </li>
 

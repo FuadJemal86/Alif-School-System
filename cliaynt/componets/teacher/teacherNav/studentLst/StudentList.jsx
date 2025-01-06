@@ -69,12 +69,12 @@ function StudentList() {
                                                 {c.average !== null ? (
                                                     <Link
                                                         to={`/teacher-nav/add-grade/${c.id}`}
-                                                        style={{ color: '#FFB200' }}
+                                                        style={{ color: '#89A8B2' }}
                                                     >
                                                         <FontAwesomeIcon icon={faCircleInfo} />
                                                     </Link>
                                                 ) : (
-                                                    <span style={{ color: '#FFB200', cursor: 'not-allowed' }}>
+                                                    <span style={{ color: '#89A8B2', cursor: 'not-allowed' }}>
                                                         <FontAwesomeIcon icon={faCircleInfo} />
                                                     </span>
                                                 )}

@@ -69,7 +69,7 @@ function Assisment() {
                                                 <td>{c.midterm || '-'}</td>
                                                 <td>{c.final || '-'}</td>
                                                 <td>
-                                                    <Link to={`/teacher-nav/add-mark/${c.student_id}`} style={{ color: '#FFB200' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
+                                                    <Link to={`/teacher-nav/add-mark/${c.student_id}`} style={{ color: '#89A8B2' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
                                                 </td>
                                             </tr>
 
