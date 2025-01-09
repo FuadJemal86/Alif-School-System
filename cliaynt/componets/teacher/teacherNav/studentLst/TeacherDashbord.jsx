@@ -13,7 +13,7 @@ function TeacherDashboard() {
     if(counter.history_id !==0 ) {
         var attendance = (counter.present_day * 100)/counter.history_id
 
-        attendance.toFixed(2)
+        attendance=attendance.toFixed(2)
     } else {
         attendance = 0
     }
@@ -21,7 +21,7 @@ function TeacherDashboard() {
     if(counter.total_grade !== 0) {
         var totalgrade = (counter.grade_average)/counter.total_grade
 
-        totalgrade.toFixed(2)
+        totalgrade=totalgrade.toFixed(2)
     } else {
         totalgrade = 0
     }

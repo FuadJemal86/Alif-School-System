@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../../../admin/navCss/nav.css';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import api from '../../../../src/api';
 
 function TeacherProfile() {
 
     const [teacherInfo, setTeacherInfo] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         feachData()
@@ -19,6 +18,9 @@ function TeacherProfile() {
         try {
             const result = await api.get('/teacher/get-teacher-profile')
             if (result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 1000);
                 setTeacherInfo(result.data.teacher)
             } else {
                 console.log(result.data.message)
@@ -28,27 +30,68 @@ function TeacherProfile() {
         }
 
     }
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <div className="spinner"></div>
+            </div>
+        );
+    }
+    
     return (
-        <div>
-            <div className='admin-profile-container'>
-                <div className='admin-profile-con'>
-                    <div className='admin-profile-con1'>
-
-                        <div className='admin-image'>
-                            <div className='admin-profile-text'>Teacher Profile</div>
-                            <img src={`http://localhost:3032/image/${teacherInfo.image}`} alt="" srcset="" />
-                            <div><Link to={`/teacher-nav/edit-teacher/${teacherInfo.id}`} style={{ color: 'red' }}><FontAwesomeIcon icon={faPenToSquare} />edit</Link></div>
+        <div className="admin-profile-container">
+                    <div className="admin-profile-card">
+                        <div className="profile-header">
+                            <h2>Teacher Profile</h2>
+                            <div className="profile-image-container">
+                                <img
+                                    src={`http://localhost:3032/image/${teacherInfo.image}`}
+                                    // alt={adminInfo.name}
+                                    className="profile-image"
+                                />
+                                <div className="status-indicator"></div>
+                            </div>
                         </div>
+        
+                        <div className="profile-info">
+                            <div className="info-item">
+                                <span className="info-label">Name:</span>
+                                <span className="info-value">{teacherInfo.name}</span>
+                            </div>
+        
+                            <div className="info-item">
+                                <span className="info-label">Email:</span>
+                                <span className="info-value">{teacherInfo.email}</span>
+                            </div>
 
-                        <div className='admin-profile-info'>
-                            <div> <strong>Name:  </strong>{teacherInfo.name}</div>
-                            <div><strong>Email:  </strong>{teacherInfo.email}</div>
-                            <div><strong>Subject:  </strong>{teacherInfo.subject_name}</div>
+                            <div className="info-item">
+                                <span className="info-label">Subject:</span>
+                                <span className="info-value">{teacherInfo.subject_name}</span>
+                            </div>
+                        </div>
+        
+                        <div className="profile-actions">
+                            <Link
+                                to={`/teacher-nav/edit-teacher/${teacherInfo.id}`}
+                                className="edit-button"
+                            >
+                                <svg
+                                    className="edit-icon"
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                >
+                                    <path
+                                        fill="currentColor"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                    />
+                                </svg>
+                                Edit Profile
+                            </Link>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     )
 }
 
