@@ -1,218 +1,182 @@
-/* Main Dashboard Container */
-.main-dashbord-container {
-    padding: 30px;
-    background: #f5f7fd;
+/* Main Layout */
+.dashboard-container {
     min-height: 100vh;
-    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+    padding: 1.5rem;
 }
 
-.main-dashbord-container1 {
-    max-width: 1440px;
+.dashboard-inner {
+    max-width: 1400px;
     margin: 0 auto;
 }
 
-.t-dashbord-text {
-    margin-top: 20px;
-    font-size: 30px;
-    font-weight: 600;
-    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 0.5px;
-}
-
-.t-dashbord-main {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    padding: 20px 0;
-}
-
-.t-dashbord-box {
-    border-radius: 20px;
-    padding: 40px;
-    min-height: 250px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    transition: all 0.3s ease;
+.dashboard-header {
     display: flex;
     justify-content: space-between;
-    gap: 30px;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+}
+
+.dashboard-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2d3436;
+}
+
+/* Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Card Styles */
+.dashboard-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
-.gradient-1 {
-    background: linear-gradient(145deg, #ffffff, #f8f9ff);
-}
-
-.t-dashbord-box:nth-child(1) {
-    background: linear-gradient(145deg, #6a11cb 0%, #2575fc 100%);
-}
-
-.t-dashbord-box:nth-child(2) {
-    background: linear-gradient(145deg, #0ba360 0%, #3cba92 100%);
-}
-
-.t-dashbord-box:nth-child(3) {
-    background: linear-gradient(145deg, #f6d365 0%, #fda085 100%);
-}
-
-.t-dashbord-box:nth-child(4) {
-    background: linear-gradient(145deg, #ff758c 0%, #ff7eb3 100%);
-}
-
-.t-dashbord-box:hover {
+.dashboard-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.06);
 }
 
-.t-dashbord-box > div {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #2d3436, #636e72);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.t-dashbord-box > div:first-child {
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-    padding-right: 30px;
+.dashboard-card:hover::before {
+    opacity: 1;
 }
 
-.t-dashbord-box > div:last-child {
-    padding-left: 30px;
+/* Stat Styles */
+.stat-container {
+    margin-bottom: 1.25rem;
 }
 
-.t-dashbord-box div div:first-child {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    font-weight: 500;
+.stat-label {
+    color: #636e72;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
     letter-spacing: 0.5px;
 }
 
-.t-dashbord-box div div:last-child {
-    font-size: 2.2rem;
+.stat-value {
+    color: #2d3436;
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #ffffff;
+    margin-bottom: 0.25rem;
 }
 
-.t-dashbord-box h3 {
-    color: #ffffff;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
+.stat-trend {
+    font-size: 0.75rem;
+    color: #636e72;
+}
+
+/* Calendar Card */
+.calendar-card {
+    grid-column: span 2;
+}
+
+.calendar-title {
+    color: #2d3436;
+    font-size: 1rem;
     font-weight: 500;
+    margin-bottom: 1rem;
 }
 
-.t-dashbord-box::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-    transform: rotate(45deg);
-    pointer-events: none;
+.custom-calendar {
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Calendar Customization */
+.react-calendar {
+    border: none !important;
+    font-family: inherit;
+}
+
+.react-calendar__tile--active {
+    background: #2d3436 !important;
+    color: white !important;
+    border-radius: 6px;
+}
+
+.react-calendar__tile:hover {
+    background: #f1f3f5 !important;
+    border-radius: 6px;
+}
+
+.react-calendar__tile--now {
+    background: #e9ecef !important;
+    border-radius: 6px;
 }
 
 /* Responsive Design */
-@media screen and (max-width: 1400px) {
-    .main-dashbord-container1 {
-        max-width: 1200px;
-    }
-}
-
 @media screen and (max-width: 1200px) {
-    .t-dashbord-box {
-        padding: 30px;
-        min-height: 200px;
-    }
-    
-    .t-dashbord-box div div:last-child {
-        font-size: 1.8rem;
-    }
-}
-
-@media screen and (max-width: 992px) {
-    .t-dashbord-main {
-        grid-template-columns: 1fr;
-    }
-    
-    .t-dashbord-box {
-        min-height: 180px;
+    .calendar-card {
+        grid-column: span 1;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .main-dashbord-container {
-        padding: 20px;
+    .dashboard-container {
+        padding: 1rem;
     }
     
-    .t-dashbord-text {
-        font-size: 24px;
-    }
-    
-    .t-dashbord-box div div:first-child {
-        font-size: 1rem;
-    }
-    
-    .t-dashbord-box div div:last-child {
-        font-size: 1.6rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .t-dashbord-box {
+    .dashboard-header {
         flex-direction: column;
-        gap: 20px;
-        padding: 25px;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
     
-    .t-dashbord-box > div:first-child {
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        padding-right: 0;
-        padding-bottom: 20px;
+    .dashboard-title {
+        font-size: 1.5rem;
     }
     
-    .t-dashbord-box > div:last-child {
-        padding-left: 0;
-        padding-top: 20px;
+    .dashboard-grid {
+        gap: 1rem;
     }
     
-    .t-dashbord-text {
-        font-size: 20px;
+    .dashboard-card {
+        padding: 1.25rem;
     }
 }
 
-/* Custom Calendar Overrides */
-.custom-calendar {
-    background: transparent !important;
-    border: none !important;
-    width: 100%;
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.custom-calendar button {
-    color: #ffffff !important;
+.dashboard-card {
+    animation: fadeIn 0.4s ease-out;
+    animation-fill-mode: both;
 }
 
-.react-calendar__navigation button:disabled {
-    opacity: 0.5 !important;
-}
-
-.react-calendar__month-view__days__day--neighboringMonth {
-    opacity: 0.5 !important;
-}
-
-.react-calendar__tile--active,
-.react-calendar__tile--active:enabled:hover,
-.react-calendar__tile--active:enabled:focus {
-    background: rgba(255, 255, 255, 0.2) !important;
-}
-
-.react-calendar__tile:enabled:hover,
-.react-calendar__tile:enabled:focus {
-    background: rgba(255, 255, 255, 0.1) !important;
-}
+.dashboard-card:nth-child(1) { animation-delay: 0.1s; }
+.dashboard-card:nth-child(2) { animation-delay: 0.2s; }
+.dashboard-card:nth-child(3) { animation-delay: 0.3s; }
+.dashboard-card:nth-child(4) { animation-delay: 0.4s; }

@@ -62,22 +62,22 @@
     overflow-y: auto;
     background-color: #10171d;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 11px;
 }
 
 .admin-page-text {
+    display: flex;
+    gap: 15px;
+    align-items: center;
     background:#272c38;
     padding: 10px;
+    margin-top: 10px;
     text-align: center;
     border-radius: 25px;
-    color: rgb(204, 200, 200);
-    font-weight: 700;
+    color: rgb(243, 240, 240);
+    font-weight: 500;
     font-size: 20px;
     margin-bottom: 15px;
-}
-
-.text-container2 ul {
-    list-style: none;
 }
 
 .text-container2 li,a {
@@ -88,21 +88,38 @@
     font-size: 15px;
 }
 
+.text-container2 ul {
+    padding: 0 1px;
+    list-style: none;
+}
+
 .text-container2 li {
-    margin: 16px 5px;
-    transition: .6s ease;
-    transform: scale(1);
+    margin: 1px 2px;
+}
+.a-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 7px 20px;
+    transition: all .2s ease; 
+    font-size: 15px;
 }
 
-.text-container2 li:hover {
-    color: #5a4a0e; 
-    transform: translateX(10px);
-    cursor: pointer;
-    color: #fafafa;
+.a-nav-link:hover {
+    transform:translateX(10px) ;
 }
 
-.text-container2 li:active {
-    transform: scale(.9);
+.a-nav-link:hover {
+    background: #272c38;
+}
+
+.a-nav-link:focus {
+    background: #021c58;
+}
+
+.nav-icon {
+    width: 25px;
+    margin-right: 17px;
+    font-size: 15px;
 }
 
 /* admin profile conatiner */
@@ -179,3 +196,4 @@
     text-align: right;
     padding: 10px;
 }
+

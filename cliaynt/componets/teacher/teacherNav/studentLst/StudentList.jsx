@@ -66,7 +66,7 @@ function StudentList() {
                                             <td>{c.gender}</td>
                                             <td>{c.average}</td>
                                             <td>
-                                                {c.average !== null ? (
+                                                {c.average !== null && c.average !==0 ? (
                                                     <Link
                                                         to={`/teacher-nav/add-grade/${c.id}`}
                                                         style={{ color: '#89A8B2' }}

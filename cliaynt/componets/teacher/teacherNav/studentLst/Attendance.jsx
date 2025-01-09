@@ -30,11 +30,12 @@ function Attendance() {
     };
 
 
-    const handleAttendance = async (student_id, class_id, status) => {
+    const handleAttendance = async (student_id, class_id, subject_id, status) => {
         try {
             const result = await api.post('/teacher/take-attendance', {
                 student_id,
                 class_id,
+                subject_id,
                 status,
             });
 
@@ -50,12 +51,12 @@ function Attendance() {
         }
     };
 
-    const handlePresent = (student_id, class_id) => {
-        handleAttendance(student_id, class_id, "Present");
+    const handlePresent = (student_id, class_id, subject_id) => {
+        handleAttendance(student_id, class_id, subject_id, "Present");
     };
 
-    const handleAbsent = (student_id, class_id) => {
-        handleAttendance(student_id, class_id, "Absent");
+    const handleAbsent = (student_id, class_id, subject_id) => {
+        handleAttendance(student_id, class_id, subject_id, "Absent");
     };
 
 
@@ -96,9 +97,17 @@ function Attendance() {
                                             <td>{c.student_gender}</td>
                                             <td>{c.attendance_status}</td>
                                             <td>
-                                                <div style={{ display: 'flex', gap: "15px" }}><FontAwesomeIcon onClick={() => handlePresent(c.student_id, c.class_id)} style={{ color: '#16C47F', cursor: 'pointer' }} icon={faCheck} />
-                                                    <FontAwesomeIcon onClick={() => handleAbsent(c.student_id, c.class_id)} style={{ color: '#F93827', cursor: 'pointer' }} icon={faXmark} />
+                                                {c.attendance_status !== '-' && c.attendance_status !== null ?(
+
+                                                    <div style={{ display: 'flex', gap: "15px" }}><FontAwesomeIcon  style={{ color: '#16C47F', cursor: 'not-allowed' }} icon={faCheck} />
+                                                        <FontAwesomeIcon  style={{ color: '#F93827', cursor: 'not-allowed' }} icon={faXmark} />
+                                                    </div>
+
+                                                ) : (
+                                                <div style={{ display: 'flex', gap: "15px" }}><FontAwesomeIcon onClick={() => handlePresent(c.student_id, c.class_id, c.subject_id)} style={{ color: '#16C47F', cursor: 'pointer' }} icon={faCheck} />
+                                                    <FontAwesomeIcon onClick={() => handleAbsent(c.student_id, c.class_id, c.subject_id)} style={{ color: '#F93827', cursor: 'pointer' }} icon={faXmark} />
                                                 </div>
+                                                )}
 
                                             </td>
                                         </tr>

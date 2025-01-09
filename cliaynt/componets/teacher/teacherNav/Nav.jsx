@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import '../teacherNav/mainTeacher.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle } from "@fortawesome/free-regular-svg-icons";
 import { faBars, faChartBar, faUser, faSignOutAlt, faUsers, faClipboardList, faBell,faHistory } from '@fortawesome/free-solid-svg-icons';
+import alifLogo from '../../home/logo/alif.png'
 import { Link, Outlet } from 'react-router-dom';
 import api from '../../../src/api';
 import teacherValidation from '../../../src/hooks/teacherValidation';
@@ -100,7 +102,15 @@ function Nav() {
                             </div>
 
                             <div className='teacher-profile'>
-                                <img src={`http://localhost:3032/image/${teacherInfo.image}`} alt="" srcset="" />
+                                {
+                                    teacherInfo.image !== null ? (
+                                        <div><img src={`http://localhost:3032/image/${teacherInfo.image}`} alt="" srcset="" /></div>
+
+                                    ) : (
+                                        <div style={{padding:'7px'}}><FontAwesomeIcon icon={faUserCircle} style={{ fontSize: '30px', color: '#295F98' }} /></div>
+                                    )
+                                }
+                                
                             </div>
 
                         </div>
@@ -110,7 +120,16 @@ function Nav() {
 
             {/* Navigation Section */}
             <div className={`t-nav-main ${isNavOpen ? 'open' : ''}`}>
-                <div className='t-nav-text'>Teacher Menu</div>
+                <div className='t-nav-text'>
+                    <div>
+                        <img style={{width:'45px' , height:'45px',borderRadius:'50px' , background:'white'}} src= {alifLogo} alt="" srcset="" />
+                    </div>
+                    <div>
+                        Teacher Menu
+                    </div>
+                </div>
+
+                <div><hr style={{ border: "1px solid #ECEBDE", margin: "16px 8px" }} /></div>
                 <div className='t-nav-main1'>
                     <ul>
                         <li>

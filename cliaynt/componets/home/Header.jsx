@@ -65,7 +65,7 @@ function Header() {
 
                 <div className='header-container2'>
                     <div className='header-text d-flex' style={{background: colour}}>
-                        <div className='d-none d-md-block'><strong><Link to={'contact'}>Have quation  ?</Link></strong></div>
+                        <div className='d-none d-md-block'><strong></strong></div>
                         <div className='d-none d-md-block'><span></span> </div>
                         <div className='fs-15 d-block d-md-none header-mobile'><strong>phone number:</strong> +251-90292-0301</div>
                         <div className='d-none d-md-block'><span className='t-icone-phone'><FontAwesomeIcon icon={faPhone} /></span><strong>phone number:</strong> +251-90292-0301</div>

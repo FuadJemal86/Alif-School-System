@@ -25,7 +25,7 @@
 }
 
 .t-nav-main.open {
-    left: 0; 
+    left: 0;
 }
 
 .header-wid {
@@ -37,7 +37,7 @@
 }
 
 .teacher-profile {
-    padding: 7px 15px 7px 15px;
+    padding: 7px 15px 7px 3px;
 }
 
 .teacher-profile img{
@@ -81,12 +81,19 @@
 }
 
 .t-nav-text {
-    color: antiquewhite;
-    padding: 10px;
-    font-size: 25px;
+    background: rgb(12, 34, 77);
+    color: rgb(214, 211, 206);
+    padding: 20px 10px;
+    border-radius: 13px;
+    margin: 10px;
+    font-size: 19px;
+    font-weight: 500;
     text-align: center;
-    margin-top: 15px;
-    margin-bottom: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .t-nav-main1 ul {
@@ -97,10 +104,38 @@
 .t-nav-main1 li .t-link{
     text-decoration: none;
     color: #D2E0FB;
-    padding: 15px 14px;
+    padding: 13px 8px;
     border-radius: 7px;
     font-size: 15px;
     display: block;
+}
+
+.t-nav-main1 ul{
+    padding: 0 20px;
+}
+
+.t-nav-icone {
+    width: 25px;
+    margin-right: 12px;
+}
+
+.t-link {
+    padding: 0 13px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    transition: all .2s ease;
+}
+
+.t-link:hover {
+    background: #212d38;
+    transform: translateX(10px);
+    color: white;
+    font-family: 14px;
+}
+
+.t-link:focus {
+    background: #003391;
 }
 
 

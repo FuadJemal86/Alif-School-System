@@ -3,6 +3,7 @@ import './navCss/nav.css'
 import LogoAlif from '../home/logo/alif.png'
 import { Link, Outlet } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import alifLogo from '../home/logo/alif.png'
 import {
     faTachometerAlt,
     faBook,
@@ -126,13 +127,13 @@ function AdminNav() {
                                 {
                                     isOpen && (
                                         <div onClick={togelCloth} className='admin-dropdown'>
-                                            <div style={{ padding: '2px' , display:'flex' }}>
+                                            <div style={{ padding: '2px', display: 'flex' }}>
                                                 <div><FontAwesomeIcon style={{ padding: '2px' }} icon={faPlus} /></div>
                                                 <Link to={'/admin-dashbord/add-account'} className='dropdown-item'>Add Account</Link>
                                             </div>
 
-                                            <div style={{ padding: '2px' , display:'flex'}} onClick={handelLogout} 
-                                            className='logout-dropdown-item'>
+                                            <div style={{ padding: '2px', display: 'flex' }} onClick={handelLogout}
+                                                className='logout-dropdown-item'>
                                                 <div><FontAwesomeIcon style={{ padding: '2px' }} icon={faRightFromBracket} /></div>
                                                 Logout
 
@@ -149,62 +150,68 @@ function AdminNav() {
 
             <div onClick={togelCloth} className='text-nav-container'>
                 <div className='text-container1'>
-                    <div className='admin-page-text'>Admin Page</div>
+                    <div className='admin-page-text'>
+                        <div style={{border:'1px solid #8D77AB' , borderRadius:'50px'}}><img style={{ height: '40px', width: '40px', background: 'white', borderRadius: '50px',margin:'3px' }} src={alifLogo} alt="" srcset="" /></div>
+                        <div>Admin Menu</div>
+                    </div>
+
+                    <div><hr style={{ border: "1px solid #ECEBDE", margin: "20px 8px" }} /></div>
+
                     <nav className='text-container2'>
                         <ul className='text-container3'>
                             <li>
-                                <Link to={''}>
+                                <Link to={''} className='a-nav-link'>
                                     <FontAwesomeIcon icon={faTachometerAlt} className="nav-icon" /> Overview
                                 </Link>
                             </li>
                             <li>
-                                <Link to={'subject'}>
+                                <Link to={'subject'} className='a-nav-link'>
                                     <FontAwesomeIcon icon={faBook} className="nav-icon" /> Subject
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to={'class'}>
+                                <Link to={'class'} className='a-nav-link'>
                                     <FontAwesomeIcon icon={faSchool} className="nav-icon" /> Classes
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to={'teacher'}>
+                                <Link to={'teacher'} className='a-nav-link'>
                                     <FontAwesomeIcon icon={faChalkboardTeacher} className="nav-icon" /> Teacher
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to={'dipartmen'}>
+                                <Link to={'dipartmen'} className='a-nav-link'>
                                     <FontAwesomeIcon icon={faInbox} className="nav-icon" /> Dipartment
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to={'student'}>
+                                <Link to={'student'} className='a-nav-link'>
                                     <FontAwesomeIcon icon={faUserGraduate} className="nav-icon" /> Students
                                 </Link>
                             </li>
                             <li>
-                                <Link to={'grade'}>
+                                <Link to={'grade'} className='a-nav-link'>
                                     <FontAwesomeIcon icon={faGraduationCap} className="nav-icon" /> Grades
                                 </Link>
                             </li>
                             <li>
-                                <Link to={'parent'}>
+                                <Link to={'parent'} className='a-nav-link'>
                                     <FontAwesomeIcon icon={faUsers} className="nav-icon" /> Parents
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to={'/admin-dashbord/send-message'}>
-                                <FontAwesomeIcon icon={faMessage}  className="nav-icon"/> Message
+                                <Link to={'/admin-dashbord/send-message'} className='a-nav-link'>
+                                    <FontAwesomeIcon icon={faMessage} className="nav-icon" /> Message
                                 </Link>
                             </li>
 
                             <li>
-                                <Link to={'sitting'}>
+                                <Link to={'sitting'} className='a-nav-link'>
                                     <FontAwesomeIcon icon={faGear} className="nav-icon" /> Setting
                                 </Link>
                             </li>

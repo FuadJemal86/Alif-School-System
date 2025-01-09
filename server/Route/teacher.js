@@ -136,7 +136,10 @@ router.get('/get-teacher-profile', async (req, res) => {
 //add attendance 
 
 router.post('/take-attendance', async (req, res) => {
-    const { student_id, class_id, status } = req.body;
+    
+    const { student_id, class_id, status , subject_id } = req.body;
+
+    console.log(subject_id)
 
 
     const sql = `
@@ -145,12 +148,12 @@ router.post('/take-attendance', async (req, res) => {
         ON DUPLICATE KEY UPDATE status = ?, updated_at = NOW()
     `;
 
-    const historySql = `INSERT INTO history (student_id, class_id, status) VALUES (?, ?, ?)`;
+    const historySql = `INSERT INTO history (student_id, class_id, subject_id,  status) VALUES (?, ?, ? ,?)`;
 
 
     try {
 
-        connection.query(historySql, [student_id, class_id, status], (err, historyResult) => {
+        connection.query(historySql, [student_id, class_id, subject_id, status], (err, historyResult) => {
             if (err) {
                 console.error('Database error:', err);
                 return res.status(500).json({
@@ -270,13 +273,16 @@ router.get('/get-attendance', async (req, res) => {
                 classes.class_name,
                 attendance.id AS attendance_id,
                 attendance.status AS attendance_status,
-                attendance.attendance_date
+                attendance.attendance_date,
+                subjects.id AS subject_id
             FROM 
                 students
             INNER JOIN 
                 classes ON students.class_id = classes.id
             INNER JOIN 
                 teachers ON classes.id = teachers.class_id
+            INNER JOIN
+                subjects ON subjects.id = teachers.subject_id
             LEFT JOIN 
                 attendance ON students.id = attendance.student_id
             WHERE 
@@ -746,6 +752,52 @@ router.get('/get-history', async (req, res) => {
     }
 });
 
+
+// get student in teacher section
+
+router.get('/counter-number-student', async (req, res) => {
+    const token = req.header('token')
+
+    if (!token) {
+        return res.status(400).send('token not provide')
+    }
+    try {
+
+        const decoded = jwt.verify(token, process.env.TEACHER_KEY)
+        const teacherId = decoded.id
+
+                const sql = `
+            SELECT 
+                COUNT(DISTINCT students.id) AS student_count, -- Total students in the teacher's class and subject
+                SUM(CASE WHEN history.status = 'Present' THEN 1 ELSE 0 END) AS present_day, -- Total "Present" days for this subject
+                COUNT(history.id) AS history_id, -- Total attendance records for this subject
+                SUM(exams.average) AS grade_average, -- Average grade in this subject
+                COUNT(exams.id) AS total_grade -- Total number of exams in this subject
+            FROM
+                students
+            JOIN
+                teachers ON teachers.class_id = students.class_id
+            LEFT JOIN 
+                exams ON exams.student_id = students.id AND exams.subject_id = teachers.subject_id -- Filter exams by teacher's subject
+            LEFT JOIN
+                history ON history.student_id = students.id AND history.subject_id = teachers.subject_id 
+            WHERE
+                teachers.id = ?;
+            `;
+
+        connection.query(sql, [teacherId], (err, result) => {
+            if (err) {
+                console.log(err.message)
+                return res.status(500).json({ status: false, message: 'query error!' })
+            }
+            return res.status(200).json({ status: true, result })
+        })
+
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json({ status: false, error: "server error!" })
+    }
+})
 
 
 

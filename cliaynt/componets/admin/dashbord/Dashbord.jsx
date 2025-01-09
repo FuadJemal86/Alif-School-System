@@ -1,169 +1,172 @@
-import React, { useEffect, useState } from 'react'
-import { BarChart } from '@mui/x-charts';
 import '../dashbord/dashbord.css'
-import { PieChart } from '@mui/x-charts/PieChart';
-import api from '../../../src/api';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGraduationCap, faChalkboardUser, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
-function Dashbord() {
+import React, { useEffect, useState } from 'react';
+import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { Users, GraduationCap, School, BookOpen, TrendingUp, ChevronUp } from 'lucide-react';
 
-    const [teacher, setTeacher] = useState()
-    const [student, setStudent] = useState()
-    const [dip, setDip] = useState()
-    // const [teacher , setTeacher] = useState()
-    // const [teacher , setTeacher] = useState()
 
-    const getTeacher = async () => {
-        try {
-            const result = await api.get('/auth/teacher-total')
 
-            if (result.data.status) {
-                setTeacher(result.data.result[0].teacherTotal)
-            } else {
 
-            }
-        } catch (err) {
-            console.log(err)
-        }
-    }
+const StatCard = ({ title, value, icon: Icon, trend, color }) => (
+    <div className="stat-card">
+        <div className="stat-header">
+            <div className="stat-icon" style={{ background: `${color}20`, color: color }}>
+                <Icon size={24} />
+            </div>
+            <div className="stat-trend" style={{ color: trend >= 0 ? '#22c55e' : '#ef4444' }}>
+                <ChevronUp size={20} />
+                <span>{Math.abs(trend)}%</span>
+            </div>
+        </div>
+        <div className="stat-content">
+            <h3>{title}</h3>
+            <h2>{value.toLocaleString()}</h2>
+        </div>
+        <div className="stat-footer">
+            <div className="progress-bar" style={{ '--progress': `${trend}%`, '--color': color }}></div>
+        </div>
+    </div>
+);
 
-    const getStudent = async () => {
-        try {
-            const result = await api.get('/auth/student-total')
 
-            if (result.data.status) {
-                setStudent(result.data.result[0].studentTotal)
-            } else {
-                console.log(result.data.error)
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
 
-    const getDip = async () => {
-        try {
-            const result = await api.get('/auth/dip-total')
 
-            if (result.data.status) {
-                setDip(result.data.result[0].dipTotal)
-            } else {
-                console.log(result.data.error)
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
+const Dashbord = () => {
+    const [stats, setStats] = useState({
+        teachers: 0,
+        students: 0,
+        departments: 0,
+        courses: 0
+    });
+    const [loading, setLoading] = useState(true);
+
+    const monthlyData = [
+        { name: 'Jan', students: 4000, teachers: 2400, courses: 1800 },
+        { name: 'Feb', students: 4500, teachers: 2600, courses: 2000 },
+        { name: 'Mar', students: 4200, teachers: 2800, courses: 2200 },
+        { name: 'Apr', students: 5000, teachers: 2900, courses: 2400 },
+        { name: 'May', students: 4800, teachers: 3000, courses: 2600 },
+        { name: 'Jun', students: 5200, teachers: 3200, courses: 2800 },
+    ];
+
+    const performanceData = [
+        { name: 'Mon', value: 65 },
+        { name: 'Tue', value: 78 },
+        { name: 'Wed', value: 85 },
+        { name: 'Thu', value: 72 },
+        { name: 'Fri', value: 90 },
+        { name: 'Sat', value: 68 },
+        { name: 'Sun', value: 82 },
+    ];
 
     useEffect(() => {
+        // Simulate API calls
+        setTimeout(() => {
+            setStats({
+                teachers: 245,
+                students: 3890,
+                departments: 12,
+                courses: 86
+            });
+            setLoading(false);
+        }, 1000);
+    }, []);
 
-        getTeacher();
-        getStudent();
-        getDip()
-
-    }, [])
-
-
-    const chartData = [
-        { value: 40, label: 'Group A' },
-        { value: 30, label: 'Group B' },
-        { value: 20, label: 'Group C' },
-        { value: 10, label: 'Group D' },
-    ];
     return (
-        <div className='dashbord-conatiner'>
-
-
-            <div className='box-container'>
-                <div className='box-container1'>
-
-                    <div className='dashborde-box'>
-                        <div className='dollar-icone1'>
-                            <div className='card-text'>TEACHERS</div>
-                            <div className='dollar-icone'><FontAwesomeIcon icon={faChalkboardUser} /></div>
-                        </div>
-                        <div className='card-numbers'>{teacher}</div>
-                        <div className='total-teachers-main'><div className='total-teachers'>Total Teachers</div></div>
-
+        <div className="dashboard-wrapper">
+            <div className="dashboard-header">
+                <div className="header-content">
+                    <h1>Academic Dashboard</h1>
+                    <p>Welcome back! Here's what's happening with your institution.</p>
+                </div>
+                <div className="header-actions">
+                    <div className="date-picker">
+                        <span>Last 30 Days</span>
+                        <TrendingUp size={20} />
                     </div>
-
-                    <div className='dashborde-box'>
-                        <div className='dollar-icone1'>
-                            <div className='card-text'>STUDENT</div>
-                            <div className='student-icone'> <FontAwesomeIcon icon={faUserGraduate} /></div>
-                        </div>
-                        <div className='card-numbers'>{student}</div>
-                        <div className='total-teachers-main'><div className='total-teachers'>Total Student</div></div>
-                    </div>
-
-                    <div className='dashborde-box'>
-                        <div className='dollar-icone1'>
-                            <div className='card-text'>DIPARTMENT</div>
-                            <div className='student-icone'><FontAwesomeIcon icon={faGraduationCap} /></div>
-                        </div>
-                        <div className='card-numbers'>{dip}</div>
-                        <div className='total-teachers-main'><div className='total-teachers'>Total Dip-</div></div>
-
-                    </div>
-
-                    <div className='dashborde-box'>
-                        <div className='dollar-icone1'>
-                            <div className='card-text'>STUDENT</div>
-                            <div className='student-icone'><FontAwesomeIcon icon={faGraduationCap} /></div>
-                        </div>
-                        <div className='card-numbers'>{student}</div>
-                        <div className='total-teachers-main'><div className='total-teachers'>Total Teachers</div></div>
-
-                    </div>
-
                 </div>
             </div>
 
-            <div className='dashbord-conatiner1'>
-                <div className='piChart-box'>
-                    <PieChart
-                        width={300}
-                        height={300}
-                        series={[
-                            {
-                                data: chartData,
-                                innerRadius: 40,
-                                outerRadius: 100,
-                                paddingAngle: 5,
-                                cornerRadius: 5,
-                                startAngle: -45,
-                                endAngle: 225,
-                                cx: 150,
-                                cy: 150,
-                            },
-                        ]}
-                    />
-                </div>
-
-                <div className='chart-box'>
-                    <BarChart
-                        xAxis={[
-                            {
-                                scaleType: 'band',
-                                data: ['Group A', 'Group B', 'Group C'],
-                            },
-                        ]}
-                        series={[
-                            { data: [4, 3, 5], label: 'Series 1' },
-                            { data: [1, 6, 3], label: 'Series 2' },
-                            { data: [2, 5, 6], label: 'Series 3' },
-                        ]}
-                        width={520}
-                        height={300}
-                    />
-                </div>
-
-
+            <div className="stats-grid">
+                <StatCard
+                    title="Total Teachers"
+                    value={stats.teachers}
+                    icon={Users}
+                    trend={12}
+                    color="#6366f1"
+                />
+                <StatCard
+                    title="Total Students"
+                    value={stats.students}
+                    icon={GraduationCap}
+                    trend={8}
+                    color="#22c55e"
+                />
+                <StatCard
+                    title="Departments"
+                    value={stats.departments}
+                    icon={School}
+                    trend={-3}
+                    color="#eab308"
+                />
+                <StatCard
+                    title="Active Courses"
+                    value={stats.courses}
+                    icon={BookOpen}
+                    trend={15}
+                    color="#ec4899"
+                />
             </div>
 
+            <div className="charts-grid">
+                <div className="chart-card enrollment-trends">
+                    <h3>Enrollment Trends</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <AreaChart data={monthlyData}>
+                            <defs>
+                                <linearGradient id="colorStudents" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.1} />
+                                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Area
+                                type="monotone"
+                                dataKey="students"
+                                stroke="#6366f1"
+                                fillOpacity={1}
+                                fill="url(#colorStudents)"
+                            />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </div>
 
+                <div className="chart-card performance-chart">
+                    <h3>Weekly Performance</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={performanceData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Line
+                                type="monotone"
+                                dataKey="value"
+                                stroke="#22c55e"
+                                strokeWidth={2}
+                                dot={{ r: 4 }}
+                                activeDot={{ r: 6 }}
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
         </div>
-    )
-}
+    );
+};
 
-export default Dashbord
+export default Dashbord;

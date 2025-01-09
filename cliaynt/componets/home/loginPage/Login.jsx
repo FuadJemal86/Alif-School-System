@@ -34,7 +34,7 @@ function Login() {
 
             if (result.data.loginStates && result.data.token) {
                 localStorage.setItem('token', result.data.token)
-                navigate('/teacher-nav')
+                navigate('/teacher-nav/dashbord')
             } else {
                 toast.error(result.data.message)
             }

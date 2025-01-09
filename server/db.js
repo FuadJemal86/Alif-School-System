@@ -137,8 +137,10 @@ connection.connect((err) => {
             id INT AUTO_INCREMENT PRIMARY KEY,
             student_id INT NOT NULL,
             class_id INT NOT NULL,
+            subject_id INT NOT NULL,
             attendance_date DATE NOT NULL DEFAULT CURRENT_DATE,
-            status ENUM('Present', 'Absent', '-') NOT NULL DEFAULT '-'
+            status ENUM('Present', 'Absent', '-') NOT NULL DEFAULT '-',
+            FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
         )`,
 
         `CREATE TABLE IF NOT EXISTS exams (
@@ -162,13 +164,11 @@ connection.connect((err) => {
     const resetAttendanceEvent = `
         CREATE EVENT IF NOT EXISTS reset_attendance_status
             ON SCHEDULE EVERY 5 MINUTE
-            DO
-            BEGIN
-                UPDATE attendance
-                SET status = '-', updated_at = NOW()
-                WHERE status != '-' AND attendance_date = CURDATE();
-            END;
-    `;
+        DO
+            UPDATE attendance
+            SET status = '-', updated_at = NOW()
+        WHERE status != '-' AND attendance_date = CURDATE();
+        `;
 
     const executeQueries = (queries) => {
         queries.forEach((query, index) => {
