@@ -472,6 +472,7 @@ router.put('/edit-teacher/:id', upload.single('image'), async (req, res) => {
     try {
 
         const image = req.file ? req.file.filename : null;
+        
 
         const sql = `UPDATE  teachers  SET password = ? , image = ?  WHERE id = ?`
 
