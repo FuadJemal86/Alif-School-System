@@ -104,7 +104,7 @@ function Sitting() {
     }
 
     const [schoolImage, setSchoolImage] = useState([])
-
+    const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
 
         FeachDataSchool()
@@ -117,6 +117,9 @@ function Sitting() {
             const result = await api.get('/auth/get-schoolImage')
 
             if (result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
                 setSchoolImage(result.data.result)
             } else {
                 console.log(result.data.error)
@@ -154,8 +157,6 @@ function Sitting() {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, delete it!"
             }).then(async (result) => {
-
-
 
                 if (result.isConfirmed) {
                     const responce = await api.delete(`/auth/delete-school-image/${id}`);
@@ -216,6 +217,14 @@ function Sitting() {
         } catch (err) {
             console.error(err);
         }
+    }
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
     }
 
     return (

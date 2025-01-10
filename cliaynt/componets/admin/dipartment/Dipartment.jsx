@@ -8,20 +8,24 @@ import Swal from 'sweetalert2';
 
 function Dipartment() {
 
-    const [department , setDepartment] = useState([])
+    const [department, setDepartment] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
-    
 
-    const feachData = async() => {
+
+    const feachData = async () => {
         try {
             const result = await api.get('/auth/get-dip')
 
-            if(result.data.status) {
+            if (result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
                 setDepartment(result.data.result)
             } else {
                 console.log(result.data.message)
             }
-        } catch(err) {
+        } catch (err) {
             console.log(err)
         }
     }
@@ -29,7 +33,15 @@ function Dipartment() {
     useState(() => {
         feachData()
 
-    } , [])
+    }, [])
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
 
     const handeDelete = async (id) => {
 
@@ -70,40 +82,40 @@ function Dipartment() {
     return (
         <div>
             <div className='subject-main-table-con'>
-            <div className="subject-main-container">
-                <h4>Dipartmen</h4>
-                <div className='add-subject-button'>
-                    <Link to={'/admin-dashbord/add-dipartmen'}>Add Dipartment</Link>
+                <div className="subject-main-container">
+                    <h4>Dipartmen</h4>
+                    <div className='add-subject-button'>
+                        <Link to={'/admin-dashbord/add-dipartmen'}>Add Dipartment</Link>
+                    </div>
+                    <div className="subject-table-con">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    department.map((c) => (
+                                        <tr key={c.id}>
+                                            <td>{c.id}</td>
+                                            <td>{c.dip_name}</td>
+                                            <td>
+                                                <Link onClick={() => handeDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer' }}>
+                                                    <FontAwesomeIcon icon={faTrash} />
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div className="subject-table-con">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                department.map((c) => (
-                                    <tr key={c.id}>
-                                        <td>{c.id}</td>
-                                        <td>{c.dip_name}</td>
-                                        <td>
-                                            <Link onClick={() => handeDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer' }}>
-                                                <FontAwesomeIcon icon={faTrash} />
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
-        </div>
+            </div>
 
         </div>
     )

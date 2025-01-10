@@ -11,15 +11,20 @@ function Student() {
     const [students, setStudents] = useState([])
     const [filteredStudents, setFilteredStudents] = useState([]);
     const [searchTerm, setSearchTerm] = useState(''); 
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         fetchData();
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
     }, []);
 
     const fetchData = async () => {
         try {
             const result = await api.get('/auth/get-student');
             if (result.data.status) {
+                
                 const sortedStudents = result.data.result.sort((a, b) =>
                     a.class_name.localeCompare(b.class_name) || a.name.localeCompare(b.name)
                 );
@@ -32,6 +37,8 @@ function Student() {
             console.log(err);
         }
     };
+
+    
 
     useEffect(() => {
         const filtered = students.filter((student) =>
@@ -74,6 +81,14 @@ function Student() {
             console.log(err.message)
         }
 
+    }
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
     }
 
 

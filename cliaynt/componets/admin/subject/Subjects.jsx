@@ -14,15 +14,18 @@ function Subjects() {
     const [subject, setSubject] = useState([])
 
     useEffect(() => {
-        
+
         fetchData()
 
     }, [])
-
+    const [isLoading, setIsLoading] = useState(true)
     const fetchData = async () => {
         try {
             const result = await api.get('/auth/get-subject');
             if (result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
                 setSubject(result.data.result)
             } else {
                 console.error('Error fetching data:', result.data.error);
@@ -32,6 +35,7 @@ function Subjects() {
             console.error(err)
         }
     }
+
 
     const handelDelete = (id) => {
 
@@ -69,6 +73,14 @@ function Subjects() {
         } catch (err) {
             console.error(err);
         }
+    }
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
     }
     return (
         <div className='subject-main-table-con'>

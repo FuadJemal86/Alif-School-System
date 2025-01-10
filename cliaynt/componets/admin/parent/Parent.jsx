@@ -9,10 +9,14 @@ import Swal from 'sweetalert2';
 function Parent() {
 
     const [parent, setParent] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
 
         fechData()
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
     }, [])
 
     const fechData = async () => {
@@ -65,6 +69,14 @@ function Parent() {
             console.error(err);
         }
     }
+
+    if (isLoading) {
+            return (
+                <div className="loading-spinner">
+                    <span class="loader"></span>
+                </div>
+            );
+        }
 
 
     return (

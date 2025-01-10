@@ -1278,13 +1278,13 @@ router.get('/teacher-total', [auth, admin], (req, res) => {
         connection.query(sql, (err, result) => {
             if (err) {
                 console.error(err.message);
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, message: 'query error' })
             }
             return res.status(200).json({ status: true, result })
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ status: true, error: err })
+        return res.status(500).json({ status: true, error: 'server error' })
     }
 })
 
@@ -1297,13 +1297,13 @@ router.get('/dip-total', [auth, admin], (req, res) => {
         connection.query(sql, (err, result) => {
             if (err) {
                 console.error(err.message);
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, message: 'query error'})
             }
             return res.status(200).json({ status: true, result })
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ status: true, error: err })
+        return res.status(500).json({ status: true, error: 'server error'  })
     }
 })
 

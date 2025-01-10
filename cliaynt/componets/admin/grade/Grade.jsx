@@ -12,11 +12,15 @@ function Grade() {
     const [studentInfo, setStudentInfo] = useState([])
     const [filteredStudents, setFilteredStudents] = useState([])
     const [serchItem, setSerchItem] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
 
 
     useEffect(() => {
 
         fechData()
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
 
     }, [])
 
@@ -75,6 +79,15 @@ function Grade() {
             console.error(err.message)
         }
     }
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
+
     return (
         <div className='subject-main-table-con'>
             <div className='serch-bar'>

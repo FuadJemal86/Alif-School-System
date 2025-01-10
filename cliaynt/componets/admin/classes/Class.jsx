@@ -15,11 +15,16 @@ function Class() {
         feachdata()
 
     }, [])
+    
+    const [isLoading, setIsLoading] = useState(true)
 
     const feachdata = async () => {
         try {
             const result = await api.get('/auth/get-class');
             if (result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
                 setSection(result.data.result);
             } else {
                 console.error('Error fetching teachers:', result.data.error);
@@ -28,6 +33,14 @@ function Class() {
             console.log(err)
         }
 
+    }
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
     }
 
     const handelDelete = (id) => {

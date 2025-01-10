@@ -6,12 +6,17 @@ import api from '../../../src/api'
 function Message() {
 
     const [message, setMessage] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    
     useEffect(() => {
 
         const feahData = async () => {
             try {
                 const result = await api.get('/auth/get-message')
                 if (result.data.status) {
+                    setTimeout(() => {
+                        setIsLoading(false);
+                    }, 2000);
                     setMessage(result.data.result)
                 } else {
                     console.log(result.data.message)
@@ -24,6 +29,14 @@ function Message() {
         feahData()
 
     }, [])
+
+    if (isLoading) {
+            return (
+                <div className="loading-spinner">
+                    <span class="loader"></span>
+                </div>
+            );
+        }
 
     
     return (

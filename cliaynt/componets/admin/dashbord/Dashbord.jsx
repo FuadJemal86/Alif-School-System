@@ -4,11 +4,11 @@ import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { Users, GraduationCap, School, BookOpen, TrendingUp, ChevronUp } from 'lucide-react';
-
-
-
+import api from '../../../src/api';
 
 const StatCard = ({ title, value, icon: Icon, trend, color }) => (
+
+
     <div className="stat-card">
         <div className="stat-header">
             <div className="stat-icon" style={{ background: `${color}20`, color: color }}>
@@ -27,19 +27,91 @@ const StatCard = ({ title, value, icon: Icon, trend, color }) => (
             <div className="progress-bar" style={{ '--progress': `${trend}%`, '--color': color }}></div>
         </div>
     </div>
+
+
 );
 
-
-
-
 const Dashbord = () => {
+    const [teacherInfo, setTeacherInfo] = useState({});
+    const [dipInfo, setDipInfo] = useState({});
+    const [studentInfo, setStudentInfo] = useState({});
     const [stats, setStats] = useState({
         teachers: 0,
         students: 0,
         departments: 0,
         courses: 0
     });
+
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        feahTeacherCounter();
+        feahDipCounter();
+        feahStudentCounter();
+    }, []);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setStats({
+                teachers: teacherInfo.teacherTotal || 0,
+                students: studentInfo.studentTotal || 0,
+                departments: dipInfo.dipTotal || 0,
+                courses: 86
+            });
+            setLoading(false);
+        }, 1000);
+    }, [teacherInfo, dipInfo, studentInfo]);
+
+    const [isLoading, setIsLoading] = useState(true)
+    const feahTeacherCounter = async () => {
+        try {
+            const result = await api.get('/auth/teacher-total');
+            if (result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
+                setTeacherInfo(result.data.result[0]);
+            } else {
+                console.log(result.data.message);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const feahDipCounter = async () => {
+        try {
+            const result = await api.get('/auth/dip-total');
+            if (result.data.status) {
+                setDipInfo(result.data.result[0]);
+            } else {
+                console.log(result.data.message);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const feahStudentCounter = async () => {
+        try {
+            const result = await api.get('/auth/student-total');
+            if (result.data.status) {
+                setStudentInfo(result.data.result[0]);
+            } else {
+                console.log(result.data.message);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
 
     const monthlyData = [
         { name: 'Jan', students: 4000, teachers: 2400, courses: 1800 },
@@ -59,19 +131,6 @@ const Dashbord = () => {
         { name: 'Sat', value: 68 },
         { name: 'Sun', value: 82 },
     ];
-
-    useEffect(() => {
-        // Simulate API calls
-        setTimeout(() => {
-            setStats({
-                teachers: 245,
-                students: 3890,
-                departments: 12,
-                courses: 86
-            });
-            setLoading(false);
-        }, 1000);
-    }, []);
 
     return (
         <div className="dashboard-wrapper">

@@ -14,10 +14,15 @@ function Teacher() {
         fetchTeachers();
     }, []);
 
+    const [isLoading, setIsLoading] = useState(true)
+
     const fetchTeachers = async () => {
         try {
             const result = await api.get('/auth/get-teacher');
             if (result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
                 setTeachers(result.data.result);
             } else {
                 console.error('Error fetching teachers:', result.data.error);
@@ -26,6 +31,14 @@ function Teacher() {
             console.error('Error fetching teachers:', err.message);
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
 
     const handelDelete = (id) => {
         const fetchDelete = async () => {

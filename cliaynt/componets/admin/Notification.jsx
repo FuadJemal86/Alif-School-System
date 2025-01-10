@@ -7,6 +7,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 function Notification() {
 
     const [notification, setNotification] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fechData = async () => {
@@ -14,6 +15,9 @@ function Notification() {
                 const result = await api.get('/auth/get-messaga')
 
                 if (result.data.status) {
+                    setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
                     setNotification(result.data.result)
                 } else {
                     console.log(result.data.error)
@@ -61,6 +65,14 @@ function Notification() {
         feachData()
 
     }, [])
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <div className="spinner"></div>
+            </div>
+        );
+    }
 
     return (
         <div>
