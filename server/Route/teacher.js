@@ -398,13 +398,16 @@ router.get('/teacher-data', async (req, res) => {
                     students.address, 
                     classes.class_name,
                     classes.id AS class_id,
-                    exams.average
+                    exams.average,
+                    grades.grade
                 FROM 
-                    students 
+                    students
                 JOIN 
                     classes  ON students.class_id = classes.id 
                 LEFT JOIN 
                     exams ON students.id = exams.student_id AND classes.id = exams.class_id
+                LEFT JOIN   
+                    grades ON students.id  = grades.student_id
                 WHERE 
                     students.class_id = ?`;
 
@@ -500,6 +503,8 @@ router.put('/edit-teacher/:id', upload.single('image'), async (req, res) => {
 })
 
 
+// get assistance
+
 router.get('/get-assistence', async (req, res) => {
     const token = req.header('token');
     if (!token) {
@@ -528,7 +533,6 @@ router.get('/get-assistence', async (req, res) => {
             FROM 
                 students
             INNER JOIN   -- INNER JOIN means match the student table based on classes.id
-
                 classes ON students.class_id = classes.id 
             INNER JOIN 
                 teachers ON teachers.class_id = classes.id

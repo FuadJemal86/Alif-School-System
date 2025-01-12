@@ -833,24 +833,39 @@ router.delete('/delete-student/:id', [auth, admin], async (req, res) => {
 //  edit(update student)
 
 router.put('/update-student/:id', [auth, admin], async (req, res) => {
-    const id = req.params.id
-    console.log(id)
-    const { name, email, class_name, gender, contact, dob, address } = req.body;
+    const id = req.params.id;
+    const { name, email, class_name, gender, dob, address } = req.body;
+
+
+    if (!name || !email || !class_name || !gender || !dob || !address) {
+        return res.status(400).json({ status: false, error: 'All fields are required' });
+    }
 
     try {
-        const sql = `UPDATE  students SET name = ? , email = ? , class_id = ? , gender = ? , parent_contact = ? , dob =? , address = ?  WHERE id = ?`
-        connection.query(sql, [name, email, class_name, gender, contact, dob, address, id], (err, result) => {
+        const sql = `
+            UPDATE students
+            SET name = ?, email = ?, class_id = ?, gender = ?, dob = ?, address = ?
+            WHERE id = ?
+        `;
+        connection.query(sql, [name, email, class_name, gender, dob, address, id], (err, result) => {
             if (err) {
-                console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                console.error(err.message);
+                return res.status(500).json({ status: false, error: 'Query error' });
             }
-            return res.status(200).json({ status: true, result })
-        })
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ status: false, error: 'Student not found' });
+            }
+
+            return res.status(200).json({ status: true, message: 'Student updated successfully!' });
+        });
     } catch (err) {
-        console.error(err.message)
-        return res.status(400).jsone({ status: false, error: err.message })
+        console.error(err.message);
+        return res.status(400).json({ status: false, error: 'Server error!' });
     }
-})
+});
+
+
 
 // select student by id
 
@@ -1297,13 +1312,13 @@ router.get('/dip-total', [auth, admin], (req, res) => {
         connection.query(sql, (err, result) => {
             if (err) {
                 console.error(err.message);
-                return res.status(500).json({ status: false, message: 'query error'})
+                return res.status(500).json({ status: false, message: 'query error' })
             }
             return res.status(200).json({ status: true, result })
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ status: true, error: 'server error'  })
+        return res.status(500).json({ status: true, error: 'server error' })
     }
 })
 
@@ -1567,30 +1582,30 @@ router.delete('/delete-teacher-info/:id', [auth, admin], async (req, res) => {
 
 //  send message
 
-router.post('/send-message' , async(req , res) => {
+router.post('/send-message', async (req, res) => {
     const token = req.header('token')
 
-    if(!token) {
+    if (!token) {
         return res.status(400).send('token not provide')
     }
 
-    const message  = req.body.message
+    const message = req.body.message
     const time = req.body.time
     try {
-        const decoded = jwt.verify( token , process.env.ADMIN_PASSWORD)
+        const decoded = jwt.verify(token, process.env.ADMIN_PASSWORD)
         const adminId = decoded.id
         console.log(adminId)
 
-        const value = [adminId , message , time]
+        const value = [adminId, message, time]
 
         const sql = `INSERT  INTO messages (admin_id , message , time) VALUES(?)`
 
-        connection.query(sql , [value] , (err , result) => {
+        connection.query(sql, [value], (err, result) => {
             if (err) {
                 console.log(err.message)
-                return res.status(500).json({ status: false, error:'query errro' });
+                return res.status(500).json({ status: false, error: 'query errro' });
             }
-            return res.status(200).json({ status: true, message:'send succsessfully!' });
+            return res.status(200).json({ status: true, message: 'send succsessfully!' });
         })
     } catch (err) {
         console.error(err)

@@ -8,7 +8,8 @@ import { cache } from 'react';
 
 function Attendance() {
 
-    const [attendance, setAttendance] = useState([])
+    const [attendance, setAttendance] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
 
@@ -20,6 +21,9 @@ function Attendance() {
             const result = await api.get('/teacher/get-attendance');
 
             if (result.data && result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 1000);
                 setAttendance(result.data.attendance);
             } else {
                 console.log('Error: ', result.data.message || 'Failed to fetch students');
@@ -58,6 +62,14 @@ function Attendance() {
     const handleAbsent = (student_id, class_id, subject_id) => {
         handleAttendance(student_id, class_id, subject_id, "Absent");
     };
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
 
 
 

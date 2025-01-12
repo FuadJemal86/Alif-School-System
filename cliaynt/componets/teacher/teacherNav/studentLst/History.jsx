@@ -6,6 +6,7 @@ import api from '../../../../src/api';
 function History() {
 
     const [history, setHistory] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
 
@@ -17,6 +18,9 @@ function History() {
             const result = await api.get('/teacher/get-history');
 
             if (result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 1000);
                 setHistory(result.data.history);
             } else {
                 console.log('Error: ', result.data.message || 'Failed to fetch students');
@@ -25,6 +29,15 @@ function History() {
             console.error('An error occurred: ', err);
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
+    
     return (
         <div>
             <div className='subject-main-table-con'>

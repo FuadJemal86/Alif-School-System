@@ -31,12 +31,12 @@ function Message() {
     }, [])
 
     if (isLoading) {
-            return (
-                <div className="loading-spinner">
-                    <span class="loader"></span>
-                </div>
-            );
-        }
+        return (
+            <div className="loading-spinner">
+                <div className="spinner"></div>
+            </div>
+        );
+    }
 
     
     return (

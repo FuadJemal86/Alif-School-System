@@ -45,6 +45,7 @@ import SendMessage from '../componets/admin/send message/SendMessage';
 import Message from '../componets/teacher/teacherNav/Message';
 import History from '../componets/teacher/teacherNav/studentLst/History';
 import TeacherDashbord from '../componets/teacher/teacherNav/studentLst/TeacherDashbord';
+import StudentProfile from '../componets/student/StudentProfile';
 
 
 
@@ -111,6 +112,11 @@ function App() {
           <Route path='add-mark/:id' element={<AddMarke />} />
           <Route path='notification' element={<Message />} />
           <Route path='history' element={<History />} />
+          
+        </Route>
+
+        <Route path='/student-profile' element={<StudentProfile />}>
+          <Route path='ss' element={<StudentProfile />} />
           
         </Route>
       </Routes>

@@ -7,7 +7,8 @@ import api from '../../../../src/api';
 
 function StudentList() {
     const [students, setStudents] = useState([]);
-    const [section, setSection] = useState([])
+    const [section, setSection] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -15,6 +16,9 @@ function StudentList() {
                 const result = await api.get('/teacher/teacher-data');
 
                 if (result.data && result.data.status) {
+                    setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
                     // Assuming the response has class_students
                     setStudents(result.data.class_students); // Use 'class_students' from the response
                     setSection(result.data.subject_details);
@@ -28,6 +32,15 @@ function StudentList() {
 
         fetchData();
     }, []);
+
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
 
     return (
         <div>
@@ -66,7 +79,7 @@ function StudentList() {
                                             <td>{c.gender}</td>
                                             <td>{c.average}</td>
                                             <td>
-                                                {c.average !== null && c.average !==0 ? (
+                                                {c.average != null && c.average != 0  && c.grade == null ? (
                                                     <Link
                                                         to={`/teacher-nav/add-grade/${c.id}`}
                                                         style={{ color: '#89A8B2' }}

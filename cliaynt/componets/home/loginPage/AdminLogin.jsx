@@ -12,34 +12,50 @@ import { Toaster, toast } from 'react-hot-toast';
 function AdminLogin() {
 
     const navigate = useNavigate()
-
     const [adminInfo, setadminInfo] = useState({
         email: '',
         password: ''
     })
+    const [isLoading, setIsLoading] = useState(false);
 
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     const handelsubmit = async (e) => {
 
         e.preventDefault()
+
+        setIsLoading(true)
+
+        const { email, password } = adminInfo
+
+        if (!email || !password) {
+            setIsLoading(false);
+            return toast.error('Missing required fields')
+        }
 
         try {
             const result = await api.post('/auth/admin-login', adminInfo)
 
             if (result.data.loginStates && result.data.token) {
                 localStorage.setItem('token', result.data.token)
+                await delay(1000);
                 navigate('/admin-dashbord')
             } else {
+                await delay(1000);
+                setIsLoading(false);
                 toast.error(result.data.message)
             }
         } catch (err) {
             console.log(err.message)
+            setIsLoading(false);
         }
     }
 
 
     return (
         <div>
+            <Toaster position="top-center" reverseOrder={false} />
+
             <div>
                 <div className='login-header-container'>
                     <div className='login-header-container2'>
@@ -52,52 +68,89 @@ function AdminLogin() {
                 </div>
             </div>
             <div >
-                <form onSubmit={handelsubmit}>
-                    <div className='login-teacher-container'>
-                        <div className='login-teacher-container1'>
-                            <div className='alif-logoo'><img src={logo} alt="" /></div>
-                            <div className='t-login-text'>Welcome Admin!</div>
-                            <div className='t-input'>
-                                <span className='t-input-icone'><FontAwesomeIcon icon={faEnvelope} /></span>
-                                <input
-                                    onChange={(e) => setadminInfo({ ...adminInfo, email: e.target.value })}
-                                    placeholder='Username'
-                                />
+                <form onSubmit={handelsubmit} className="login-form">
+                    <div className="login-teacher-container">
+                        <div className="login-teacher-container1">
+                            <div className="lo-alif-logoo">
+                                <img src={logo} alt="" />
+                            </div>
+                            <div className="t-login-text">Admin Login!</div>
+
+                            {/* Email Input */}
+                            <div className="form-group">
+                                <div className="input-container">
+                                    <span className="input-icon">
+                                        <FontAwesomeIcon icon={faEnvelope} />
+                                    </span>
+                                    <input
+                                        onChange={(e) =>
+                                            setadminInfo({ ...adminInfo, email: e.target.value })
+                                        }
+                                        placeholder="Username"
+                                        className="form-input"
+                                        type="email"
+                                    />
+                                </div>
                             </div>
 
-                            <div className='t-input'>
-                                <span className='t-input-icone'><FontAwesomeIcon icon={faLock} /></span>
-                                <input
-                                    onChange={(e) => setadminInfo({ ...adminInfo, password: e.target.value })}
-                                    placeholder='Password'
-                                />
-                            </div>
-                            <div className='t-login'>
-                                <button >Login <FontAwesomeIcon icon={faRightToBracket} />
-                                    <Toaster
-                                        position="top-center" // Position of the toast
-                                        reverseOrder={false} // Keep toasts in the order they were added
+                            {/* Password Input */}
+                            <div className="form-group">
+                                <div className="input-container">
+                                    <span className="input-icon">
+                                        <FontAwesomeIcon icon={faLock} />
+                                    </span>
+                                    <input
+                                        name="password"
+                                        placeholder="Password"
+                                        onChange={(e) =>
+                                            setadminInfo({ ...adminInfo, password: e.target.value })
+                                        }
+                                        className="form-input"
+                                        type="password"
                                     />
-                                </button>
+                                </div>
                             </div>
+                            <div className='forget-link-main'>
+                                <Link className='forget-link'>Forgot password ?</Link>
+                            </div>
+
+                            {/* Login Button */}
+                            <div className="t-login">
+                                {isLoading ? (
+                                    <button className="login-loader-button login-button" disabled>
+                                        <span className="login-loader"></span>
+                                    </button>
+                                ) : (
+                                    <button type="submit" className="login-button">
+                                        Login
+                                        <FontAwesomeIcon icon={faRightToBracket} />
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {/* Navigation Links */}
+                    <div className="t-buttons-container">
+                        <div className="t-buttons">
+                            <Link to={'/techer-login'}>Teacher</Link>
+                        </div>
+                        <div className="t-buttons">
+                            <Link to={'/student-login'}>Student</Link>
+                        </div>
+                        <div className="t-buttons-teacher">
+                            <Link>Admin</Link>
                         </div>
                     </div>
                 </form>
 
-                <div className='t-buttons-container'>
-                    <div className='t-buttons '>
-                        <Link to={'/techer-login'}>Teacher</Link>
-                    </div>
-                    <div className=' t-buttons'>
-                        <Link to={'/student-login'}>Student</Link>
-                    </div>
-                    <div className='t-buttons-teacher'>
-                        <Link>Admin</Link>
-                    </div>
-                </div>
-
 
             </div>
+
+
+
+
             <Footer />
         </div>
     )

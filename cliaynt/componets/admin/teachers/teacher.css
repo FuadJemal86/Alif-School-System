@@ -1,118 +1,153 @@
-.add-teacher{
-    display: flex;
-    justify-content: center;
-    width: 50%;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
+/* Main container styles */
 .teacher-main-con {
-    padding-top: 30px;
+    min-height: 100vh;
+    padding: 2rem;
 }
 
-.add-teacher-text {
-    font-size: 25px;
-    font-weight: 600;
-    font-family: "Inter", sans-serif;
-    color: #333;
-    margin-bottom: 15px;
-    text-align: center;
+/* Form container styles */
+.add-teacher {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-top: 6rem;
 }
 
 .add-teacher-con {
-    width: 50%;
+    padding: 2rem;
 }
 
-.add-teacher {
-    margin-top: 100px;
-}
-
-.add-teacher-con1 {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.add-teacher-inputs input {
-    width: 100%;
-    border: 1px solid #dad4d4;
-    outline: none;
-    padding: 7px;
-    border-radius: 10px;
-}
-
-.add-teacher-inputs input:focus {
-    border-color: #4caf50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-}
-
-.add-teacher-button button{
-    margin-top: 10px;
-    padding: 10px 15px;
-    background-color: #0b1d58;
-    color: rgb(228, 220, 220);
+/* Header text styles */
+.add-teacher-text {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 2rem;
     text-align: center;
-    font-size: 16px;
-    font-weight: bold;
+    position: relative;
+}
+
+.add-teacher-text::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: #3498db;
+    border-radius: 2px;
+}
+
+/* Input container styles */
+.add-teacher-con1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Input field styles */
+.add-teacher-inputs {
+    position: relative;
+}
+
+.add-teacher-inputs input,
+.add-teacher-inputs select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.add-teacher-inputs input[type="file"] {
+    padding: 8px;
+    border: 2px dashed #3498db;
+    background: #f8f9fa;
+}
+
+.add-teacher-inputs input:focus,
+.add-teacher-inputs select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+    outline: none;
+}
+
+.add-teacher-inputs input::placeholder {
+    color: #95a5a6;
+}
+
+/* Button styles */
+.add-teacher-button {
+    text-align: center;
+}
+
+.add-teacher-button button {
+    background: #3498db;
+    color: white;
     border: none;
-    border-radius: 7px;
+    padding: 12px 36px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition:  0.3s ease;
-    transform: scale(.9);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .add-teacher-button button:hover {
-    transform: scale(1);
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
 }
 
 .add-teacher-button button:active {
-    transform: scale(.9);
+    transform: translateY(0);
 }
 
-.add-teacher-inputs select {
-    width: 100%;
-    padding: 7px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    font-size: 16px;
-    outline: none;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .teacher-main-con {
+        padding: 1rem;
+    }
+    
+    .add-teacher-con {
+        padding: 1.5rem;
+    }
+    
+    .add-teacher-text {
+        font-size: 1.5rem;
+    }
 }
 
-.add-teacher-inputs select:focus {
-    border-color: #007bff;
-    background-color: #fff;
+@media (max-width: 480px) {
+    .add-teacher-con1 {
+        grid-template-columns: 1fr;
+    }
+    
+    .add-teacher-button button {
+        width: 100%;
+    }
 }
 
-.add-account-main {
-    height: 100vh;
-} 
-
-.message-box-main {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    width: 100%;
-    margin-top: 20px;
+/* Animation for form appearance */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.message-trash {
-    color: rgb(206, 36, 36);
-    text-align: right;
-}
-.message-box {
-    margin-top: 30px;
-    border: 1px solid rgb(224, 220, 220);
-    padding: 20px;
-    padding-top: 20px;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    width: 35%;
-}
-
-.message-box1 {
-    padding: 5px;
+.add-teacher {
+    animation: fadeIn 0.5s ease-out;
 }

@@ -11,6 +11,7 @@ function StudentGrade() {
     const { id } = useParams()
     const [section, setSubject] = useState([])
     const [student, setStudent] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
     const [grades, setGreade] = useState({
         student_id: '',
         subject_id: '',
@@ -23,6 +24,9 @@ function StudentGrade() {
                 const result = await api.get('/teacher/teacher-data');
 
                 if (result.data && result.data.status) {
+                    setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
                     setSubject(result.data.subject_details);
                 } else {
                     console.log('Error: ', result.data.message || 'Failed to fetch students');
@@ -91,6 +95,14 @@ function StudentGrade() {
                 showConfirmButton: true,
             });
         }
+    }
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <div className="spinner"></div>
+            </div>
+        );
     }
 
     return (

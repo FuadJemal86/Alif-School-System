@@ -10,11 +10,10 @@
 
 .main-admin-header {
     backdrop-filter: blur(10px);
-    background-color: rgba(275, 275, 275, 0.7);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     position: fixed;
-    /* z-index: 1000; */
-    left: 0;
+    z-index: 1000;
+    left: 250px;
     right: 0;
 }
 
@@ -66,7 +65,7 @@
 
 .admin-page-text {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     align-items: center;
     background: #272c38;
     padding: 10px;

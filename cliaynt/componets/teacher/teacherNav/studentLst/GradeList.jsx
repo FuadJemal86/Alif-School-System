@@ -8,6 +8,7 @@ import api from '../../../../src/api';
 function GradeList() {
 
     const [grade, setGrade] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
     
@@ -19,6 +20,9 @@ function GradeList() {
             const result = await api.get('/teacher/get-grade');
 
             if (result.data && result.data.status) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 1000);
                 setGrade(result.data.result);
             } else {
                 console.log('Error: ', result.data.message || 'Failed to fetch students');
@@ -27,6 +31,14 @@ function GradeList() {
             console.error('An error occurred: ', err);
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
 
 
 

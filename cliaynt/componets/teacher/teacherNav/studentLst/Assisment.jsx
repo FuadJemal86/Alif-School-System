@@ -7,6 +7,7 @@ import api from '../../../../src/api';
 
 function Assisment() {
     const [assistenses, setAssistance] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
 
 
     useEffect(() => {
@@ -15,6 +16,9 @@ function Assisment() {
             try {
                 const result = await api.get('/teacher/get-assistence')
                 if (result.data.status) {
+                    setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
                     setAssistance(result.data.students)
                 } else {
                     console.log(result.data.message)
@@ -28,6 +32,14 @@ function Assisment() {
 
 
     }, [])
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
 
     return (
         <div>
@@ -69,7 +81,19 @@ function Assisment() {
                                                 <td>{c.midterm || '-'}</td>
                                                 <td>{c.final || '-'}</td>
                                                 <td>
-                                                    <Link to={`/teacher-nav/add-mark/${c.student_id}`} style={{ color: '#89A8B2' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
+                                                    {
+                                                        (c.assi1 !== 0 && c.assi1 !== null &&
+                                                            c.assi2 !== 0 && c.assi2 !== null &&
+                                                            c.midterm !== 0 && c.midterm !== null &&
+                                                            c.final !== 0 && c.final !== null) && (c.final != 0 || c.final != null) ? (
+
+                                                            <Link style={{ color: '#89A8B2', cursor: 'not-allowed' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
+
+                                                        ) : (
+
+                                                            <Link to={`/teacher-nav/add-mark/${c.student_id}`} style={{ color: '#89A8B2' }}><FontAwesomeIcon icon={faCircleInfo} /></Link>
+                                                        )
+                                                    }
                                                 </td>
                                             </tr>
 

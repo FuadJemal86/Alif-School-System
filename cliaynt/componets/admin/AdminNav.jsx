@@ -92,9 +92,6 @@ function AdminNav() {
                 <div className='main-admin-header'>
                     <header className='header-admin'>
                         <div className='header-conatiner1'>
-                            {/* <div className='nav-alif-logo'>
-                                <img src={LogoAlif} alt="" srcset="" />
-                            </div> */}
 
                             <div className='admin-profile'>
                                 <div className='notification-icone' style={{ position: 'relative' }}>
