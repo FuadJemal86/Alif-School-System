@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { LogOut, User, Book, GraduationCap } from 'lucide-react';
+import { Link, Outlet } from 'react-router-dom';
 import './studentProfile.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../../src/api';
@@ -11,35 +12,38 @@ const StudentProfile = () => {
 
     const [studentDetail, setStudentDeatil] = useState([])
     const [studentProfile, setProfile] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
 
 
     useEffect(() => {
-
-        const feachData = async () => {
-            try {
-                const result = await api.get('/student/student-result')
-
-                if (result.data.status) {
-                    setStudentDeatil(result.data.student)
-                    setProfile(result.data.student[0])
-                } else {
-                    console.log('student not found')
-                }
-            } catch (err) {
-                console.log(err)
-            }
-        }
-
         feachData()
-
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
     }, [])
+
+    const feachData = async () => {
+        try {
+            const result = await api.get('/student/student-result')
+
+            if (result.data.status) {
+                setStudentDeatil(result.data.student)
+                setProfile(result.data.student[0])
+            } else {
+                console.log('student not found')
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
     // Sample student data
     const student = {
-        name: studentProfile.student_name,
-        grade: studentProfile.class_name,
-        studentId: studentProfile.student_id,
-        email: studentProfile.email
+        name: studentProfile?.student_name || "N/A",
+        grade: studentProfile?.class_name || "N/A",
+        studentId: studentProfile?.student_id || "N/A",
+        email: studentProfile?.email || "N/A",
     };
+
 
     const getGradeClassName = (grade) => {
         if (grade == 'A') return 'grade-badge grade-a';
@@ -53,8 +57,17 @@ const StudentProfile = () => {
         window.location.reload()
     }
 
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
+
     return (
         <div className="">
+
             <div className='student-dashboard'>
                 <header className="student-dashboard-header">
                     <div className="student-header-container">
@@ -71,7 +84,9 @@ const StudentProfile = () => {
                         </button>
 
                         <button className="student-logout-button d-block d-sm-none m-3 ">
-                            <LogOut size={16} className='fw-bold' />
+                            <span onClick={handelLogout}>
+                                <LogOut size={16} className='fw-bold' />
+                            </span>
                         </button>
                     </div>
                 </header>
@@ -103,6 +118,9 @@ const StudentProfile = () => {
                                         <p className="student-info">{student.email}</p>
                                     </div>
                                 </div>
+                                <div className='student-edit-profile'>
+                                    <Link to={'/edit-profile'} className='student-edit-button'>Edit Profile</Link>
+                                </div>
                             </div>
                         </div>
 
@@ -129,18 +147,18 @@ const StudentProfile = () => {
                                         <tbody>
                                             {studentDetail.map((c) => (
                                                 <tr key={c.grade_id}>
-                                                    <td>{c.name || null}</td>
-                                                    <td>{c.assi1 || null}</td>
-                                                    <td>{c.assi2 || null}</td>
-                                                    <td>{c.midterm || null}</td>
-                                                    <td >{c.final || null}</td>
+                                                    <td>{c.name || '-'}</td>
+                                                    <td>{c.assi1 || '-'}</td>
+                                                    <td>{c.assi2 || '-'}</td>
+                                                    <td>{c.midterm || '-'}</td>
+                                                    <td >{c.final || '-'}</td>
                                                     <td>
                                                         <span className={getGradeClassName('B')}>
-                                                        {c.average || '-'}
+                                                            {c.average || '-'}
                                                         </span></td>
                                                     <td>
                                                         <span className={getGradeClassName(c.grade)}>
-                                                            {c.student_grade}
+                                                            {c.student_grade || '-'}
                                                         </span>
                                                     </td>
                                                 </tr>

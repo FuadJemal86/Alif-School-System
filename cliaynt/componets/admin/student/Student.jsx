@@ -93,7 +93,8 @@ function Student() {
 
 
     return (
-        <div className='subject-main-table-con'>
+        <div>
+            <div className='subject-main-table-con'>
             <div className='serch-bar'>
                 <input
                     value={searchTerm}
@@ -154,6 +155,7 @@ function Student() {
                 </div>
             </div>
 
+        </div>
         </div>
     )
 }

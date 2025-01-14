@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import api from '../../../src/api';
 
@@ -14,7 +14,7 @@ function AjestGrade() {
             try {
                 const result = await api.get('/auth/get-student');
                 if (result.data.status) {
-                    
+
                     const sortedData = result.data.result.sort((a, b) =>
                         a.class_name.localeCompare(b.class_name) || a.name.localeCompare(b.name)
                     );
@@ -32,7 +32,15 @@ function AjestGrade() {
     }, [])
 
     return (
-        <div>
+        <div className='add-account-main'>
+            <div className='serch-bar'>
+                <input
+
+                    placeholder='Search...'
+
+                />
+                <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
+            </div>
             <div className="subject-main-container">
                 <div className="add-subject-button">
                 </div>

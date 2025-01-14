@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import '../subject/subject.css';
 import { Link } from 'react-router-dom';
 import api from '../../../src/api';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faTrash ,faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 
 function Dipartment() {
@@ -80,7 +80,15 @@ function Dipartment() {
     }
 
     return (
-        <div>
+        <div className='add-account-main'>
+            <div className='serch-bar'>
+                <input
+
+                    placeholder='Search...'
+
+                />
+                <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
+            </div>
             <div className='subject-main-table-con'>
                 <div className="subject-main-container">
                     <h4>Dipartmen</h4>

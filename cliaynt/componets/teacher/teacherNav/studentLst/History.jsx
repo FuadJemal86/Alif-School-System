@@ -41,6 +41,16 @@ function History() {
     return (
         <div>
             <div className='subject-main-table-con'>
+                <div className='serch-bar'>
+                                <input
+                                    
+                                    
+                
+                                    placeholder='Search...'
+                
+                                />
+                                <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
+                            </div>
                 <div className='subject-main-container'>
                     <h4>Attendance History</h4>
 

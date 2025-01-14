@@ -4,7 +4,7 @@ import { data, Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import api from '../../../src/api'
 import Swal from 'sweetalert2'
 
@@ -84,6 +84,14 @@ function Subjects() {
     }
     return (
         <div className='subject-main-table-con'>
+            <div className='serch-bar'>
+                <input
+
+                    placeholder='Search...'
+
+                />
+                <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
+            </div>
             <div className='subject-main-container'>
                 <h4>Subjects</h4>
                 <div className='add-subject-button'>

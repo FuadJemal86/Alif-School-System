@@ -76,6 +76,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 2rem;
+    margin: .2rem;
 }
 
 /* Card Styles */
@@ -126,7 +127,9 @@
 .student-profile-avatar img {
     width: 128px;
     height: 128px;
-    border-radius: 50px;
+    border-radius: 50%;
+    border: 2px solid rgb(211, 206, 206);
+    padding: 3px;
 }
 
 .student-profile-details {
@@ -145,6 +148,25 @@
     margin-bottom: 0.25rem;
 }
 
+.student-edit-profile {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.student-edit-button {
+    background-color: #2563eb;
+    padding: .7rem;
+    border-radius: 10px;
+    color: white;
+    transition: all .3s ease;
+}
+
+.student-edit-button:hover {
+    background-color: #002396;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
 /* Results Table Styles */
 .student-table-container {
     overflow-x: auto;
@@ -234,7 +256,7 @@
     }
 
     .student-school-brand h1 {
-        font-size: 15px;
+        font-size: 20px;
     }
 
     .student-school-logo {
@@ -344,4 +366,31 @@
         background-color: #f8d7da;
         color: #721c24;
     }
+}
+
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.student-dashboard-grid {
+    animation: fadeIn 0.4s ease-out;
+    animation-fill-mode: both;
+}
+
+.student-dashboard-grid:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.student-dashboard-grid:nth-child(2) {
+    animation-delay: 0.2s;
 }

@@ -76,17 +76,18 @@ router.post('/login', async (req, res) => {
 // get grade
 
 router.get('/student-result', async (req, res) => {
-    const token = req.header('token')
+    const token = req.header('token');
 
     if (!token) {
-        return res.status(400).json({ status: false, message: 'token not found!' })
+        return res.status(400).json({ status: false, message: 'Token not found!' });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.STUDENT_KEY)
-        const studentId = decoded.id
+        const decoded = jwt.verify(token, process.env.STUDENT_KEY);
+        const studentId = decoded.id;
 
-        const sql = `SELECT
+        const sql = `
+            SELECT
                 students.id AS student_id,
                 students.name AS student_name,
                 students.image,
@@ -102,33 +103,27 @@ router.get('/student-result', async (req, res) => {
                 exams.final
             FROM 
                 students
-            LEFT JOIN
-                grades ON students.id = grades.student_id
-            LEFT JOIN
-                exams ON students.id = exams.student_id
-            LEFT JOIN
-                classes ON students.class_id = classes.id
-            LEFT JOIN
-                subjects ON grades.subject_id = subjects.id
-            WHERE
-                grades.student_id = ?
-            
-            `;
+            LEFT JOIN grades ON students.id = grades.student_id
+            LEFT JOIN exams ON students.id = exams.student_id
+            LEFT JOIN classes ON students.class_id = classes.id
+            LEFT JOIN subjects ON grades.subject_id = subjects.id
+            WHERE students.id = ?
+        `;
 
         connection.query(sql, [studentId], (err, result) => {
             if (err) {
-                console.log(err.message)
-                return res.status(500).json({ status: false, Error: 'query error' })
+                console.error(err.message);
+                return res.status(500).json({ status: false, error: 'Database query error' });
             }
 
-            return res.status(200).json({ status: true, student: result })
-        })
-
+            return res.status(200).json({ status: true, student: result });
+        });
     } catch (err) {
-        console.log(err)
-        return res.status(400).json({ status: false, Error: 'server error' })
+        console.error(err);
+        return res.status(400).json({ status: false, error: 'Invalid token' });
     }
-})
+});
+
 
 module.exports = { student: router }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPenToSquare,faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import api from '../../../src/api';
 import Swal from 'sweetalert2';
 
@@ -77,6 +77,14 @@ function Teacher() {
 
     return (
         <div className='add-account-main'>
+            <div className='serch-bar'>
+                <input
+
+                    placeholder='Search...'
+
+                />
+                <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
+            </div>
             <div className="subject-main-container">
                 <h4>Teachers</h4>
                 <div className="add-subject-button">

@@ -151,3 +151,50 @@
 .add-teacher {
     animation: fadeIn 0.5s ease-out;
 }
+
+
+
+/* form for student profle editing */
+
+.edit-student-main {
+    display: flex;
+    justify-content: center;
+}
+
+.add-student {
+    background: #ffffff;
+    margin: .4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    border-radius: 12px;
+    width: 50%;
+}
+
+.add-student-button button {
+    background: #2980b9;
+    padding: .5rem 1rem;
+    border-radius: 8px;
+    color: white;
+    transition: all .3s ease;
+}
+
+.add-student-button button:hover {
+    background: #0f4468;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+
+@media (max-width: 768px) {
+    .add-student {
+        width: 80%;
+    }
+}
+@media (max-width: 480px) {
+    .add-student {
+        width: 90%;
+    }
+}
+

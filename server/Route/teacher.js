@@ -317,27 +317,21 @@ router.get('/get-grade', async (req, res) => {
 
     try {
         const sql = `SELECT 
-            grades.id AS grade_id,
+            grades.grade AS grade,
+            subjects.name AS subject_name,
             students.id AS student_id,
             students.name AS student_name,
             students.gender AS gender,
-            grades.grade AS grade,
-            subjects.name AS subject_name,
-            grades.date AS grade_date,
-            attendance.status,
-            attendance.id AS attendance_id,
-            classes.id AS class_id
-        FROM 
+            classes.class_name AS class_name
+        FROM
             grades
-        LEFT JOIN 
-            subjects ON grades.subject_id = subjects.id
-        LEFT JOIN 
-            teachers ON teachers.subject_id = subjects.id
         LEFT JOIN 
             students ON grades.student_id = students.id
         LEFT JOIN 
-            attendance ON students.id = attendance.student_id
-        LEFT JOIN
+            subjects ON grades.subject_id = subjects.id
+        LEFT JOIN 
+            teachers ON teachers.subject_id = subjects.id AND teachers.class_id = students.class_id
+        LEFT JOIN 
             classes ON teachers.class_id = classes.id
         WHERE 
             teachers.id = ?;
@@ -355,6 +349,29 @@ router.get('/get-grade', async (req, res) => {
         return res.status(400).json({ status: false, error: "server error!" })
     }
 })
+
+// get one grade
+
+router.get('/get-student-grade/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+
+    const sql = `SELECT
+            exams.average
+        FROM
+            exams
+        WHERE
+            student_id = ?`
+    connection.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ status: false, error: err.message });
+        }
+        
+        return res.status(200).json({ status: true, result: result[0] });
+    });
+});
+
 
 // get teachers 
 
@@ -721,27 +738,32 @@ router.get('/get-history', async (req, res) => {
         const teacherId = decoded.id;
 
         const sql = `
-            SELECT 
+                    SELECT 
                 students.id AS student_id,
                 students.name AS student_name,
                 classes.id AS class_id,
+                subjects.id AS subject_id,
+                subjects.name AS subject_name,
+                subjects.id,
                 history.attendance_date,
                 COUNT(CASE WHEN history.status = 'Absent' THEN 1 END) AS absent_count
             FROM
-                students
+                history
             INNER JOIN
-                classes ON students.class_id = classes.id
+                classes ON history.class_id = classes.id
             INNER JOIN
-                teachers ON classes.id = teachers.class_id
+                teachers ON classes.id = teachers.class_id AND history.subject_id = teachers.subject_id
             INNER JOIN
-                history ON students.id = history.student_id
+                students ON students.id = history.student_id
+            INNER JOIN 
+                subjects ON history.subject_id = subjects.id
             WHERE
                 teachers.id = ?
             GROUP BY
-                students.id, history.attendance_date
+                students.id, students.name, classes.id, subjects.id, subjects.name, history.attendance_date
             ORDER BY
-                history.attendance_date DESC;
-        `;
+                history.attendance_date DESC, students.name;
+            `;
 
         connection.query(sql, [teacherId], (err, result) => {
             if (err) {

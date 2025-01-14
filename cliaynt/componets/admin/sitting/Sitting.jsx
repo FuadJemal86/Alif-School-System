@@ -234,10 +234,12 @@ function Sitting() {
                 <div className="siting-school-image1">
                     {
                         schoolImage.map((c) => (
-                            <div className="sitting-text" key={c.id}>
-                                <div className="sitting-tresh"> <span onClick={() => schoolDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer', marginRight: '10px' }} ><FontAwesomeIcon icon={faTrash} /></span></div>
-                                <img src={`http://localhost:3032/image/${c.image}`} alt="" srcset="" />
-                                <div>{c.discription}</div>
+                            <div className="main-sitting-text">
+                                <div className="sitting-text" key={c.id}>
+                                    <div className="sitting-tresh"> <span onClick={() => schoolDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer', marginRight: '10px' }} ><FontAwesomeIcon icon={faTrash} /></span></div>
+                                    <img src={`http://localhost:3032/image/${c.image}`} alt="" srcset="" />
+                                    <div>{c.discription}</div>
+                                </div>
                             </div>
                         ))
                     }
@@ -249,14 +251,14 @@ function Sitting() {
                 <div className="siting-school-image1">
                     {
                         teacherImage.map((c) => (
-                            <div className="sitting-text" key={c.id}>
-                                <div className="sitting-tresh"> <span onClick={() => teacherDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer', marginRight: '10px' }} ><FontAwesomeIcon icon={faTrash} /></span></div>
-                                <img src={`http://localhost:3032/image/${c.image}`} alt="" srcset="" />
-                                <strong>{c.name}</strong>
-                                <div className="t-image-des">{c.discription}</div>
+                            <div className="main-sitting-text">
+                                <div className="sitting-text" key={c.id}>
+                                    <div className="sitting-tresh"> <span onClick={() => teacherDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer', marginRight: '10px' }} ><FontAwesomeIcon icon={faTrash} /></span></div>
+                                    <img src={`http://localhost:3032/image/${c.image}`} alt="" srcset="" />
+                                    <strong>{c.name}</strong>
+                                    <div className="t-image-des">{c.discription}</div>
+                                </div>
                             </div>
-
-
                         ))
                     }
                 </div>

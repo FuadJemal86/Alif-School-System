@@ -2,24 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../subject/subject.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import api from '../../../src/api';
 import Swal from 'sweetalert2';
 
 function Parent() {
 
     const [parent, setParent] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
 
         fechData()
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
+
     }, [])
 
     const fechData = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/get-parent')
             if (result.data.status) {
@@ -30,9 +29,12 @@ function Parent() {
         } catch (err) {
             console.error(err.message)
         }
+        finally {
+            setIsLoading(false)
+        }
     }
 
-    const handelDelete = async(id) => {
+    const handelDelete = async (id) => {
 
         try {
             Swal.fire({
@@ -71,16 +73,24 @@ function Parent() {
     }
 
     if (isLoading) {
-            return (
-                <div className="loading-spinner">
-                    <span class="loader"></span>
-                </div>
-            );
-        }
+        return (
+            <div className="loading-spinner">
+                <span class="loader"></span>
+            </div>
+        );
+    }
 
 
     return (
         <div className='subject-main-table-con'>
+            <div className='serch-bar'>
+                <input
+
+                    placeholder='Search...'
+
+                />
+                <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
+            </div>
             <div className="subject-main-container">
                 <h4>Parent</h4>
                 <div className="subject-table-con">

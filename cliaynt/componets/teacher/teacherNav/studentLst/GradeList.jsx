@@ -66,7 +66,7 @@ function GradeList() {
                                     <tr>
                                         <th>Id</th>
                                         <th>Name</th>
-                                        <th>Section</th>
+                                        <th>Subject</th>
                                         <th>Gender</th>
                                         <th>Grade</th>
                                     </tr>
