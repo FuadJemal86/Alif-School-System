@@ -198,3 +198,37 @@
     }
 }
 
+.message-box-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+    gap: 1rem;
+    padding: 1rem;
+    margin-top: 4rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.message-box {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+@media (max-width: 480px) {
+    .message-box-main {
+        width: 80%;
+    }
+
+    .message-box {
+        padding: 0.5rem;
+    }
+
+    .message-box1 div {
+        font-size: 0.8rem;
+    }
+}

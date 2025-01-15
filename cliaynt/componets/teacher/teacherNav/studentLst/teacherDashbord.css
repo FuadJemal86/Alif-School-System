@@ -159,6 +159,17 @@
     }
 }
 
+@media (max-width: 460px) {
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+        grid-column: auto;
+    }
+}
+
+
+
 /* Animation */
 @keyframes fadeIn {
     from {

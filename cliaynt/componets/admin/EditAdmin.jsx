@@ -13,7 +13,6 @@ function EditAdmin() {
 
     const [adminInfo, setAdminInfo] = useState({
         name: '',
-        email: '',
         password: '',
         image: ''
     })
@@ -26,7 +25,7 @@ function EditAdmin() {
 
         // Append form fields to FormData
         formData.append('name', adminInfo.name);
-        formData.append('email', adminInfo.email);
+        formData.append('password', adminInfo.password);
         formData.append('image', adminInfo.image);
 
         try {
@@ -41,7 +40,6 @@ function EditAdmin() {
                     timer: 1500
                 });
                 navigate('/admin-dashbord/admin-profile')
-                window.location.reload()
             } else {
                 toast.error(result.data.message)
             }
@@ -68,8 +66,8 @@ function EditAdmin() {
 
                             <div className='add-teacher-inputs'>
                                 <input
-                                    onChange={e => setAdminInfo({ ...adminInfo, email: e.target.value })}
-                                    placeholder='email'
+                                    onChange={e => setAdminInfo({ ...adminInfo, password: e.target.value })}
+                                    placeholder='password'
 
                                 />
                             </div>

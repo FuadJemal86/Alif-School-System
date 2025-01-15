@@ -107,7 +107,7 @@ function SendMessage() {
                     {
                         message.map(c => (
                             <div className='message-box'>
-                                <div style={{ cursor: 'pointer' }} onClick={() => handelDelete(c.id)} className='message-trash'><FontAwesomeIcon icon={faTrash} /></div>
+                                <div style={{ cursor: 'pointer' }} onClick={() => handelDelete(c.id)} className='message-trash'><FontAwesomeIcon style={{color:'red'}} icon={faTrash} /></div>
                                 <div className='message-box1'>
                                     <div><strong>message:</strong> {c.message}</div>
                                     <div><strong>Time:</strong> {c.time}</div>

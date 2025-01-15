@@ -8,6 +8,7 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 const { console } = require('inspector');
 const { auth, admin } = require('../middelwer/auth');
+const { hash } = require('crypto');
 
 
 
@@ -195,26 +196,35 @@ router.get('/get-admin', (req, res) => {
 router.put('/edit-admin/:id', upload.single('image'), async (req, res) => {
 
     const id = req.params.id;
-    const { name, email } = req.body;
+    const { name, password } = req.body;
 
-    if (!name || !email) {
+    if (!name || !password) {
         return res.status(400).json({ status: false, message: 'Missing required fields!' })
     }
 
     try {
 
-        const image = req.file ? req.file.filename : null;
-
-        const values = [name, email, image, id];
-
-        const sql = `UPDATE  admin  SET name = ? , email = ? , image = ?  WHERE id = ?`
-
-        connection.query(sql, values, (err, result) => {
+        bcrypt.hash(password, (10), (err, hash) => {
             if (err) {
-                console.error(err.message);
-                return res.status(500).json({ status: false, error: err.message })
+                console.log(err.message)
+                return res.status(200).json({ status: false, Error: 'hash error' })
             }
-            return res.status(200).json({ status: true, message: 'Admin Update successfully!' })
+
+
+            const image = req.file ? req.file.filename : null;
+
+            const values = [name, hash, image, id];
+
+            const sql = `UPDATE  admin  SET name = ? , password = ? , image = ?  WHERE id = ?`
+
+            connection.query(sql, values, (err, result) => {
+                if (err) {
+                    console.error(err.message);
+                    return res.status(500).json({ status: false, error: err.message })
+                }
+                return res.status(200).json({ status: true, message: 'Admin Update successfully!' })
+            })
+
         })
 
     } catch (err) {

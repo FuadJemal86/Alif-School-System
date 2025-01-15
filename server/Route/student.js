@@ -125,5 +125,37 @@ router.get('/student-result', async (req, res) => {
 });
 
 
+// edit student profile
+
+router.put('/edit-student/:id',  async (req, res) => {
+    const id = req.params.id
+
+    const { password } = req.body
+
+    try {
+        bcrypt.hash(password , (10) , (err , hash) => {
+            if(err) {
+                console.log(err.message)
+                return res.status(500).json({status:false , Error : 'hash error'})
+            }
+            const sql = `UPDATE students SET password = ? WHERE id = ?`;
+        connection.query(sql, [hash, id], (err, result) => {
+            if (err) {
+                console.error(err.message)
+                return res.status(500).json({ status: false, error: 'query error' })
+            }
+
+            return res.status(200).json({ status: true, message: 'grade updated' })
+        })
+        })
+        
+
+    } catch (err) {
+        console.error(err.message)
+        return res.status(400).json({ status: false, error: 'server error' })
+    }
+})
+
+
 module.exports = { student: router }
 

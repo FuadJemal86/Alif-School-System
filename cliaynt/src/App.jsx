@@ -117,7 +117,7 @@ function App() {
         </Route>
 
         <Route path='/student-profile' element={<StudentProfile />} />
-        <Route path='/edit-profile' element={<EditStudentProfile />} />
+        <Route path='/edit-profile/:id' element={<EditStudentProfile />} />
       </Routes>
     </Router>
   );

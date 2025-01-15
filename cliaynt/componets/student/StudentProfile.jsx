@@ -119,7 +119,7 @@ const StudentProfile = () => {
                                     </div>
                                 </div>
                                 <div className='student-edit-profile'>
-                                    <Link to={'/edit-profile'} className='student-edit-button'>Edit Profile</Link>
+                                    <Link to={`/edit-profile/${student.studentId}`} className='student-edit-button'>Edit Profile</Link>
                                 </div>
                             </div>
                         </div>

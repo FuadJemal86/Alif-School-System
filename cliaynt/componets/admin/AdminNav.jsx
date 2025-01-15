@@ -18,7 +18,8 @@ import {
     faBell,
     faInbox,
     faGear,
-    faMessage
+    faMessage,
+    faUserCircle
 } from '@fortawesome/free-solid-svg-icons';
 import useValidation from '../../src/hooks/validation';
 import api from '../../src/api';
@@ -114,7 +115,15 @@ function AdminNav() {
                                         </span>
                                     )}
                                 </div>
-                                <Link to={'/admin-dashbord/admin-profile'}><img src={`http://localhost:3032/image/${adminInfo.image}`} alt="" srcset="" /></Link>
+                                {
+                                    adminInfo.image !== null ? (
+                                        <Link to={'/admin-dashbord/admin-profile'}><img src={`http://localhost:3032/image/${adminInfo.image}`} alt="" srcset="" /></Link>
+
+                                    ) : (
+                                        <Link to={'/admin-dashbord/admin-profile'} style={{ padding: '8px' , paddingTop:'13px' }}><FontAwesomeIcon icon={faUserCircle} style={{ fontSize: '30px', color: '#295F98' }} /></Link>
+                                    )
+                                }
+                                {/* <Link to={'/admin-dashbord/admin-profile'}><img src={`http://localhost:3032/image/${adminInfo.image}`} alt="" srcset="" /></Link> */}
                                 <div onClick={togel} className='admin-ellips-vertical'>
                                     <FontAwesomeIcon icon={faEllipsisVertical} />
                                 </div>

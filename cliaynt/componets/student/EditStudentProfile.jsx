@@ -1,9 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../admin/teachers/teacher.css'
 import { LogOut, User, Book, GraduationCap } from 'lucide-react';
 import studentValidation from '../../src/hooks/studentValidation';
+import api from '../../src/api';
+import { useParams } from 'react-router-dom';
 
 function EditStudentProfile() {
+    
+
+    const {id} = useParams()
+    const [studentInfo , setStudentInfo] = useState({
+        password:''
+    })
+
+    const handelSubmit = async(c) => {
+        c.preventDefault()
+
+        try {
+            const result = await api.put(`/student/edit-student/${id}` , studentInfo)
+
+            if(result.data.status) {
+                alert('studnt edited')
+            } else {
+                alert(result.data.message)
+            }
+        }catch(err) {
+            console.log(err)
+        }
+    }
 
     studentValidation()
 
@@ -36,13 +60,13 @@ function EditStudentProfile() {
                 </div>
             </header>
             <div className='edit-student-main'>
-                <form className='add-teacher-con add-student'>
+                <form className='add-teacher-con add-student' onSubmit={handelSubmit}>
                     <div >
                         <div className='add-teacher-text'>Edit Profile</div>
                         <div className='add-teacher-con1'>
                             <div className='add-teacher-inputs'>
                                 <input
-                                    // onChange={e => setTeacher({ ...teacher, name: e.target.value })}
+                                    onChange={e => setStudentInfo({ ...studentInfo, password: e.target.value })}
                                     placeholder='new password'
                                     type='text'
                                 />
