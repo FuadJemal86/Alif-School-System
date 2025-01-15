@@ -220,7 +220,7 @@ router.put('/edit-admin/:id', upload.single('image'), async (req, res) => {
             connection.query(sql, values, (err, result) => {
                 if (err) {
                     console.error(err.message);
-                    return res.status(500).json({ status: false, error: err.message })
+                    return res.status(500).json({ status: false, error: 'query error' })
                 }
                 return res.status(200).json({ status: true, message: 'Admin Update successfully!' })
             })
@@ -229,7 +229,7 @@ router.put('/edit-admin/:id', upload.single('image'), async (req, res) => {
 
     } catch (err) {
         console.log(err.message)
-        return res.status(400).json({ status: false, error: err })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -246,7 +246,7 @@ router.post('/add-subjects', [auth, admin], async (req, res) => {
         connection.query(chekSubject, [name], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
 
             if (result.length > 0) {
@@ -268,7 +268,7 @@ router.post('/add-subjects', [auth, admin], async (req, res) => {
 
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 
 })
@@ -305,7 +305,7 @@ router.get('/auth/get-teacher/:id', [auth, admin], (req, res) => {
 
     connection.query(sql, [id], (err, result) => {
         if (err) {
-            return res.status(500).json({ status: false, error: err.message });
+            return res.status(500).json({ status: false, error: 'query error' });
         }
         return res.status(200).json({ status: true, result });
     });
@@ -336,7 +336,7 @@ router.delete('/subject-delete/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -391,7 +391,7 @@ router.post('/add-teacher', [auth, admin], upload.single('image'), async (req, r
 
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error'})
     }
 
 });
@@ -438,7 +438,7 @@ router.get('/get-teacher', [auth, admin], async (req, res) => {
         });
     } catch (err) {
         console.error(err.message);
-        return res.status(400).json({ status: false, error: err.message });
+        return res.status(400).json({ status: false, error: 'server error' });
     }
 });
 
@@ -461,7 +461,7 @@ router.get('/get-teacher-name', [auth, admin], async (req, res) => {
         })
 
     } catch (err) {
-        return res.status(400).json({ status: false, error: 'query error', err })
+        return res.status(400).json({ status: false, error: 'query error' })
     }
 })
 
@@ -490,7 +490,7 @@ router.delete('/teacher-delete/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error:'server error' })
     }
 })
 
@@ -520,7 +520,7 @@ router.put('/update-teacher/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 
 })
@@ -550,7 +550,7 @@ router.get('/get-teacher/:id', [auth, admin], async (req, res) => {
 
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -611,7 +611,7 @@ router.post('/send-email', async (req, res) => {
         res.json({ Status: true, Message: 'Email sent successfully' });
     } catch (err) {
         console.error('Error sending email:', err);
-        res.json({ Status: false, Error: err.message });
+        res.json({ Status: false, Error: 'server error' });
     }
 });
 
@@ -628,7 +628,7 @@ router.post('/add-class', [auth, admin], async (req, res) => {
         connection.query(classChek, [class_name], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
 
             if (result.length > 0) {
@@ -640,12 +640,12 @@ router.post('/add-class', [auth, admin], async (req, res) => {
                 if (err) {
                     throw err
                 }
-                return res.status(200).json({ status: true, message: ' ' })
+                return res.status(200).json({ status: true, message: 'Class Added! ' })
             })
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ state: true, error: err.message })
+        return res.status(400).json({ state: true, error: 'server error' })
     }
 
 })
@@ -669,7 +669,7 @@ router.get('/get-class-section', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -687,7 +687,7 @@ router.get('/get-class', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -716,7 +716,7 @@ router.delete('/class-delete/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -767,7 +767,7 @@ router.post('/add-student', [auth, admin], upload.single('image'), async (req, r
                         console.error('Database query error:', err.message);
                         return res.status(500).json({
                             status: false,
-                            error: err.message,
+                            error:'query error',
                         });
                     }
                     return res.status(200).json({ status: true, message: 'Successfully added' });
@@ -776,7 +776,7 @@ router.post('/add-student', [auth, admin], upload.single('image'), async (req, r
         });
     } catch (err) {
         console.error(err.message);
-        return res.status(400).json({ status: false, error: err.message });
+        return res.status(400).json({ status: false, error: 'server error' });
     }
 });
 
@@ -815,7 +815,7 @@ router.get('/get-student', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -835,7 +835,7 @@ router.delete('/delete-student/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 
 })
@@ -888,13 +888,13 @@ router.get('/get-student/:id', [auth, admin], async (req, res) => {
         connection.query(sql, [id], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
             return res.status(200).json({ status: true, result })
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).jsone({ status: false, error: err.message })
+        return res.status(400).jsone({ status: false, error: 'server error' })
     }
 })
 
@@ -909,13 +909,13 @@ router.get('/get-students/:id', [auth, admin], async (req, res) => {
         connection.query(sql, [id], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
             return res.status(200).json({ status: true, result })
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).jsone({ status: false, error: err.message })
+        return res.status(400).jsone({ status: false, error: 'server error' })
     }
 })
 
@@ -961,7 +961,7 @@ router.post('/send-email-student', async (req, res) => {
         res.json({ Status: true, Message: 'Email sent successfully' });
     } catch (err) {
         console.error('Error sending email:', err);
-        res.json({ Status: false, Error: err.message });
+        res.json({ Status: false, Error:'server error' });
     }
 });
 
@@ -999,14 +999,14 @@ router.post('/add-grade', [auth, admin], async (req, res) => {
             connection.query(sql, [values], (err, result) => {
                 if (err) {
                     console.error(err.message)
-                    return res.status(500).json({ status: false, message: err.message })
+                    return res.status(500).json({ status: false, message:'query error'})
                 }
                 return res.status(200).json({ status: true, message: 'Grade added successfully!' })
             })
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, message: err.message })
+        return res.status(400).json({ status: false, message: 'server error'})
     }
 })
 
@@ -1038,7 +1038,7 @@ router.get('/get-grade', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error!' })
     }
 })
 
@@ -1054,7 +1054,7 @@ router.put('/edit-grade/:id', [auth, admin], async (req, res) => {
         connection.query(sql, [subject_id, grade, id], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
 
             return res.status(200).json({ status: true, message: 'grade updated' })
@@ -1062,7 +1062,7 @@ router.put('/edit-grade/:id', [auth, admin], async (req, res) => {
 
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error!' })
     }
 })
 
