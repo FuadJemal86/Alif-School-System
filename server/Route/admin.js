@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 const { console } = require('inspector');
 const { auth, admin } = require('../middelwer/auth');
 const { hash } = require('crypto');
+const { error } = require('console');
 
 
 
@@ -62,7 +63,7 @@ router.post('/admin-login', async (req, res) => {
 
     try {
 
-        const sql = 'SELECT * FROM admin WHERE email=?';
+        const sql = 'SELECT * FROM admin WHERE email = ?';
         connection.query(sql, [req.body.email], async (err, result) => {
             if (err) {
                 console.error("Database query error:", err.message);
@@ -1082,7 +1083,7 @@ router.delete('/delete-grade/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -1103,7 +1104,7 @@ router.post('/add-parent', [auth, admin], async (req, res) => {
         connection.query(isParentFoun, [student_id], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
 
             if (result.length > 0) {
@@ -1114,14 +1115,14 @@ router.post('/add-parent', [auth, admin], async (req, res) => {
             connection.query(sql, [values], (err, result) => {
                 if (err) {
                     console.error(err.message)
-                    return res.status(500).json({ status: false, error: err.message })
+                    return res.status(500).json({ status: false, error: 'query error' })
                 }
                 return res.status(200).json({ status: true, message: 'parent added' })
             })
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -1148,7 +1149,7 @@ router.get('/get-parent', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error'})
     }
 })
 
@@ -1191,7 +1192,7 @@ router.delete('/delete-parent/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -1219,14 +1220,14 @@ router.post('/contact-message', async (req, res) => {
         connection.query(sql, [value], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
             return res.status(200).json({ status: true, message: 'Send Succsesfuly!' })
         })
 
     } catch (err) {
         console.log(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error'})
     }
 })
 
@@ -1243,13 +1244,13 @@ router.delete('/delete-message/:id', [auth, admin], async (req, res) => {
         connection.query(sql, [id], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error:'query error' })
             }
             return res.status(200).json({ status: true, message: 'message delete' })
         })
     } catch (err) {
         console.log(err)
-        return res.status(400).json({ status: false, error: err })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 
 })
@@ -1263,13 +1264,13 @@ router.get('/get-messaga', [auth, admin], async (req, res) => {
 
         connection.query(sql, (err, result) => {
             if (err) {
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error:'query error' })
             }
             return res.status(200).json({ status: true, result })
         })
     } catch (err) {
         console.log(err)
-        return res.status(400).json({ status: false, error: er })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 
 })
@@ -1283,14 +1284,14 @@ router.get('/count-message', [auth, admin], (req, res) => {
         connection.query(sql, (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
 
             return res.status(200).json({ status: true, result })
         })
     } catch (err) {
         console.log(err);
-        return res.status(400).json({ status: false, error: err })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -1341,13 +1342,13 @@ router.get('/student-total', [auth, admin], (req, res) => {
         connection.query(sql, (err, result) => {
             if (err) {
                 console.error(err.message);
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error:'query error' })
             }
             return res.status(200).json({ status: true, result })
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ status: true, error: err })
+        return res.status(500).json({ status: true, error: 'server error' })
     }
 })
 
@@ -1386,7 +1387,7 @@ router.post('/add-dipa', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ status: true, error: err })
+        return res.status(500).json({ status: true, error: 'server error!' })
     }
 })
 
@@ -1400,13 +1401,13 @@ router.get('/get-dip', [auth, admin], (req, res) => {
         connection.query(sql, (err, result) => {
             if (err) {
                 console.error(err.message);
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query' })
             }
             return res.status(200).json({ status: true, result })
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ status: true, error: err })
+        return res.status(500).json({ status: true, error:'server error' })
     }
 })
 
@@ -1435,7 +1436,7 @@ router.delete('/dip-delete/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -1456,7 +1457,7 @@ router.post('/school-image', [auth, admin], upload.single('image'), async (req, 
         connection.query(sql, value, (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
             return res.status(200).json({ status: true, message: 'Image uploaded successfully' })
         })
@@ -1482,7 +1483,7 @@ router.post('/teacher-image', [auth, admin], upload.single('image'), async (req,
         connection.query(sql, value, (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error: err.message })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
             return res.status(200).json({ status: true, message: 'Image uploaded successfully' })
         })
@@ -1501,7 +1502,7 @@ router.get('/get-schoolImage', async (req, res) => {
 
         connection.query(sql, (err, result) => {
             if (err) {
-                return res.status(500).json({ status: false, error: err.message });
+                return res.status(500).json({ status: false, error: 'query error' });
             }
             return res.status(200).json({ status: true, result });
         });
@@ -1520,7 +1521,7 @@ router.get('/get-teacherImage', async (req, res) => {
 
         connection.query(sql, (err, result) => {
             if (err) {
-                return res.status(500).json({ status: false, error: err.message });
+                return res.status(500).json({ status: false, error: 'query error' });
             }
             return res.status(200).json({ status: true, result });
         });
@@ -1556,7 +1557,7 @@ router.delete('/delete-school-image/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -1586,7 +1587,7 @@ router.delete('/delete-teacher-info/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error: err.message })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
