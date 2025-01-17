@@ -13,7 +13,7 @@ function SendMessage() {
         time: ''
     })
     const [message, setMessage] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleSubmit = async (e) => {
 
@@ -34,13 +34,11 @@ function SendMessage() {
     useEffect(() => {
 
         feahData()
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
 
     }, [])
 
     const feahData = async () => {
+        setIsLoading(true);
         try {
             const result = await api.get('/auth/get-message')
             if (result.data.status) {
@@ -50,6 +48,8 @@ function SendMessage() {
             }
         } catch (err) {
             console.log(err)
+        } finally {
+            setIsLoading(false);
         }
     }
 

@@ -8,7 +8,7 @@ import api from '../../../../src/api';
 function GradeList() {
 
     const [grade, setGrade] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
     
@@ -16,19 +16,19 @@ function GradeList() {
     }, []);
 
     const fetchData = async () => {
+        setIsLoading(true);
         try {
             const result = await api.get('/teacher/get-grade');
 
             if (result.data && result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 1000);
                 setGrade(result.data.result);
             } else {
                 console.log('Error: ', result.data.message || 'Failed to fetch students');
             }
         } catch (err) {
             console.error('An error occurred: ', err);
+        } finally {
+            setIsLoading(false);
         }
     };
 

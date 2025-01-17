@@ -6,7 +6,7 @@ import api from '../../../../src/api';
 function TeacherProfile() {
 
     const [teacherInfo, setTeacherInfo] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         feachData()
@@ -14,19 +14,18 @@ function TeacherProfile() {
     }, [])
 
     const feachData = async () => {
-
+        setIsLoading(true);
         try {
             const result = await api.get('/teacher/get-teacher-profile')
             if (result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 1000);
                 setTeacherInfo(result.data.teacher)
             } else {
                 console.log(result.data.message)
             }
         } catch (err) {
             console.log(err)
+        } finally {
+            setIsLoading(false);
         }
 
     }

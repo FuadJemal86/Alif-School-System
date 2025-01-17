@@ -6,7 +6,7 @@ import api from '../../../../src/api';
 function History() {
 
     const [history, setHistory] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
 
@@ -14,19 +14,19 @@ function History() {
     }, []);
 
     const fetchData = async () => {
+        setIsLoading(true);
         try {
             const result = await api.get('/teacher/get-history');
 
             if (result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 1000);
                 setHistory(result.data.history);
             } else {
                 console.log('Error: ', result.data.message || 'Failed to fetch students');
             }
         } catch (err) {
             console.error('An error occurred: ', err);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -43,11 +43,7 @@ function History() {
             <div className='subject-main-table-con'>
                 <div className='serch-bar'>
                                 <input
-                                    
-                                    
-                
                                     placeholder='Search...'
-                
                                 />
                                 <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
                             </div>

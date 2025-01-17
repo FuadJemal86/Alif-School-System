@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './navCss/nav.css'
 import LogoAlif from '../home/logo/alif.png'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, Outlet } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import alifLogo from '../home/logo/alif.png'
@@ -19,7 +20,8 @@ import {
     faInbox,
     faGear,
     faMessage,
-    faUserCircle
+    faUserCircle,
+    faBars
 } from '@fortawesome/free-solid-svg-icons';
 import useValidation from '../../src/hooks/validation';
 import api from '../../src/api';
@@ -48,6 +50,7 @@ function AdminNav() {
 
     const [adminInfo, setAdminInfo] = useState([])
     const [notificationCount, setNotificationCount] = useState();
+    const [isNavOpen, setIsNavOpen] = useState(true);
 
     useEffect(() => {
 
@@ -86,23 +89,30 @@ function AdminNav() {
         fechData()
     }, [])
 
+    const toggleNav = () => {
+        setIsNavOpen(!isNavOpen);
+    };
+
 
     return (
         <div className=''>
-            <div className='main-nav'>
+            <div className={`main-nav ${!isNavOpen ? 'header-wid' : ''}`}>
                 <div className='main-admin-header'>
                     <header className='header-admin'>
                         <div className='header-conatiner1'>
+                            <button className="nav-toggle-btn" onClick={toggleNav}>
+                                <FontAwesomeIcon icon={faBars} />
+                            </button>
 
                             <div className='admin-profile'>
-                                <div className='notification-icone' style={{ position: 'relative' }}>
-                                    <Link to={'/admin-dashbord/notification'}><FontAwesomeIcon icon={faBell} style={{ fontSize: '23px', cursor: 'pointer', padding: '12px', paddingTop: '15px', color: '#295F98' }} /></Link>
+                                <div className='t-bell'>
+                                    <Link to={'/admin-dashbord/notification'}><FontAwesomeIcon icon={faBell} style={{ fontSize: '23px', cursor: 'pointer', padding: '12px', paddingTop: '12px', color: '#295F98' }} /></Link>
                                     {notificationCount > 0 && (
                                         <span
                                             style={{
                                                 position: 'absolute',
-                                                top: '6px',
-                                                right: '-1px',
+                                                top: '10px',
+                                                right: '-1',
                                                 backgroundColor: '#789DBC',
                                                 color: 'white',
                                                 borderRadius: '50%',
@@ -120,10 +130,9 @@ function AdminNav() {
                                         <Link to={'/admin-dashbord/admin-profile'}><img src={`http://localhost:3032/image/${adminInfo.image}`} alt="" srcset="" /></Link>
 
                                     ) : (
-                                        <Link to={'/admin-dashbord/admin-profile'} style={{ padding: '8px' , paddingTop:'13px' }}><FontAwesomeIcon icon={faUserCircle} style={{ fontSize: '30px', color: '#295F98' }} /></Link>
+                                        <Link to={'/admin-dashbord/admin-profile'} style={{ padding: '8px', paddingTop: '13px' }}><FontAwesomeIcon icon={faUserCircle} style={{ fontSize: '30px', color: '#295F98' }} /></Link>
                                     )
                                 }
-                                {/* <Link to={'/admin-dashbord/admin-profile'}><img src={`http://localhost:3032/image/${adminInfo.image}`} alt="" srcset="" /></Link> */}
                                 <div onClick={togel} className='admin-ellips-vertical'>
                                     <FontAwesomeIcon icon={faEllipsisVertical} />
                                 </div>
@@ -154,10 +163,10 @@ function AdminNav() {
                 </div>
             </div>
 
-            <div onClick={togelCloth} className='text-nav-container'>
+            <div onClick={togelCloth} className={`text-nav-container   ${isNavOpen ? 'open' : ''}`}>
                 <div className='text-container1'>
                     <div className='admin-page-text'>
-                        <div style={{border:'1px solid #8D77AB' , borderRadius:'50px'}}><img style={{ height: '40px', width: '40px', background: 'white', borderRadius: '50px',margin:'3px' }} src={alifLogo} alt="" srcset="" /></div>
+                        <div style={{ border: '1px solid #8D77AB', borderRadius: '50px' }}><img style={{ height: '40px', width: '40px', background: 'white', borderRadius: '50px', margin: '3px' }} src={alifLogo} alt="" srcset="" /></div>
                         <div>Admin Menu</div>
                     </div>
 
@@ -226,7 +235,7 @@ function AdminNav() {
                 </div>
 
             </div>
-            <div onClick={togelCloth} className="main-content">
+            <div className={`t-main-outlet ${!isNavOpen ? 't-main-outlet-mobile' : ''}`}>
                 <Outlet />
             </div>
 

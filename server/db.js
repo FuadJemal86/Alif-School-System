@@ -158,7 +158,16 @@ connection.connect((err) => {
             FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
             FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
             FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
-        );`
+        )`,
+
+        `CREATE TABLE IF NOT EXISTS forgotTable (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            email VARCHAR(255) NOT NULL,
+            token TEXT NOT NULL,
+            expires_at DATETIME NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            is_used BOOLEAN DEFAULT FALSE
+        )`
     ];
 
     const resetAttendanceEvent = `

@@ -231,4 +231,7 @@
     .message-box1 div {
         font-size: 0.8rem;
     }
+    .add-teacher-button button {
+        padding: 12px 0px;
+    }
 }

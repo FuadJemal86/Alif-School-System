@@ -9,7 +9,7 @@ import { cache } from 'react';
 function Attendance() {
 
     const [attendance, setAttendance] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
 
@@ -17,19 +17,19 @@ function Attendance() {
     }, []);
 
     const fetchData = async () => {
+        setIsLoading(true);
         try {
             const result = await api.get('/teacher/get-attendance');
 
             if (result.data && result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 1000);
                 setAttendance(result.data.attendance);
             } else {
                 console.log('Error: ', result.data.message || 'Failed to fetch students');
             }
         } catch (err) {
             console.error('An error occurred: ', err);
+        } finally {
+            setIsLoading(false);
         }
     };
 

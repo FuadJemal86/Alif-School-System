@@ -62,24 +62,25 @@ const Dashbord = () => {
         }, 1000);
     }, [teacherInfo, dipInfo, studentInfo]);
 
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const feahTeacherCounter = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/teacher-total');
             if (result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 2000);
                 setTeacherInfo(result.data.result[0]);
             } else {
                 console.log(result.data.message);
             }
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false)
         }
     };
 
     const feahDipCounter = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/dip-total');
             if (result.data.status) {
@@ -89,10 +90,13 @@ const Dashbord = () => {
             }
         } catch (err) {
             console.log(err);
+        }  finally {
+            setIsLoading(false)
         }
     };
 
     const feahStudentCounter = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/student-total');
             if (result.data.status) {
@@ -102,6 +106,8 @@ const Dashbord = () => {
             }
         } catch (err) {
             console.log(err);
+        }  finally {
+            setIsLoading(false)
         }
     };
 

@@ -104,7 +104,7 @@ function Sitting() {
     }
 
     const [schoolImage, setSchoolImage] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
 
         FeachDataSchool()
@@ -113,19 +113,19 @@ function Sitting() {
     }, [])
 
     const FeachDataSchool = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/get-schoolImage')
 
             if (result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 2000);
                 setSchoolImage(result.data.result)
             } else {
                 console.log(result.data.error)
             }
         } catch (err) {
             console.log(err)
+        } finally {
+            setIsLoading(false)
         }
     }
 

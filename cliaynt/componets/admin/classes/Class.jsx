@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import '../subject/subject.css'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import api from '../../../src/api';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -15,22 +15,22 @@ function Class() {
         feachdata()
 
     }, [])
-    
-    const [isLoading, setIsLoading] = useState(true)
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const feachdata = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/get-class');
             if (result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 2000);
                 setSection(result.data.result);
             } else {
                 console.error('Error fetching teachers:', result.data.error);
             }
         } catch (err) {
             console.log(err)
+        } finally {
+            setIsLoading(false)
         }
 
     }
@@ -46,28 +46,28 @@ function Class() {
     const handelDelete = (id) => {
         const fetchDelete = async () => {
             try {
-                    Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!"
-                    }).then( async(result) => {
-                        if (result.isConfirmed) {
-                            const responce = await api.delete(`/auth/class-delete/${id}`);
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const responce = await api.delete(`/auth/class-delete/${id}`);
 
-                            if(responce.data.status) {
-                                Swal.fire({
-                                    title: "Deleted!",
-                                    text: "Your file has been deleted.",
-                                    icon: "success"
-                                });
-                                feachdata()
-                            }
+                        if (responce.data.status) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                            feachdata()
                         }
-                    })
+                    }
+                })
 
             } catch (err) {
                 console.error(err);
@@ -77,6 +77,14 @@ function Class() {
     }
     return (
         <div className='subject-main-table-con'>
+            <div className='serch-bar'>
+                <input
+
+                    placeholder='Search...'
+
+                />
+                <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
+            </div>
 
             <div className="subject-main-container">
                 <h3>Classes</h3>

@@ -14,21 +14,21 @@ function Teacher() {
         fetchTeachers();
     }, []);
 
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     const fetchTeachers = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/get-teacher');
             if (result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 2000);
                 setTeachers(result.data.result);
             } else {
                 console.error('Error fetching teachers:', result.data.error);
             }
         } catch (err) {
             console.error('Error fetching teachers:', err.message);
+        } finally {
+            setIsLoading(false)
         }
     };
 

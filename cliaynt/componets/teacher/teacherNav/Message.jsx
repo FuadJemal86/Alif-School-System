@@ -11,18 +11,18 @@ function Message() {
     useEffect(() => {
 
         const feahData = async () => {
+            setIsLoading(true)
             try {
                 const result = await api.get('/auth/get-message')
                 if (result.data.status) {
-                    setTimeout(() => {
-                        setIsLoading(false);
-                    }, 2000);
                     setMessage(result.data.result)
                 } else {
                     console.log(result.data.message)
                 }
             } catch (err) {
                 console.log(err)
+            } finally {
+                setIsLoading(false)
             }
         }
 

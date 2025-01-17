@@ -8,8 +8,7 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 const { console } = require('inspector');
 const { auth, admin } = require('../middelwer/auth');
-const { hash } = require('crypto');
-const { error } = require('console');
+const crypto = require('crypto')
 
 
 
@@ -171,7 +170,14 @@ router.get('/get-admin', (req, res) => {
         const id = decoded.id
         console.log(id)
 
-        const sql = 'SELECT * FROM admin WHERE id = ?'
+        const sql = `SELECT 
+            name,
+            email,
+            image
+        FROM
+            admin
+        WHERE    
+            id = ?`
 
         connection.query(sql, [id], (err, result) => {
             if (err) {
@@ -392,7 +398,7 @@ router.post('/add-teacher', [auth, admin], upload.single('image'), async (req, r
 
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: 'server error'})
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 
 });
@@ -491,7 +497,7 @@ router.delete('/teacher-delete/:id', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, error:'server error' })
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -768,7 +774,7 @@ router.post('/add-student', [auth, admin], upload.single('image'), async (req, r
                         console.error('Database query error:', err.message);
                         return res.status(500).json({
                             status: false,
-                            error:'query error',
+                            error: 'query error',
                         });
                     }
                     return res.status(200).json({ status: true, message: 'Successfully added' });
@@ -962,7 +968,7 @@ router.post('/send-email-student', async (req, res) => {
         res.json({ Status: true, Message: 'Email sent successfully' });
     } catch (err) {
         console.error('Error sending email:', err);
-        res.json({ Status: false, Error:'server error' });
+        res.json({ Status: false, Error: 'server error' });
     }
 });
 
@@ -1000,14 +1006,14 @@ router.post('/add-grade', [auth, admin], async (req, res) => {
             connection.query(sql, [values], (err, result) => {
                 if (err) {
                     console.error(err.message)
-                    return res.status(500).json({ status: false, message:'query error'})
+                    return res.status(500).json({ status: false, message: 'query error' })
                 }
                 return res.status(200).json({ status: true, message: 'Grade added successfully!' })
             })
         })
     } catch (err) {
         console.error(err)
-        return res.status(400).json({ status: false, message: 'server error'})
+        return res.status(400).json({ status: false, message: 'server error' })
     }
 })
 
@@ -1149,7 +1155,7 @@ router.get('/get-parent', [auth, admin], async (req, res) => {
         })
     } catch (err) {
         console.error(err.message)
-        return res.status(400).json({ status: false, error: 'server error'})
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -1227,7 +1233,7 @@ router.post('/contact-message', async (req, res) => {
 
     } catch (err) {
         console.log(err)
-        return res.status(400).json({ status: false, error: 'server error'})
+        return res.status(400).json({ status: false, error: 'server error' })
     }
 })
 
@@ -1244,7 +1250,7 @@ router.delete('/delete-message/:id', [auth, admin], async (req, res) => {
         connection.query(sql, [id], (err, result) => {
             if (err) {
                 console.error(err.message)
-                return res.status(500).json({ status: false, error:'query error' })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
             return res.status(200).json({ status: true, message: 'message delete' })
         })
@@ -1264,7 +1270,7 @@ router.get('/get-messaga', [auth, admin], async (req, res) => {
 
         connection.query(sql, (err, result) => {
             if (err) {
-                return res.status(500).json({ status: false, error:'query error' })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
             return res.status(200).json({ status: true, result })
         })
@@ -1342,7 +1348,7 @@ router.get('/student-total', [auth, admin], (req, res) => {
         connection.query(sql, (err, result) => {
             if (err) {
                 console.error(err.message);
-                return res.status(500).json({ status: false, error:'query error' })
+                return res.status(500).json({ status: false, error: 'query error' })
             }
             return res.status(200).json({ status: true, result })
         })
@@ -1407,7 +1413,7 @@ router.get('/get-dip', [auth, admin], (req, res) => {
         })
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ status: true, error:'server error' })
+        return res.status(500).json({ status: true, error: 'server error' })
     }
 })
 
@@ -1646,5 +1652,108 @@ router.get('/get-message', async (req, res) => {
     }
 })
 
+
+// forgot password
+
+router.post('/check-email', async (req, res) => {
+    const email = req.body.email;
+
+    try {
+        const sql = 'SELECT * FROM admin WHERE email = ?';
+
+        connection.query(sql, [email], async (err, result) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ status: false, message: 'Query error!' });
+            }
+
+            if (result.length > 0) {
+                // Generate a random 6-digit verification code
+                const verificationCode = Math.floor(100000 + Math.random() * 900000);
+                const expiresAt = new Date(Date.now() + 3600000); // Expires in 1 hour
+
+                const insertSql = `
+                    INSERT INTO forgotTable (email, verification_code, expires_at, is_used)
+                    VALUES (?, ?, ?, ?)
+                `;
+
+                connection.query(insertSql, [email, verificationCode, expiresAt, false], (insertErr) => {
+                    if (insertErr) {
+                        console.error(insertErr.message);
+                        return res.status(500).json({ status: false, message: 'Failed to save verification code!' });
+                    }
+
+                    // Send the verification code via email
+                    const transporter = nodemailer.createTransport({
+                        service: 'Gmail',
+                        auth: {
+                            user: 'fuad47722@gmail.com',
+                            pass: 'adyu juwc wdvb ukhf'
+                        }
+                    });
+
+                    const mailOptions = {
+                        from: 'fuad47722@gmail.com',
+                        to: email,
+                        subject: 'Password Reset Verification Code',
+                        text: `Your verification code is: ${verificationCode}`,
+                        html: `<p>Your verification code is:</p><h3>${verificationCode}</h3>`
+                    };
+
+                    transporter.sendMail(mailOptions, (mailErr, info) => {
+                        if (mailErr) {
+                            console.error(mailErr.message);
+                            return res.status(500).json({ status: false, message: 'Failed to send email!' });
+                        }
+
+                        return res.status(200).json({
+                            status: true,
+                            message: 'Verification code sent to your email address.'
+                        });
+                    });
+                });
+            } else {
+                return res.status(404).json({ status: false, message: 'Account not found!' });
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ status: false, error: 'Server error' });
+    }
+});
+
+
+// chek the token
+
+router.post('/verify-code', async (req, res) => {
+    const { email, verificationCode } = req.body;
+
+    try {
+        const sql = `
+            SELECT * FROM forgotTable 
+            WHERE email = ? AND verification_code = ? AND expires_at > NOW() AND is_used = FALSE
+        `;
+
+        connection.query(sql, [email, verificationCode], (err, result) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ status: false, message: 'Query error!' });
+            }
+
+            if (result.length > 0) {
+                // Mark the code as used
+                const updateSql = `UPDATE forgotTable SET is_used = TRUE WHERE email = ? AND verification_code = ?`;
+                connection.query(updateSql, [email, verificationCode]);
+
+                return res.status(200).json({ status: true, message: 'Verification successful!' });
+            } else {
+                return res.status(400).json({ status: false, message: 'Invalid or expired verification code!' });
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ status: false, error: 'Server error' });
+    }
+});
 
 module.exports = { admin: router };

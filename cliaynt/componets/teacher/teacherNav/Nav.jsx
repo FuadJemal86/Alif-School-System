@@ -119,7 +119,7 @@ function Nav() {
             </div>
 
             {/* Navigation Section */}
-            <div className={`t-nav-main ${isNavOpen ? 'open' : ''}`}>
+            <div className={` t-nav-main ${isNavOpen ? 'open' : ''}` }>
                 <div className='t-nav-text'>
                     <div>
                         <img style={{width:'45px' , height:'45px',borderRadius:'50px' , background:'white'}} src= {alifLogo} alt="" srcset="" />

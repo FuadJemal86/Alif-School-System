@@ -7,7 +7,7 @@ import api from '../../../../src/api';
 function TeacherDashboard() {
     const [date, setDate] = useState(new Date());
     const [counter , setCounter] = useState({})
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
 
 
@@ -30,19 +30,19 @@ function TeacherDashboard() {
     useEffect(() => {
 
         const feachData = async() => {
+            setIsLoading(true);
             try {
                 const result = await api.get('/teacher/counter-number-student')
 
                 if(result.data.status) {
-                    setTimeout(() => {
-                        setIsLoading(false);
-                    }, 2000);
                     setCounter(result.data.result[0])
                 } else {
                     console.log(result.data.message)
                 }
             } catch(err) {
                 console.log(err)
+            } finally {
+                setIsLoading(false);
             }
         }
 

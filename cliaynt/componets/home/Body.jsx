@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import './homeCss/body.css'
+import React, { useEffect, useState } from 'react';
+import './homeCss/body.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook, faSchool, faPen } from '@fortawesome/free-solid-svg-icons';
-import kidsImage from './logo/studentKid.jpg'
-import school1 from './logo/shoolEnvi1.jpeg'
-import school2 from './logo/schoolEnvi2.jpeg'
-import school3 from './logo/schoolEnvi3.jpg'
+import kidsImage from './logo/studentKid.jpg';
+import school1 from './logo/shoolEnvi1.jpeg';
+import school2 from './logo/schoolEnvi2.jpeg';
+import school3 from './logo/schoolEnvi3.jpg';
 import api from '../../src/api';
 
 function Body() {

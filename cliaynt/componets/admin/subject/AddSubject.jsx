@@ -1,5 +1,6 @@
 import React from 'react';
 import '../subject/subject.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -50,29 +51,29 @@ function AddSubject() {
 
     }
     return (
-        <div className='subject-main-table-con'>
-            <div className='subject-input-container'>
-                <form onSubmit={handleSubmit}>
+        <div className='teacher-main-con'>
+            <div className='add-teacher'>
+                <form className='add-teacher-con' onSubmit={handleSubmit}>
                     <div className='subject-main'>
-                        <div className='add-subject-text'>Add Subject</div>
-                        <div className='subject-input'>
+                        <div className='add-teacher-text'>Add Subject</div>
+                        <div className='subject-input '>
                             <div>{error}</div>
-                            <div>
+                            <div className='add-teacher-inputs mb-3'>
                                 <input
                                     onChange={e => setSubject({ ...subject, name: e.target.value })}
                                     placeholder='subject name'
                                 />
                             </div>
 
-                            <div>
-                                <textarea
+                            <div className='add-teacher-inputs mb-3'>
+                                <input
                                     onChange={e => setSubject({ ...subject, description: e.target.value })}
                                     placeholder='description'
                                 />
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div className='add-teacher-button'>
                         <button type='submit' >Add Subject</button>
                     </div>
                 </form>

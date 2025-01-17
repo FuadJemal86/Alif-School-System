@@ -12,17 +12,15 @@ const StudentProfile = () => {
 
     const [studentDetail, setStudentDeatil] = useState([])
     const [studentProfile, setProfile] = useState({})
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
 
     useEffect(() => {
         feachData()
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
     }, [])
 
     const feachData = async () => {
+        setIsLoading(true);
         try {
             const result = await api.get('/student/student-result')
 
@@ -34,6 +32,8 @@ const StudentProfile = () => {
             }
         } catch (err) {
             console.log(err)
+        } finally {
+            setIsLoading(false);
         }
     }
     // Sample student data

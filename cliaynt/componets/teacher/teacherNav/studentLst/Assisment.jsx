@@ -7,24 +7,24 @@ import api from '../../../../src/api';
 
 function Assisment() {
     const [assistenses, setAssistance] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     useEffect(() => {
 
         const feacheData = async () => {
+            setIsLoading(true);
             try {
                 const result = await api.get('/teacher/get-assistence')
                 if (result.data.status) {
-                    setTimeout(() => {
-                        setIsLoading(false);
-                    }, 1000);
                     setAssistance(result.data.students)
                 } else {
                     console.log(result.data.message)
                 }
             } catch (err) {
                 console.log(err)
+            } finally {
+                setIsLoading(false);
             }
         }
 

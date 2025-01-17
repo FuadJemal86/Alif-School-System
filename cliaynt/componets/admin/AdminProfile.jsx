@@ -6,10 +6,11 @@ import api from '../../src/api';
 
 const AdminProfile = () => {
     const [adminInfo, setAdminInfo] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const result = await api.get('/auth/get-admin');
                 if (result.data.status) {
@@ -27,6 +28,8 @@ const AdminProfile = () => {
 
             } catch (err) {
                 console.error('Error fetching admin data:', err);
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchData();

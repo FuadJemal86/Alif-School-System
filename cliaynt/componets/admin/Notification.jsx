@@ -7,17 +7,15 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 function Notification() {
 
     const [notification, setNotification] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fechData = async () => {
+            setIsLoading(true);
             try {
                 const result = await api.get('/auth/get-messaga')
 
                 if (result.data.status) {
-                    setTimeout(() => {
-                        setIsLoading(false);
-                    }, 1000);
                     setNotification(result.data.result)
                 } else {
                     console.log(result.data.error)
@@ -25,6 +23,8 @@ function Notification() {
 
             } catch (err) {
                 console.log(err)
+            } finally {
+                setIsLoading(false);
             }
         }
         fechData()
@@ -35,7 +35,7 @@ function Notification() {
             const result = await api.delete(`/auth/delete-message/${id}`)
 
             if (result.data.status) {
-                window.location.reload()
+                fechData()
             } else {
                 console.log(result.data.message)
             }

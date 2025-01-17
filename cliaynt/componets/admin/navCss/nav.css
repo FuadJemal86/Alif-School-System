@@ -7,13 +7,21 @@
     padding: 20px;
 }
 
-.main-admin-header {
+.main-nav {
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     position: fixed;
-    z-index: 1000;
     left: 250px;
+    z-index: 1000;
     right: 0;
+    height: 55px;
+    transition: left 0.3s ease-in-out;
+}
+
+/* when on clike the nav will change */
+
+.text-nav-container.open {
+    left: 0;
 }
 
 .nav-alif-logo {
@@ -53,13 +61,16 @@
 /* nav styling */
 
 .text-nav-container {
-    width: 250px;
-    position: fixed;
+    background: rgb(27, 27, 49);
     height: 100vh;
-    overflow-y: auto;
-    background-color: #10171d;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    width: 250px;
     padding: 11px;
+    position: fixed;
+    top: 0;
+    left: -250px; 
+    transition: left 0.3s ease-in-out;
+    z-index: 999;
+    overflow-y: auto;
 }
 
 .admin-page-text {
@@ -127,7 +138,6 @@ a {
 .admin-profile-container {
     min-height: 100vh;
     padding: 2rem;
-    background-color: #f5f5f5;
     display: flex;
     justify-content: center;
     align-items: center;

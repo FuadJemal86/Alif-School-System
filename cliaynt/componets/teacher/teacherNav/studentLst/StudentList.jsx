@@ -8,17 +8,15 @@ import api from '../../../../src/api';
 function StudentList() {
     const [students, setStudents] = useState([]);
     const [section, setSection] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const result = await api.get('/teacher/teacher-data');
 
                 if (result.data && result.data.status) {
-                    setTimeout(() => {
-                        setIsLoading(false);
-                    }, 1000);
                     // Assuming the response has class_students
                     setStudents(result.data.class_students); // Use 'class_students' from the response
                     setSection(result.data.subject_details);
@@ -27,6 +25,8 @@ function StudentList() {
                 }
             } catch (err) {
                 console.error('An error occurred: ', err);
+            } finally {
+                setIsLoading(false);
             }
         };
 

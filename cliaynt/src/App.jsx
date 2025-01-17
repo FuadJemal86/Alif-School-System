@@ -47,6 +47,7 @@ import History from '../componets/teacher/teacherNav/studentLst/History';
 import TeacherDashbord from '../componets/teacher/teacherNav/studentLst/TeacherDashbord';
 import StudentProfile from '../componets/student/StudentProfile';
 import EditStudentProfile from '../componets/student/EditStudentProfile';
+import ForgotEmail from '../componets/forgotpassword/ForgotEmail';
 
 
 
@@ -64,6 +65,7 @@ function App() {
         <Route path='/admin-login' element={<AdminLogin />} />
         <Route path='/techer-login' element={<Login />} />
         <Route path='/student-login' element={<StudentLogin />} />
+        <Route path='/forgot-email' element={<ForgotEmail />} />
 
         {/* Contact Page */}
         <Route path='/contact' element={<ContactParent />} />

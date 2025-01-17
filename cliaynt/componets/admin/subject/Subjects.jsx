@@ -18,14 +18,12 @@ function Subjects() {
         fetchData()
 
     }, [])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const fetchData = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/get-subject');
             if (result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 2000);
                 setSubject(result.data.result)
             } else {
                 console.error('Error fetching data:', result.data.error);
@@ -33,6 +31,8 @@ function Subjects() {
 
         } catch (err) {
             console.error(err)
+        } finally {
+            setIsLoading(false)
         }
     }
 

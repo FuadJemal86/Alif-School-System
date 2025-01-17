@@ -9,24 +9,24 @@ import Swal from 'sweetalert2';
 function Dipartment() {
 
     const [department, setDepartment] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
 
 
     const feachData = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/get-dip')
 
             if (result.data.status) {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 2000);
                 setDepartment(result.data.result)
             } else {
                 console.log(result.data.message)
             }
         } catch (err) {
             console.log(err)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -69,8 +69,6 @@ function Dipartment() {
                     } else {
                         console.log(result.data.error)
                     }
-
-
                 }
             });
         } catch (err) {

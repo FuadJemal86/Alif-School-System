@@ -11,16 +11,14 @@ function Student() {
     const [students, setStudents] = useState([])
     const [filteredStudents, setFilteredStudents] = useState([]);
     const [searchTerm, setSearchTerm] = useState(''); 
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         fetchData();
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
     }, []);
 
     const fetchData = async () => {
+        setIsLoading(true);
         try {
             const result = await api.get('/auth/get-student');
             if (result.data.status) {
@@ -35,6 +33,8 @@ function Student() {
             }
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
         }
     };
 

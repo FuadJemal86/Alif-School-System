@@ -12,19 +12,17 @@ function Grade() {
     const [studentInfo, setStudentInfo] = useState([])
     const [filteredStudents, setFilteredStudents] = useState([])
     const [serchItem, setSerchItem] = useState('')
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
 
     useEffect(() => {
 
         fechData()
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
 
     }, [])
 
     const fechData = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/get-grade')
             if (result.data.status) {
@@ -38,6 +36,8 @@ function Grade() {
             }
         } catch (err) {
             console.error(err.message)
+        } finally {
+            setIsLoading(false)
         }
     }
 
