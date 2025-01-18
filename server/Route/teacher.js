@@ -136,8 +136,8 @@ router.get('/get-teacher-profile', async (req, res) => {
 //add attendance 
 
 router.post('/take-attendance', async (req, res) => {
-    
-    const { student_id, class_id, status , subject_id } = req.body;
+
+    const { student_id, class_id, status, subject_id } = req.body;
 
     console.log(subject_id)
 
@@ -367,7 +367,7 @@ router.get('/get-student-grade/:id', (req, res) => {
             console.error(err.message);
             return res.status(500).json({ status: false, error: err.message });
         }
-        
+
         return res.status(200).json({ status: true, result: result[0] });
     });
 });
@@ -492,7 +492,7 @@ router.put('/edit-teacher/:id', upload.single('image'), async (req, res) => {
     try {
 
         const image = req.file ? req.file.filename : null;
-        
+
 
         const sql = `UPDATE  teachers  SET password = ? , image = ?  WHERE id = ?`
 
@@ -793,7 +793,7 @@ router.get('/counter-number-student', async (req, res) => {
         const decoded = jwt.verify(token, process.env.TEACHER_KEY)
         const teacherId = decoded.id
 
-                const sql = `
+        const sql = `
             SELECT 
                 COUNT(DISTINCT students.id) AS student_count, -- Total students in the teacher's class and subject
                 SUM(CASE WHEN history.status = 'Present' THEN 1 ELSE 0 END) AS present_day, -- Total "Present" days for this subject
@@ -827,7 +827,7 @@ router.get('/counter-number-student', async (req, res) => {
 })
 
 
-// forgot email
+// forgot password
 
 router.post('/check-email', async (req, res) => {
     const email = req.body.email;
@@ -859,6 +859,7 @@ router.post('/check-email', async (req, res) => {
 
                     // Send the verification code via email
                     const transporter = nodemailer.createTransport({
+                        host: 'smtp.gmail.com',
                         service: 'Gmail',
                         auth: {
                             user: process.env.EMAIL_USER,
@@ -904,7 +905,7 @@ router.post('/verify-code', async (req, res) => {
 
     try {
         const sql = `
-            SELECT * FROM forgotTable 
+            SELECT * FROM forgottable 
             WHERE email = ? AND token = ? AND expires_at > NOW() AND is_used = FALSE
         `;
 
@@ -916,7 +917,7 @@ router.post('/verify-code', async (req, res) => {
 
             if (result.length > 0) {
                 // Mark the code as used
-                const updateSql = `UPDATE forgotTable SET is_used = TRUE WHERE email = ? AND token = ?`;
+                const updateSql = `UPDATE forgottable SET is_used = TRUE WHERE email = ? AND token = ?`;
                 connection.query(updateSql, [email, verificationCode]);
 
                 return res.status(200).json({ status: true, message: 'Verification successful!' });
@@ -929,6 +930,49 @@ router.post('/verify-code', async (req, res) => {
         return res.status(500).json({ status: false, error: 'Server error' });
     }
 });
+
+
+// reset-password
+router.put('/reset-password', async (req, res) => {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+        return res.status(400).json({ status: false, message: 'Email and new password are required.' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ status: false, message: 'Invalid email format.' });
+    }
+
+    const sql = `UPDATE teachers SET password = ? WHERE email = ?`;
+
+    try {
+        bcrypt.hash(newPassword, 10, (err, hash) => {
+            if (err) {
+                console.error('Hashing error:', err.message);
+                return res.status(500).json({ status: false, message: 'Failed to hash password.' });
+            }
+
+            connection.query(sql, [hash, email], (err, result) => {
+                if (err) {
+                    console.error('Database error:', err.message);
+                    return res.status(500).json({ status: false, message: 'Database query failed.' });
+                }
+
+                if (result.affectedRows === 0) {
+                    return res.status(404).json({ status: false, message: 'Email not found.' });
+                }
+
+                return res.status(200).json({ status: true, message: 'Password reset successfully!' });
+            });
+        });
+    } catch (error) {
+        console.error('Server error:', error.message);
+        return res.status(500).json({ status: false, message: 'Server error!' });
+    }
+});
+
 
 
 

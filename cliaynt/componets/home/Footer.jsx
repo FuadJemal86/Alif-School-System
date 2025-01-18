@@ -70,7 +70,7 @@ function Footer() {
                     <div className='footer-icons'>
                         <div className='footer-icon'><Link to={"#"}><FontAwesomeIcon icon={faFacebook} /></Link></div>
                         <div className='footer-icon'><Link to={'https://www.instagram.com/fuad.l1'}><FontAwesomeIcon icon={faInstagram} /></Link></div>
-                        <div className='footer-icon'><Link to={'#'}><FontAwesomeIcon icon={faLinkedin} /></Link></div>
+                        <div className='footer-icon'><Link to={'https://www.linkedin.com/in/fuad-jemal-757601302'}><FontAwesomeIcon icon={faLinkedin} /></Link></div>
                         <div className='footer-icon'><Link to={'https:/www.tiwtter.com/Fuadjemal185415'}><FontAwesomeIcon icon={faTwitter} /></Link></div>
                     </div>
                 </div>

@@ -122,17 +122,19 @@
 }
 
 .forget-link-main {
-    text-align: left;
-    margin-left: 20px;
+    text-align: right;
+    margin-right: 20px;
 }
 
 .forget-link {
-    color: #a2bcd8;
+    color: #004c9c;
     transition: .3s ease;
+    font-size: 15px;
+    font-weight: 500;
 }
 
 .forget-link:hover {
-    color: #2066b6;
+    color: #083363;
 }
 
 

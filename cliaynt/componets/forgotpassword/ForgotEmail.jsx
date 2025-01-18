@@ -128,14 +128,14 @@ function ForgotPassword() {
                         return;
                 }
 
-                const result = await api.post(resetEndpoint, {
+                const result = await api.put(resetEndpoint, {
                     email: formData.email,
                     newPassword: formData.newPassword,
                 });
 
                 if (result.data.status) {
                     toast.success('Password reset successful! Redirecting...');
-                    navigate('/login'); // Redirect to login page
+                    navigate('/techer-login');
                 } else {
                     toast.error(result.data.message);
                 }
