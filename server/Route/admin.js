@@ -1658,69 +1658,72 @@ router.get('/get-message', async (req, res) => {
 router.post('/check-email', async (req, res) => {
     const email = req.body.email;
 
+    if (!email) {
+        return res.status(400).json({ status: false, message: 'Email is required!' });
+    }
+
     try {
         const sql = 'SELECT * FROM admin WHERE email = ?';
 
-        connection.query(sql, [email], async (err, result) => {
+        connection.query(sql, [email], (err, result) => {
             if (err) {
-                console.error(err.message);
-                return res.status(500).json({ status: false, message: 'Query error!' });
+                console.error(`Query Error: ${err.message}`);
+                return res.status(500).json({ status: false, message: 'Database query error!' });
             }
 
             if (result.length > 0) {
-                // Generate a random 6-digit verification code
-                const verificationCode = Math.floor(100000 + Math.random() * 900000);
-                const expiresAt = new Date(Date.now() + 3600000); // Expires in 1 hour
+                const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+                const expiresAt = new Date(Date.now() + 3600000); // 1 hour from now
 
                 const insertSql = `
-                    INSERT INTO forgotTable (email, verification_code, expires_at, is_used)
+                    INSERT INTO forgottable (email, token, expires_at, is_used)
                     VALUES (?, ?, ?, ?)
                 `;
 
                 connection.query(insertSql, [email, verificationCode, expiresAt, false], (insertErr) => {
                     if (insertErr) {
-                        console.error(insertErr.message);
+                        console.error(`Insert Error: ${insertErr.message}`);
                         return res.status(500).json({ status: false, message: 'Failed to save verification code!' });
                     }
 
-                    // Send the verification code via email
                     const transporter = nodemailer.createTransport({
                         service: 'Gmail',
                         auth: {
-                            user: 'fuad47722@gmail.com',
-                            pass: 'adyu juwc wdvb ukhf'
-                        }
+                            user: process.env.EMAIL_USER,
+                            pass: process.env.EMAIL_PASS,
+                        },
                     });
 
                     const mailOptions = {
-                        from: 'fuad47722@gmail.com',
+                        from: process.env.EMAIL_USER,
                         to: email,
                         subject: 'Password Reset Verification Code',
                         text: `Your verification code is: ${verificationCode}`,
-                        html: `<p>Your verification code is:</p><h3>${verificationCode}</h3>`
+                        html: `<p>Your verification code is:</p><h3>${verificationCode}</h3>`,
                     };
 
-                    transporter.sendMail(mailOptions, (mailErr, info) => {
+                    transporter.sendMail(mailOptions, (mailErr) => {
                         if (mailErr) {
-                            console.error(mailErr.message);
+                            console.error(`Email Error: ${mailErr.message}`);
                             return res.status(500).json({ status: false, message: 'Failed to send email!' });
                         }
 
                         return res.status(200).json({
                             status: true,
-                            message: 'Verification code sent to your email address.'
+                            message: 'Verification code sent to your email address.',
                         });
                     });
                 });
             } else {
-                return res.status(404).json({ status: false, message: 'Account not found!' });
+                return res.status(200).json({ status: false, message: 'Account not found!' });
             }
         });
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ status: false, error: 'Server error' });
+        console.error(`Server Error: ${err.message}`);
+        return res.status(500).json({ status: false, message: 'Server error!' });
     }
 });
+
 
 
 // chek the token
@@ -1731,7 +1734,7 @@ router.post('/verify-code', async (req, res) => {
     try {
         const sql = `
             SELECT * FROM forgotTable 
-            WHERE email = ? AND verification_code = ? AND expires_at > NOW() AND is_used = FALSE
+            WHERE email = ? AND token = ? AND expires_at > NOW() AND is_used = FALSE
         `;
 
         connection.query(sql, [email, verificationCode], (err, result) => {

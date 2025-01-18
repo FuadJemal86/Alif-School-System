@@ -48,6 +48,7 @@ import TeacherDashbord from '../componets/teacher/teacherNav/studentLst/TeacherD
 import StudentProfile from '../componets/student/StudentProfile';
 import EditStudentProfile from '../componets/student/EditStudentProfile';
 import ForgotEmail from '../componets/forgotpassword/ForgotEmail';
+import PasswordVerfication from '../componets/forgotpassword/PasswordVerfication';
 
 
 
@@ -66,6 +67,7 @@ function App() {
         <Route path='/techer-login' element={<Login />} />
         <Route path='/student-login' element={<StudentLogin />} />
         <Route path='/forgot-email' element={<ForgotEmail />} />
+        <Route path='/password-verfication' element={<PasswordVerfication />} />
 
         {/* Contact Page */}
         <Route path='/contact' element={<ContactParent />} />
