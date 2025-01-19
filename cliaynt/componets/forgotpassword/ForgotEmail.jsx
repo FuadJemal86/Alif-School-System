@@ -6,7 +6,7 @@ import '../forgotpassword/forgot.css';
 
 function ForgotPassword() {
     const navigate = useNavigate();
-
+    const [notAllowed, setNotAllode] = useState(false)
     const [step, setStep] = useState(1); // Step tracker: 1 - Email, 2 - Verification, 3 - Reset Password
     const [formData, setFormData] = useState({
         email: '',
@@ -29,6 +29,7 @@ function ForgotPassword() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setNotAllode(true)
 
         if (step === 1) {
             // Step 1: Email submission
@@ -56,6 +57,7 @@ function ForgotPassword() {
 
                 const result = await api.post(endpoint, { email: formData.email });
                 if (result.data.status) {
+                    
                     toast.success('Verification code sent to your email.');
                     setStep(2); // Proceed to the next step
                 } else {
@@ -64,6 +66,8 @@ function ForgotPassword() {
             } catch (err) {
                 console.error(err);
                 toast.error('An error occurred. Please try again.');
+            } finally {
+                setNotAllode(false)
             }
         } else if (step === 2) {
             // Step 2: Verification code submission
@@ -71,6 +75,7 @@ function ForgotPassword() {
                 toast.error('Please enter the verification code.');
                 return;
             }
+            setNotAllode(true)
 
             try {
                 let verifyEndpoint;
@@ -103,6 +108,8 @@ function ForgotPassword() {
             } catch (err) {
                 console.error(err);
                 toast.error('An error occurred. Please try again.');
+            } finally {
+                setNotAllode(false)
             }
         } else if (step === 3) {
             // Step 3: Reset password
@@ -110,6 +117,7 @@ function ForgotPassword() {
                 toast.error('Please enter a new password.');
                 return;
             }
+            setNotAllode(true)
 
             try {
                 let resetEndpoint;
@@ -134,6 +142,7 @@ function ForgotPassword() {
                 });
 
                 if (result.data.status) {
+
                     toast.success('Password reset successful! Redirecting...');
                     navigate('/techer-login');
                 } else {
@@ -142,6 +151,8 @@ function ForgotPassword() {
             } catch (err) {
                 console.error(err);
                 toast.error('An error occurred. Please try again.');
+            } finally {
+                setNotAllode(false)
             }
         }
     };
@@ -231,9 +242,18 @@ function ForgotPassword() {
                                 </>
                             )}
                             <div className="add-teacher-button">
-                                <button type="submit">
-                                    {step === 1 ? 'Send Code' : step === 2 ? 'Verify Code' : 'Reset Password'}
-                                </button>
+                                {
+                                    notAllowed ? (
+                                        <button type="submit" style={{ cursor: 'not-allowed' }}>
+                                            whet...
+                                        </button>
+                                    ) : (
+                                        <button type="submit">
+                                            {step === 1 ? 'Send Code' : step === 2 ? 'Verify Code' : 'Reset Password'}
+                                        </button>
+                                    )
+                                }
+
                             </div>
                         </div>
                     </form>

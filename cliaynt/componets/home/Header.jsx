@@ -37,7 +37,7 @@ function Header() {
                         onClick={toggleNav}
                     >
                         <ul>
-                            <div className="alif-logoo nav-logo">
+                            <div className=" nav-logo">
                                 <img src={logo} alt="Logo" />
                             </div>
                             <li className="mobile-ls"><Link to="/">Home</Link></li>
