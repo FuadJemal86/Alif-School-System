@@ -2,7 +2,7 @@ import React from 'react'
 import './homeCss/footer.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { faTwitter, faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faTwitter, faTelegram, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { Link } from 'react-router-dom';
 
 function Footer() {
@@ -68,7 +68,7 @@ function Footer() {
                 </div>
                 <div className='footer-icone-conatiner'>
                     <div className='footer-icons'>
-                        <div className='footer-icon'><Link to={"#"}><FontAwesomeIcon icon={faFacebook} /></Link></div>
+                        <div className='footer-icon'><Link to={"tg://resolve?domain=@fua333"}><FontAwesomeIcon icon={faTelegram} /></Link></div>
                         <div className='footer-icon'><Link to={'https://www.instagram.com/fuad.l1'}><FontAwesomeIcon icon={faInstagram} /></Link></div>
                         <div className='footer-icon'><Link to={'https://www.linkedin.com/in/fuad-jemal-757601302'}><FontAwesomeIcon icon={faLinkedin} /></Link></div>
                         <div className='footer-icon'><Link to={'https:/www.tiwtter.com/Fuadjemal185415'}><FontAwesomeIcon icon={faTwitter} /></Link></div>
