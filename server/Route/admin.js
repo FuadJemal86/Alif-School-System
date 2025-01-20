@@ -128,7 +128,7 @@ router.post('/add-admin', upload.single('image'), async (req, res) => {
             connection.query(isAdminFound, [email], (err, result) => {
                 if (err) {
                     console.error(err.message)
-                    return res.status(500).json({ status: false, error: err.message })
+                    return res.status(500).json({ status: false, error: 'query error' })
                 }
                 if (result.length > 0) {
                     return res.status(200).json({ status: false, message: 'Email Already Exist!' })
@@ -168,7 +168,6 @@ router.get('/get-admin', (req, res) => {
         const decoded = jwt.verify(token, process.env.ADMIN_PASSWORD)
 
         const id = decoded.id
-        console.log(id)
 
         const sql = `SELECT 
             name,
