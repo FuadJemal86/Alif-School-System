@@ -7,6 +7,7 @@ import school1 from './logo/shoolEnvi1.jpeg';
 import school2 from './logo/schoolEnvi2.jpeg';
 import school3 from './logo/schoolEnvi3.jpg';
 import api from '../../src/api';
+import { Link } from 'react-router-dom';
 
 function Body() {
 
@@ -53,14 +54,14 @@ function Body() {
             <div>
                 <div className="banner">
                     <div className="banner-content">
-                        <h1>Welcome to Alif School</h1>
+                        <h1>Welcome to <span className='banner-span-text'>Alif School</span></h1>
                         <p>Empowering Education, Inspiring Excellence</p>
-                        <a class="fancy" href="#">
-                            <span class="top-key"></span>
-                            <span class="text">Enroll now</span>
-                            <span class="bottom-key-1"></span>
-                            <span class="bottom-key-2"></span>
-                        </a>
+                        <Link to={'/student-login'} class="fancy" t>
+                            <span className="top-key"></span>
+                            <span className="text">Enroll now</span>
+                            <span className="bottom-key-1"></span>
+                            <span className="bottom-key-2"></span>
+                        </Link>
                     </div>
                 </div>
             </div>

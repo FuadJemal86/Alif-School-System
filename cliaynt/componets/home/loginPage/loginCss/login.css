@@ -319,7 +319,6 @@
 /* login header */
 
 .login-header-container {
-    background: #dbddda;
     backdrop-filter: blur(10px);
     height: 50px;
     width: 100%;
