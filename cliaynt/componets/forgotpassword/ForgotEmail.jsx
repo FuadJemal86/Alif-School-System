@@ -35,6 +35,7 @@ function ForgotPassword() {
             // Step 1: Email submission
             if (!formData.email || !formData.userType) {
                 toast.error('Please enter an email and select a user type.');
+                setNotAllode(false)
                 return;
             }
 
@@ -73,6 +74,7 @@ function ForgotPassword() {
             // Step 2: Verification code submission
             if (!formData.verificationCode) {
                 toast.error('Please enter the verification code.');
+                setNotAllode(false)
                 return;
             }
             setNotAllode(true)
@@ -115,6 +117,7 @@ function ForgotPassword() {
             // Step 3: Reset password
             if (!formData.newPassword) {
                 toast.error('Please enter a new password.');
+                setNotAllode(false)
                 return;
             }
             setNotAllode(true)
@@ -245,7 +248,7 @@ function ForgotPassword() {
                                 {
                                     notAllowed ? (
                                         <button type="submit" style={{ cursor: 'not-allowed' }}>
-                                            whet...
+                                            wait...
                                         </button>
                                     ) : (
                                         <button type="submit">

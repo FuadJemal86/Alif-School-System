@@ -922,7 +922,7 @@ router.post('/verify-code', async (req, res) => {
 
                 return res.status(200).json({ status: true, message: 'Verification successful!' });
             } else {
-                return res.status(400).json({ status: false, message: 'Invalid or expired verification code!' });
+                return res.status(200).json({ status: false, message: 'Invalid or expired verification code!' });
             }
         });
     } catch (err) {
