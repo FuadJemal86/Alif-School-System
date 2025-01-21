@@ -1,5 +1,5 @@
 import React from 'react'
-
+import '../contact/contact css/contactBanner.css'
 
 function ContactBaner() {
     return (
