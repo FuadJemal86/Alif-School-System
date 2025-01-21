@@ -2,7 +2,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const connection = require('../db');
 const bcrypt = require('bcrypt')
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const { student, students } = require('../middelwer/student');
 require('dotenv').config()
 
 
@@ -76,7 +77,7 @@ router.post('/login', async (req, res) => {
 
 // get grade
 
-router.get('/student-result', async (req, res) => {
+router.get('/student-result',[student , students], async (req, res) => {
     const token = req.header('token');
 
     if (!token) {
@@ -128,7 +129,7 @@ router.get('/student-result', async (req, res) => {
 
 // edit student profile
 
-router.put('/edit-student/:id',  async (req, res) => {
+router.put('/edit-student/:id',[student , students],  async (req, res) => {
     const id = req.params.id
 
     const { password } = req.body

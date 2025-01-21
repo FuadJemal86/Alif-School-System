@@ -93,7 +93,7 @@ router.post('/teacher-login', async (req, res) => {
 
 // get teacher profile
 
-router.get('/get-teacher-profile', async (req, res) => {
+router.get('/get-teacher-profile',[teacher , teachers], async (req, res) => {
     const token = req.header('token')
 
     if (!token) {
@@ -135,7 +135,7 @@ router.get('/get-teacher-profile', async (req, res) => {
 
 //add attendance 
 
-router.post('/take-attendance', async (req, res) => {
+router.post('/take-attendance',[teacher , teachers], async (req, res) => {
 
     const { student_id, class_id, status, subject_id } = req.body;
 
@@ -191,7 +191,7 @@ router.post('/take-attendance', async (req, res) => {
 
 // get before status
 
-router.get('/before-status/:id', async (req, res) => {
+router.get('/before-status/:id',[teacher , teachers], async (req, res) => {
     const id = req.params.id
 
     try {
@@ -253,7 +253,7 @@ router.post('/add-grade', [teacher, teachers], async (req, res) => {
 
 // get attendance
 
-router.get('/get-attendance', async (req, res) => {
+router.get('/get-attendance',[teacher , teachers], async (req, res) => {
 
     const token = req.header('token');
     if (!token) {
@@ -305,7 +305,7 @@ router.get('/get-attendance', async (req, res) => {
 
 // get greade
 
-router.get('/get-grade', async (req, res) => {
+router.get('/get-grade',[teacher , teachers], async (req, res) => {
 
     const token = req.header('token');
     if (!token) {
@@ -352,7 +352,7 @@ router.get('/get-grade', async (req, res) => {
 
 // get one grade
 
-router.get('/get-student-grade/:id', (req, res) => {
+router.get('/get-student-grade/:id',[teacher , teachers], (req, res) => {
     const id = req.params.id;
     console.log(id)
 
@@ -484,7 +484,7 @@ router.get('/get-student/:id', async (req, res) => {
 // edit teacher profile
 
 
-router.put('/edit-teacher/:id', upload.single('image'), async (req, res) => {
+router.put('/edit-teacher/:id',[teacher , teachers], upload.single('image'), async (req, res) => {
 
     const id = req.params.id;
     const { password } = req.body;
@@ -522,7 +522,7 @@ router.put('/edit-teacher/:id', upload.single('image'), async (req, res) => {
 
 // get assistance
 
-router.get('/get-assistence', async (req, res) => {
+router.get('/get-assistence',[teacher , teachers], async (req, res) => {
     const token = req.header('token');
     if (!token) {
         return res.status(401).json({ status: false, message: 'No token provided' });
@@ -577,7 +577,7 @@ router.get('/get-assistence', async (req, res) => {
 
 // add assisstence
 
-router.post('/add-assistence/:id', async (req, res) => {
+router.post('/add-assistence/:id',[teacher , teachers], async (req, res) => {
 
     const student_id = req.params.id;
 
@@ -653,7 +653,7 @@ router.post('/add-assistence/:id', async (req, res) => {
 
 // get assistance 
 
-router.get('/get-assistance/:id', (req, res) => {
+router.get('/get-assistance/:id',[teacher , teachers], (req, res) => {
     const id = req.params.id;
     console.log(id)
 
@@ -674,7 +674,7 @@ router.get('/get-assistance/:id', (req, res) => {
 
 // get total
 
-router.get('/get-total', async (req, res) => {
+router.get('/get-total',[teacher , teachers], async (req, res) => {
 
     const student_id = req.body.student_id
 
@@ -697,7 +697,7 @@ router.get('/get-total', async (req, res) => {
 
 // delete message
 
-router.delete('/message-delete/:id', async (req, res) => {
+router.delete('/message-delete/:id',[teacher , teachers], async (req, res) => {
     const id = req.params.id;
 
     if (!id) {
