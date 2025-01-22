@@ -88,7 +88,9 @@ function AdminNav() {
     }, [])
 
     const toggleNav = () => {
-        setIsNavOpen(!isNavOpen);
+        if(window.innerWidth >= 768) {
+            setIsNavOpen(!isNavOpen);
+        }
     };
 
 
