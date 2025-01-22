@@ -121,6 +121,7 @@ function Sitting() {
                 setSchoolImage(result.data.result)
             } else {
                 console.log(result.data.error)
+                setIsLoading(false)
             }
         } catch (err) {
             console.log(err)
@@ -130,16 +131,20 @@ function Sitting() {
     }
 
     const FeachData = async () => {
+        setIsLoading(true)
         try {
             const result = await api.get('/auth/get-teacherImage')
 
             if (result.data.status) {
                 setteacherImage(result.data.result)
+                setIsLoading(false)
             } else {
                 console.log(result.data.error)
             }
         } catch (err) {
             console.log(err)
+        }  finally {
+            setIsLoading(false)
         }
     }
 
