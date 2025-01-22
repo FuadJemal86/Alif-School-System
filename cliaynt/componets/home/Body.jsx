@@ -155,7 +155,7 @@ function Body() {
                             <div key={c.id} className='teacher-imags'>
                                 <div>
                                     <div className="teacher-card">
-                                        <div className='teacher-card-image'> <img src={`http://localhost:3032/image/${c.image}`} alt="" /></div>
+                                        <div className='teacher-card-image'> <img src={`https://fuad.jmcpharma.com/image/${c.image}`} alt="" /></div>
                                         <div className="teacher-card-content">
                                             <p className="teacher-card-title">{c.name}</p>
                                             <p className="teacher-card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
