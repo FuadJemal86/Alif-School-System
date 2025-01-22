@@ -161,7 +161,7 @@ function AdminNav() {
                 </div>
             </div>
 
-            <div onClick={toggleNav} className={`text-nav-container   ${isNavOpen ? 'open' : ''}`}>
+            <div onClick={togelCloth} className={`text-nav-container   ${isNavOpen ? 'open' : ''}`}>
                 <div className='text-container1'>
                     <div className='admin-page-text'>
                         <div style={{ border: '1px solid #8D77AB', borderRadius: '50px' }}><img style={{ height: '40px', width: '40px', background: 'white', borderRadius: '50px', margin: '3px' }} src={alifLogo} alt="" srcset="" /></div>
@@ -170,7 +170,7 @@ function AdminNav() {
 
                     <div><hr style={{ border: "1px solid #ECEBDE", margin: "20px 8px" }} /></div>
 
-                    <nav className='text-container2'>
+                    <nav className='text-container2' onClick={toggleNav}>
                         <ul className='text-container3'>
                             <li>
                                 <Link to={''} className='a-nav-link'>
