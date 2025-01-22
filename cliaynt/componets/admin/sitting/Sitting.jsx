@@ -27,10 +27,13 @@ function Sitting() {
     })
 
 
+    const [isLoading, setIsLoading] = useState(false)
 
     const handelSchool = async (c) => {
 
         c.preventDefault()
+
+        setIsLoading(true)
 
         const formData = new FormData()
 
@@ -59,6 +62,7 @@ function Sitting() {
                     title: result.data.error || 'Something went wrong!',
                     showConfirmButton: true,
                 });
+                setIsLoading(false)
             }
         } catch (err) {
             console.log(err)
@@ -69,6 +73,7 @@ function Sitting() {
     const handelTeacher = async (c) => {
 
         c.preventDefault()
+        setIsLoading(true)
 
         const formData = new FormData()
 
@@ -96,6 +101,7 @@ function Sitting() {
                     title: result.data.error || 'Something went wrong!',
                     showConfirmButton: true,
                 });
+                setIsLoading(false)
             }
         } catch (err) {
             console.log(err)
@@ -104,7 +110,6 @@ function Sitting() {
     }
 
     const [schoolImage, setSchoolImage] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
 
         FeachDataSchool()
