@@ -1,6 +1,6 @@
 const connection = require('./db/db connection/connection');
 
-connection.connect((err) => {
+connection.getConnection((err) => {
     if (err) {
         console.error('Connection failed:', err);
         return;
@@ -69,7 +69,7 @@ connection.connect((err) => {
             id INT AUTO_INCREMENT PRIMARY KEY,
             student_id INT NOT NULL,
             class_id INT NOT NULL,
-            attendance_date DATE NOT NULL DEFAULT CURRENT_DATE,
+            attendance_date DATE NOT NULL,
             status ENUM('Present', 'Absent', '-') NOT NULL DEFAULT '-',
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
@@ -82,7 +82,7 @@ connection.connect((err) => {
             student_id INT NOT NULL,
             subject_id INT NOT NULL,
             grade VARCHAR(10),
-            date DATE NOT NULL DEFAULT CURRENT_DATE,
+            date DATE NOT NULL,
             FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
             FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
         );`,
@@ -138,10 +138,10 @@ connection.connect((err) => {
             student_id INT NOT NULL,
             class_id INT NOT NULL,
             subject_id INT NOT NULL,
-            attendance_date DATE NOT NULL DEFAULT CURRENT_DATE,
+            attendance_date DATE NOT NULL,
             status ENUM('Present', 'Absent', '-') NOT NULL DEFAULT '-',
             FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
-        )`,
+        );`,
 
         `CREATE TABLE IF NOT EXISTS exams (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -153,12 +153,12 @@ connection.connect((err) => {
             assi2 FLOAT NOT NULL,
             midterm FLOAT NOT NULL,
             final FLOAT NOT NULL,
-            average FLOAT AS (assi1 + assi2 + midterm + final) STORED,
+            average FLOAT,
             FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE,
             FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
             FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
             FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
-        )`,
+    );`,
 
         `CREATE TABLE IF NOT EXISTS forgotTable (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -170,15 +170,6 @@ connection.connect((err) => {
         )`
     ];
 
-    const resetAttendanceEvent = `
-        CREATE EVENT IF NOT EXISTS reset_attendance_status
-            ON SCHEDULE EVERY 5 MINUTE
-        DO
-            UPDATE attendance
-            SET status = '-', updated_at = NOW()
-        WHERE status != '-' AND attendance_date = CURDATE();
-        `;
-
     const executeQueries = (queries) => {
         queries.forEach((query, index) => {
             connection.query(query, (err) => {
@@ -188,15 +179,6 @@ connection.connect((err) => {
                     console.log(`Table created/verified for query ${index + 1}`);
                 }
             });
-        });
-
-        // Execute the event creation query
-        connection.query(resetAttendanceEvent, (err) => {
-            if (err) {
-                console.error('Error creating reset_attendance_status event:', err.message);
-            } else {
-                console.log('Event reset_attendance_status created/verified successfully.');
-            }
         });
     };
 

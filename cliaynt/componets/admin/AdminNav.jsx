@@ -58,7 +58,6 @@ function AdminNav() {
             try {
                 const result = await api.get('/auth/count-message')
                 if (result.data.status) {
-                    console.log(result.data.result[0].messags)
                     setNotificationCount(result.data.result[0].messags)
                 } else {
                     console.log(result.data.messaga)
@@ -77,7 +76,6 @@ function AdminNav() {
             try {
                 const result = await api.get('/auth/get-admin')
                 if (result.data.status) {
-                    console.log(result.data.admin.image)
                     setAdminInfo(result.data.admin)
                 } else {
                     console.log(result.data.messaga)

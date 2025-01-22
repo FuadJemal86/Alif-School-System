@@ -42,11 +42,11 @@ function Grade() {
     }
 
     useEffect(() => {
-        const filterd = studentInfo.filter((students) => 
+        const filterd = studentInfo.filter((students) =>
             students.student_name.toLowerCase().includes(serchItem.toLowerCase())
         )
         setFilteredStudents(filterd)
-    },[serchItem,studentInfo])
+    }, [serchItem, studentInfo])
 
     const handelDelete = async (id) => {
         try {
@@ -88,6 +88,12 @@ function Grade() {
         );
     }
 
+    const getGradeClassName = (grade) => {
+        if (grade == 'A') return 'grade-badge grade-a';
+        if (grade == 'B') return 'grade-badge grade-b';
+        return 'grade-badge grade-c';
+    };
+
     return (
         <div className='subject-main-table-con'>
             <div className='serch-bar'>
@@ -126,8 +132,10 @@ function Grade() {
                                         <td>{c.email}</td>
                                         <td>{c.gender}</td>
                                         <td>{c.subject_name}</td>
-                                        <td>{c.grade}</td>
-
+                                        <td>
+                                            <span className={getGradeClassName('A')}>
+                                                {c.grade}
+                                            </span></td>
                                         <td>
                                             <span onClick={() => handelDelete(c.id)} style={{ color: '#FA4032', cursor: 'pointer' }}>
                                                 <FontAwesomeIcon icon={faTrash} />

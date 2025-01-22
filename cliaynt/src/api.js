@@ -1,7 +1,7 @@
 import axios , { CanceledError}from "axios";
 
 const api = axios.create({
-    baseURL: 'http://localhost:3032/',
+    baseURL: 'https://fuad.jmcpharma.com',
 })
 
 api.interceptors.request.use(

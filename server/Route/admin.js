@@ -156,7 +156,7 @@ router.post('/add-admin', upload.single('image'), async (req, res) => {
 
 // get admin
 
-router.get('/get-admin', (req, res) => {
+router.get('/get-admin',[auth, admin], (req, res) => {
 
     const token = req.header('token')
 
@@ -199,7 +199,7 @@ router.get('/get-admin', (req, res) => {
 
 // edit admin
 
-router.put('/edit-admin/:id', upload.single('image'), async (req, res) => {
+router.put('/edit-admin/:id',[auth, admin], upload.single('image'), async (req, res) => {
 
     const id = req.params.id;
     const { name, password } = req.body;
@@ -1001,8 +1001,8 @@ router.post('/add-grade', [auth, admin], async (req, res) => {
                 return res.status(200).json({ status: false, message: 'Student in This Subject Already Exists ' })
             }
 
-            const sql = `INSERT INTO grades (student_id,subject_id,grade) VALUES(?)`;
-            connection.query(sql, [values], (err, result) => {
+            const sql = `INSERT INTO grades (student_id,subject_id,grade,date) VALUES(?,?,?,CURDATE())`;
+            connection.query(sql, values, (err, result) => {
                 if (err) {
                     console.error(err.message)
                     return res.status(500).json({ status: false, message: 'query error' })

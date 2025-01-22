@@ -72,6 +72,14 @@ function Attendance() {
     }
 
 
+    const getGradeClassName = (grade) => {
+        if (grade == 'A') return 'grade-badge grade-a';
+        if (grade == 'B') return 'grade-badge grade-b';
+        return 'grade-badge grade-c';
+    };
+
+
+
 
     return (
         <div>
@@ -107,18 +115,21 @@ function Attendance() {
                                             <td>{c.student_id}</td>
                                             <td>{c.student_name}</td>
                                             <td>{c.student_gender}</td>
-                                            <td>{c.attendance_status}</td>
                                             <td>
-                                                {c.attendance_status !== '-' && c.attendance_status !== null ?(
+                                                <span className={getGradeClassName('A')}>
+                                                    {c.attendance_status}
+                                                </span></td>
+                                            <td>
+                                                {c.attendance_status !== '-' && c.attendance_status !== null ? (
 
-                                                    <div style={{ display: 'flex', gap: "15px" }}><FontAwesomeIcon  style={{ color: '#16C47F', cursor: 'not-allowed' }} icon={faCheck} />
-                                                        <FontAwesomeIcon  style={{ color: '#F93827', cursor: 'not-allowed' }} icon={faXmark} />
+                                                    <div style={{ display: 'flex', gap: "15px" }}><FontAwesomeIcon style={{ color: '#16C47F', cursor: 'not-allowed' }} icon={faCheck} />
+                                                        <FontAwesomeIcon style={{ color: '#F93827', cursor: 'not-allowed' }} icon={faXmark} />
                                                     </div>
 
                                                 ) : (
-                                                <div style={{ display: 'flex', gap: "15px" }}><FontAwesomeIcon onClick={() => handlePresent(c.student_id, c.class_id, c.subject_id)} style={{ color: '#16C47F', cursor: 'pointer' }} icon={faCheck} />
-                                                    <FontAwesomeIcon onClick={() => handleAbsent(c.student_id, c.class_id, c.subject_id)} style={{ color: '#F93827', cursor: 'pointer' }} icon={faXmark} />
-                                                </div>
+                                                    <div style={{ display: 'flex', gap: "15px" }}><FontAwesomeIcon onClick={() => handlePresent(c.student_id, c.class_id, c.subject_id)} style={{ color: '#16C47F', cursor: 'pointer' }} icon={faCheck} />
+                                                        <FontAwesomeIcon onClick={() => handleAbsent(c.student_id, c.class_id, c.subject_id)} style={{ color: '#F93827', cursor: 'pointer' }} icon={faXmark} />
+                                                    </div>
                                                 )}
 
                                             </td>

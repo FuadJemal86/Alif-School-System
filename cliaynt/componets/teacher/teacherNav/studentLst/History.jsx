@@ -37,16 +37,22 @@ function History() {
             </div>
         );
     }
-    
+
+    const getGradeClassName = (grade) => {
+        if (grade == 'A') return 'grade-badge grade-a';
+        if (grade == 'B') return 'grade-badge grade-b';
+        return 'grade-badge grade-c';
+    };
+
     return (
         <div>
             <div className='subject-main-table-con'>
                 <div className='serch-bar'>
-                                <input
-                                    placeholder='Search...'
-                                />
-                                <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
-                            </div>
+                    <input
+                        placeholder='Search...'
+                    />
+                    <div className='serch-icone'><FontAwesomeIcon icon={faMagnifyingGlass} /></div>
+                </div>
                 <div className='subject-main-container'>
                     <h4>Attendance History</h4>
 
@@ -68,7 +74,12 @@ function History() {
                                             <td>{c.student_id}</td>
                                             <td>{c.student_name}</td>
                                             <td>{c.attendance_date}</td>
-                                            <td>{c.absent_count}</td>
+
+                                            <td >
+                                                <span className={getGradeClassName('B')}>
+                                                    {c.absent_count}
+                                                </span>
+                                            </td>
                                         </tr>
 
                                     ))

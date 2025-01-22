@@ -143,12 +143,12 @@ router.post('/take-attendance',[teacher , teachers], async (req, res) => {
 
 
     const sql = `
-        INSERT INTO attendance (student_id, class_id, status)
-        VALUES (?, ?, ?)
+        INSERT INTO attendance (student_id, class_id,attendance_date, status)
+        VALUES (?, ?,CURDATE(), ?)
         ON DUPLICATE KEY UPDATE status = ?, updated_at = NOW()
     `;
 
-    const historySql = `INSERT INTO history (student_id, class_id, subject_id,  status) VALUES (?, ?, ? ,?)`;
+    const historySql = `INSERT INTO history (student_id, class_id, subject_id, attendance_date,  status) VALUES (?, ?, ?, CURDATE(),?)`;
 
 
     try {
@@ -212,6 +212,27 @@ router.get('/before-status/:id',[teacher , teachers], async (req, res) => {
     }
 })
 
+// update the attendance
+
+const resetAttendanceStatus = () => {
+    const query = `
+        UPDATE attendance
+        SET status = '-'
+        WHERE status != '-' AND attendance_date = CURDATE()
+    `;
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error resetting attendance status:', err.message);
+        } else {
+            console.log('Attendance status reset successfully.');
+        }
+    });
+};
+
+// Schedule this function to run every 5 minutes
+setInterval(resetAttendanceStatus, 1 * 60 * 1000); // 5 minutes in milliseconds
+
+
 // add grades
 
 router.post('/add-grade', [teacher, teachers], async (req, res) => {
@@ -235,8 +256,8 @@ router.post('/add-grade', [teacher, teachers], async (req, res) => {
                 req.body.subject_id,
                 req.body.grade
             ]
-            const sql = `INSERT INTO grades (student_id,subject_id,grade) VALUES(?)`;
-            connection.query(sql, [values], (err, result) => {
+            const sql = `INSERT INTO grades (student_id,subject_id,grade,date) VALUES (?, ?, ?, CURDATE())`;
+            connection.query(sql, values, (err, result) => {
                 if (err) {
                     throw err
                 }
