@@ -48,7 +48,7 @@ function Sitting() {
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Student added successfully!",
+                    title: "SChool image successfully added!",
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -87,7 +87,7 @@ function Sitting() {
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Student added successfully!",
+                    title: "Teacher image successfully added !",
                     showConfirmButton: false,
                     timer: 1500
                 });

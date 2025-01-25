@@ -87,7 +87,7 @@ function AddClass() {
 
                         </div>
                         <div className='add-teacher-button'>
-                            <button>Add Teacher</button>
+                            <button>Add Class</button>
                         </div>
                     </div>
                 </form>
