@@ -50,7 +50,7 @@ const AdminProfile = () => {
                     <h2>Admin Profile</h2>
                     <div className="profile-image-container">
                         <img
-                            src={`http://localhost:3032/image/${adminInfo.image}`}
+                            src={`https://fuad.jmcpharma.com/image/${adminInfo.image}`}
                             // alt={adminInfo.name}
                             className="profile-image"
                         />

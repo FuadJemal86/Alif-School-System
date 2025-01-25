@@ -127,7 +127,7 @@ function AdminNav() {
                                 </div>
                                 {
                                     adminInfo.image !== null ? (
-                                        <Link to={'/admin-dashbord/admin-profile'}><img src={`http://localhost:3032/image/${adminInfo.image}`} alt="" srcset="" /></Link>
+                                        <Link to={'/admin-dashbord/admin-profile'}><img src={`https://fuad.jmcpharma.com/image/${adminInfo.image}`} alt="" srcset="" /></Link>
 
                                     ) : (
                                         <Link to={'/admin-dashbord/admin-profile'} style={{ padding: '8px', paddingTop: '13px' }}><FontAwesomeIcon icon={faUserCircle} style={{ fontSize: '30px', color: '#295F98' }} /></Link>

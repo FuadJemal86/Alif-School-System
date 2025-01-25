@@ -106,7 +106,7 @@ const StudentProfile = () => {
                                             studentProfile.image == null ? (
                                                 <User size={64} />
                                             ) : (
-                                                <img src={`http://localhost:3032/image/${studentProfile.image}`} alt="" srcset="" />
+                                                <img src={`https://fuad.jmcpharma.com/image/${studentProfile.image}`} alt="" srcset="" />
                                             )
                                         }
 

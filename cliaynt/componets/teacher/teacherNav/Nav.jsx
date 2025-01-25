@@ -104,7 +104,7 @@ function Nav() {
                             <div className='teacher-profile'>
                                 {
                                     teacherInfo.image !== null ? (
-                                        <div><img src={`http://localhost:3032/image/${teacherInfo.image}`} alt="" srcset="" /></div>
+                                        <div><img src={`https://fuad.jmcpharma.com/image/${teacherInfo.image}`} alt="" srcset="" /></div>
 
                                     ) : (
                                         <div style={{padding:'7px'}}><FontAwesomeIcon icon={faUserCircle} style={{ fontSize: '30px', color: '#295F98' }} /></div>

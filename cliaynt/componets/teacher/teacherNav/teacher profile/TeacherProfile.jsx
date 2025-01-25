@@ -45,7 +45,7 @@ function TeacherProfile() {
                             <h2>Teacher Profile</h2>
                             <div className="profile-image-container">
                                 <img
-                                    src={`http://localhost:3032/image/${teacherInfo.image}`}
+                                    src={`https://fuad.jmcpharma.com/image/${teacherInfo.image}`}
                                     // alt={adminInfo.name}
                                     className="profile-image"
                                 />

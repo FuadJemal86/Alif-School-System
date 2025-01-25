@@ -1,11 +1,12 @@
 const mysql = require('mysql');
+require('dotenv').config()
 
 
 const connection = mysql.createPool({
-    host: 'MYSQL5035.site4now.net', 
-    user: 'aaf278_alif',            
-    password: 'abd_red080',
-    database: 'db_aaf278_alif'     
+    host: process.env.HOST,
+    user: process.env.USER,            
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE     
 });
 
 module.exports = connection;
