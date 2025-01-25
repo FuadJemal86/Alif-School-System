@@ -11,9 +11,13 @@ import { Link } from 'react-router-dom';
 
 function Body() {
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const [teacherImage, setteacherImage] = useState([])
 
     useEffect(() => {
+
+        setIsLoading(true)
 
         const FeachData = async () => {
             try {
@@ -26,6 +30,8 @@ function Body() {
                 }
             } catch (err) {
                 console.log(err)
+            } finally {
+                setIsLoading(false)
             }
         }
         FeachData()
@@ -48,6 +54,14 @@ function Body() {
 
         return () => observer.disconnect();
     }, []);
+
+    if (isLoading) {
+        return (
+            <div className="loading-spinner">
+                <span class="home-loader"></span>
+            </div>
+        );
+    }
 
     return (
         <div className='body-container' id='home'>
