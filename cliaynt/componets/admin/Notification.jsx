@@ -11,25 +11,26 @@ function Notification() {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const fechData = async () => {
-            setIsLoading(true);
-            try {
-                const result = await api.get('/auth/get-messaga')
-
-                if (result.data.status) {
-                    setNotification(result.data.result)
-                } else {
-                    console.log(result.data.error)
-                }
-
-            } catch (err) {
-                console.log(err)
-            } finally {
-                setIsLoading(false);
-            }
-        }
         fechData()
     }, [])
+
+    const fechData = async () => {
+        setIsLoading(true);
+        try {
+            const result = await api.get('/auth/get-messaga')
+
+            if (result.data.status) {
+                setNotification(result.data.result)
+            } else {
+                console.log(result.data.error)
+            }
+
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     const handelDelete = async (id) => {
         try {
@@ -50,7 +51,7 @@ function Notification() {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
-                        fetchData()
+                        fechData()
 
                     } else {
                         console.log(result.data.error)
