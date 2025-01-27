@@ -229,8 +229,8 @@ const resetAttendanceStatus = () => {
     });
 };
 
-// Schedule this function to run every 5 minutes
-setInterval(resetAttendanceStatus, 24 * 60  * 60 * 1000);
+
+setInterval(resetAttendanceStatus, 10 * 60 * 60 * 1000); // 10 hour in milliseconds
 
 
 // add grades
@@ -396,7 +396,7 @@ router.get('/get-student-grade/:id',[teacher , teachers], (req, res) => {
 
 // get teachers 
 
-router.get('/teacher-data',[teacher , teachers], async (req, res) => {
+router.get('/teacher-data', async (req, res) => {
     const token = req.header('token');
     if (!token) {
         return res.status(401).json({ status: false, message: 'No token provided' });
@@ -483,7 +483,7 @@ router.get('/teacher-data',[teacher , teachers], async (req, res) => {
 
 //  get student
 
-router.get('/get-student/:id',[teacher , teachers], async (req, res) => {
+router.get('/get-student/:id', async (req, res) => {
     const id = req.params.id
 
 
@@ -747,7 +747,7 @@ router.delete('/message-delete/:id',[teacher , teachers], async (req, res) => {
 
 // get history
 
-router.get('/get-history',[teacher , teachers], async (req, res) => {
+router.get('/get-history', async (req, res) => {
 
     const token = req.header('token');
     if (!token) {
@@ -803,7 +803,7 @@ router.get('/get-history',[teacher , teachers], async (req, res) => {
 
 // get student in teacher section
 
-router.get('/counter-number-student',[teacher , teachers], async (req, res) => {
+router.get('/counter-number-student', async (req, res) => {
     const token = req.header('token')
 
     if (!token) {
@@ -850,7 +850,7 @@ router.get('/counter-number-student',[teacher , teachers], async (req, res) => {
 
 // forgot password
 
-router.post('/check-email',[teacher , teachers], async (req, res) => {
+router.post('/check-email', async (req, res) => {
     const email = req.body.email;
 
     try {
@@ -921,7 +921,7 @@ router.post('/check-email',[teacher , teachers], async (req, res) => {
 
 // chek the token
 
-router.post('/verify-code',[teacher , teachers], async (req, res) => {
+router.post('/verify-code', async (req, res) => {
     const { email, verificationCode } = req.body;
 
     try {
@@ -954,7 +954,7 @@ router.post('/verify-code',[teacher , teachers], async (req, res) => {
 
 
 // reset-password
-router.put('/reset-password',[teacher , teachers], async (req, res) => {
+router.put('/reset-password', async (req, res) => {
     const { email, newPassword } = req.body;
 
     if (!email || !newPassword) {

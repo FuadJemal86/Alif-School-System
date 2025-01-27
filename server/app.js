@@ -18,6 +18,7 @@ app.use(cors({
 app.get("/", (req, res) => {
     res.send("Welcome to Alif API!");
 });
+
 app.use(express.json());
 app.use('/auth', admin);
 app.use('/teacher', teacher);
@@ -25,6 +26,8 @@ app.use('/student', student);
 app.use(express.static('public'));
 
 
+
+// Start the server
 app.listen(process.env.PORT || 3032, () => {
     console.log(`Server is running on port ${process.env.PORT || 3032}`);
-}); 
+});

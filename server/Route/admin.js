@@ -100,7 +100,7 @@ router.post('/admin-login', async (req, res) => {
 
 // add admin 
 
-router.post('/add-admin', [auth, admin], upload.single('image'), async (req, res) => {
+router.post('/add-admin',[auth, admin], upload.single('image'), async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
