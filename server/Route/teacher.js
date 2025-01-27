@@ -598,78 +598,101 @@ router.get('/get-assistence',[teacher , teachers], async (req, res) => {
 
 // add assisstence
 
-router.post('/add-assistence/:id',[teacher , teachers], async (req, res) => {
-
+router.post('/add-assistence/:id', [teacher, teachers], async (req, res) => {
     const student_id = req.params.id;
 
+    // Destructure and ensure numeric values
+    const {
+        teacher_id,
+        class_id,
+        subject_id,
+        assi1 = 0,
+        assi2 = 0,
+        midterm = 0,
+        final = 0,
+    } = req.body;
 
-    const { teacher_id, class_id, subject_id, assi1, assi2, midterm, final } = req.body;
+    // Ensure values are treated as numbers
+    const numericAssi1 = Number(assi1);
+    const numericAssi2 = Number(assi2);
+    const numericMidterm = Number(midterm);
+    const numericFinal = Number(final);
+    const total = numericAssi1 + numericAssi2 + numericMidterm + numericFinal;
 
     try {
-
         const checkExistQuery = 'SELECT * FROM exams WHERE student_id = ? AND subject_id = ?';
 
         connection.query(checkExistQuery, [student_id, subject_id], (err, result) => {
             if (err) {
-                console.error(err.message);
-                return res.status(500).json({ status: false, error: 'Query error while checking existence' });
+                console.error('Error checking existence:', err.message);
+                return res.status(500).json({ status: false, error: 'Database error while checking existence' });
             }
 
             if (result.length > 0) {
-                // Update the existing row with new values
-
-                // IF(condition, value_if_true, value_if_false)
-                // assi1 = IF(? IS NOT NULL, ?, assi1)
-
+                // Update the existing record
                 const updateQuery = `
                     UPDATE exams 
                     SET 
-                        assi1 = IF(? IS NOT NULL, ?, assi1), 
-                        assi2 = IF(? IS NOT NULL, ?, assi2),
-                        midterm = IF(? IS NOT NULL, ?, midterm),
-                        final = IF(? IS NOT NULL, ?, final)
+                        assi1 = ?, 
+                        assi2 = ?, 
+                        midterm = ?, 
+                        final = ?, 
+                        total = ?
                     WHERE student_id = ? AND subject_id = ?
                 `;
 
                 const updateValues = [
-                    assi1, assi1,
-                    assi2, assi2,
-                    midterm, midterm,
-                    final, final,
-                    student_id, subject_id
+                    numericAssi1,
+                    numericAssi2,
+                    numericMidterm,
+                    numericFinal,
+                    total,
+                    student_id,
+                    subject_id,
                 ];
 
                 connection.query(updateQuery, updateValues, (err, updateResult) => {
                     if (err) {
-                        console.error(err.message);
-                        return res.status(500).json({ status: false, error: 'Query error while updating data' });
+                        console.error('Error updating record:', err.message);
+                        return res.status(500).json({ status: false, error: 'Database error while updating record' });
                     }
                     return res.status(200).json({ status: true, message: 'Record updated successfully!' });
                 });
             } else {
-                // Insert a new row if it doesn't exist
+                // Insert a new record
                 const insertQuery = `
                     INSERT INTO exams 
-                    (teacher_id, student_id, class_id, subject_id, assi1, assi2, midterm, final) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    (teacher_id, student_id, class_id, subject_id, assi1, assi2, midterm, final, total) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 `;
 
-                const insertValues = [teacher_id, student_id, class_id, subject_id, assi1 || 0, assi2 || 0, midterm || 0, final || 0];
+                const insertValues = [
+                    teacher_id,
+                    student_id,
+                    class_id,
+                    subject_id,
+                    numericAssi1,
+                    numericAssi2,
+                    numericMidterm,
+                    numericFinal,
+                    total,
+                ];
 
                 connection.query(insertQuery, insertValues, (err, insertResult) => {
                     if (err) {
-                        console.error(err.message);
-                        return res.status(500).json({ status: false, error: 'Query error while inserting data' });
+                        console.error('Error inserting record:', err.message);
+                        return res.status(500).json({ status: false, error: 'Database error while inserting record' });
                     }
                     return res.status(200).json({ status: true, message: 'Record added successfully!' });
                 });
             }
         });
     } catch (err) {
-        console.error(err.message);
-        return res.status(400).json({ status: false, error: "server error!" })
+        console.error('Server error:', err.message);
+        return res.status(500).json({ status: false, error: 'Server error' });
     }
 });
+
 
 
 // get assistance 

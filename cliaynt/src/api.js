@@ -4,6 +4,7 @@ const api = axios.create({
     baseURL: 'https://fuad.jmcpharma.com',
 })
 
+
 api.interceptors.request.use(
     (config)=>{
         const token = localStorage.getItem('token')
