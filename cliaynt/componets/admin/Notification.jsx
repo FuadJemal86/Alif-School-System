@@ -50,6 +50,7 @@ function Notification() {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
+                        fetchData()
 
                     } else {
                         console.log(result.data.error)
