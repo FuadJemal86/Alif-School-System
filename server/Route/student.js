@@ -98,7 +98,7 @@ router.get('/student-result',[student , students], async (req, res) => {
                 grades.grade AS student_grade,
                 classes.class_name,
                 subjects.name,
-                exams.average,
+                exams.total,
                 exams.assi1,
                 exams.assi2,
                 exams.midterm,

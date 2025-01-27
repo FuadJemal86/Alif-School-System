@@ -378,7 +378,7 @@ router.get('/get-student-grade/:id',[teacher , teachers], (req, res) => {
     console.log(id)
 
     const sql = `SELECT
-            exams.average
+            exams.total
         FROM
             exams
         WHERE
@@ -436,7 +436,7 @@ router.get('/teacher-data', async (req, res) => {
                     students.address, 
                     classes.class_name,
                     classes.id AS class_id,
-                    exams.average,
+                    exams.total,
                     grades.grade
                 FROM 
                     students
@@ -567,7 +567,7 @@ router.get('/get-assistence',[teacher , teachers], async (req, res) => {
                 exams.assi2,
                 exams.midterm,
                 exams.final,
-                exams.average
+                exams.total
             FROM 
                 students
             INNER JOIN   -- INNER JOIN means match the student table based on classes.id
@@ -700,7 +700,7 @@ router.get('/get-total',[teacher , teachers], async (req, res) => {
     const student_id = req.body.student_id
 
     try {
-        const sql = 'SELECT average FROM exams WHERE student_id = ?'
+        const sql = 'SELECT total FROM exams WHERE student_id = ?'
 
         connection.query(sql, [student_id], (err, result) => {
             if (err) {
@@ -819,7 +819,7 @@ router.get('/counter-number-student', async (req, res) => {
                 COUNT(DISTINCT students.id) AS student_count, -- Total students in the teacher's class and subject
                 SUM(CASE WHEN history.status = 'Present' THEN 1 ELSE 0 END) AS present_day, -- Total "Present" days for this subject
                 COUNT(history.id) AS history_id, -- Total attendance records for this subject
-                SUM(exams.average) AS grade_average, -- Average grade in this subject
+                SUM(exams.total) AS grade_average, -- Average grade in this subject
                 COUNT(exams.id) AS total_grade -- Total number of exams in this subject
             FROM
                 students

@@ -154,7 +154,7 @@ const StudentProfile = () => {
                                                     <td >{c.final || '-'}</td>
                                                     <td>
                                                         <span className={getGradeClassName('B')}>
-                                                            {c.average || '-'}
+                                                            {c.total || '-'}
                                                         </span></td>
                                                     <td>
                                                         <span className={getGradeClassName(c.grade)}>

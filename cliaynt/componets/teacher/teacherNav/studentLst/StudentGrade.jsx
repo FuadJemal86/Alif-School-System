@@ -73,27 +73,27 @@ function StudentGrade() {
 
     // Calculate grade value
     let gradeValue = '';
-    if (studentGrade?.average >= 90 && studentGrade.average <= 100) {
+    if (studentGrade?.total >= 90 && studentGrade.total <= 100) {
         gradeValue = 'A+';
-    } else if (studentGrade?.average >= 85 && studentGrade.average < 90) {
+    } else if (studentGrade?.total >= 85 && studentGrade.total < 90) {
         gradeValue = 'A';
-    } else if (studentGrade?.average >= 80 && studentGrade.average < 85) {
+    } else if (studentGrade?.total >= 80 && studentGrade.total < 85) {
         gradeValue = 'A-';
-    } else if (studentGrade?.average >= 75 && studentGrade.average < 80) {
+    } else if (studentGrade?.total >= 75 && studentGrade.total < 80) {
         gradeValue = 'B+';
-    } else if (studentGrade?.average >= 70 && studentGrade.average < 75) {
+    } else if (studentGrade?.total >= 70 && studentGrade.total < 75) {
         gradeValue = 'B';
-    } else if (studentGrade?.average >= 65 && studentGrade.average < 70) {
+    } else if (studentGrade?.total >= 65 && studentGrade.total < 70) {
         gradeValue = 'B-';
-    } else if (studentGrade?.average >= 60 && studentGrade.average < 65) {
+    } else if (studentGrade?.total >= 60 && studentGrade.total < 65) {
         gradeValue = 'C+';
-    } else if (studentGrade?.average >= 55 && studentGrade.average < 60) {
+    } else if (studentGrade?.total >= 55 && studentGrade.total < 60) {
         gradeValue = 'C';
-    } else if (studentGrade?.average >= 50 && studentGrade.average < 55) {
+    } else if (studentGrade?.total >= 50 && studentGrade.total < 55) {
         gradeValue = 'C-';
-    } else if (studentGrade?.average >= 40 && studentGrade.average < 50) {
+    } else if (studentGrade?.total >= 40 && studentGrade.total < 50) {
         gradeValue = 'D';
-    } else if (studentGrade?.average >= 0 && studentGrade.average < 40) {
+    } else if (studentGrade?.total >= 0 && studentGrade.total < 40) {
         gradeValue = 'F';
     } else {
         gradeValue = 'Invalid Grade';

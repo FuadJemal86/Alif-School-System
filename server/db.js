@@ -153,12 +153,12 @@ connection.getConnection((err) => {
             assi2 FLOAT NOT NULL,
             midterm FLOAT NOT NULL,
             final FLOAT NOT NULL,
-            average FLOAT,
+            total FLOAT AS (assi1 + assi2 + midterm + final) STORED, -- Automatically calculates the total
             FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE,
             FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
             FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
             FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
-    );`,
+        );`,
 
         `CREATE TABLE IF NOT EXISTS forgotTable (
             id INT AUTO_INCREMENT PRIMARY KEY,
