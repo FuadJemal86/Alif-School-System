@@ -3,6 +3,7 @@ import '../admin/navCss/nav.css'
 import api from '../../src/api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 
 function Notification() {
 
@@ -32,13 +33,31 @@ function Notification() {
 
     const handelDelete = async (id) => {
         try {
-            const result = await api.delete(`/auth/delete-message/${id}`)
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await api.delete(`/auth/delete-message/${id}`)
+                    if (response.data.status) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your file has been deleted.",
+                            icon: "success"
+                        });
 
-            if (result.data.status) {
-                fechData()
-            } else {
-                console.log(result.data.message)
-            }
+                    } else {
+                        console.log(result.data.error)
+                    }
+
+
+                }
+            });
         } catch (err) {
             console.log(err)
         }
